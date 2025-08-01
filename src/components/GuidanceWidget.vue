@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, defineExpose } from 'vue'
 import { useWidgetStore } from '@/stores/widget'
 import ProblemDescriptionStep from './steps/ProblemDescriptionStep.vue'
 import QuestionsStep from './steps/QuestionsStep.vue'
@@ -150,6 +150,11 @@ const handleComplete = () => {
     store.toggleOpen()
   }
 }
+
+// Expose methods to parent component
+defineExpose({
+  toggleOpen
+})
 </script>
 
 <style scoped>

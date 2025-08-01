@@ -1,18 +1,24 @@
-# guidance-widget
+# eGainWidget - Interactive Guidance Widget
 
-This template should help get you started developing with Vue 3 in Vite.
+A Vue.js-based interactive guidance widget that collects user input, walks users through questions, and offers solutions with feedback capture. Built for eGain's AI Knowledge Platform.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Multi-step Guidance Flow**: Problem description → Dynamic questioning → Answer review → Solution delivery → Feedback
+- **Multiple Input Types**: Text choices, image choices, free-text, and numeric inputs
+- **Responsive Design**: Desktop floating panel (360-400px) and mobile bottom sheet
+- **Admin Configurable**: Customizable theming, branding, and logo
+- **Accessibility**: WCAG 2.1 AA compliant with keyboard navigation and ARIA roles
+- **Embeddable**: Can be embedded on any webpage
 
-## Type Support for `.vue` Imports in TS
+## Tech Stack
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+- **Framework**: Vue 3 + Composition API
+- **Language**: TypeScript
+- **State Management**: Pinia
+- **Styling**: CSS with CSS variables for theming
+- **Build Tool**: Vite
+- **Linting**: ESLint + Prettier
 
 ## Project Setup
 
@@ -20,20 +26,43 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Development
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Build for Production
 
 ```sh
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Lint and Format
 
 ```sh
 npm run lint
+npm run format
 ```
+
+## Widget Usage
+
+The widget can be embedded on any webpage by including the widget script and mounting to a target element:
+
+```html
+<div id="egain-widget"></div>
+<script src="path/to/widget.js"></script>
+```
+
+## Mock Services
+
+- `GET /next-questions` - Returns question array
+- `POST /save-answer` - Simulated answer storage  
+- `GET /solution` - Returns solution when ready
+
+## Development Guidelines
+
+- Maximum 6 answer options per question
+- Images delivered as HTTPS URLs sized 96×96px
+- Numeric answers fit within 64-bit signed integer
+- Solution appears after ≥ 3 answered questions

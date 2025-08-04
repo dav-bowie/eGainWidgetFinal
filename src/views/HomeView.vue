@@ -115,6 +115,8 @@ const toggleWidget = () => {
   background: white;
   display: flex;
   flex-direction: column;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -126,10 +128,12 @@ const toggleWidget = () => {
   top: 0;
   z-index: 100;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .header-content {
-  max-width: 1400px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
@@ -224,6 +228,7 @@ const toggleWidget = () => {
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 /* Hero Section */
@@ -237,11 +242,14 @@ const toggleWidget = () => {
   align-items: center;
   justify-content: center;
   min-height: 50vh;
+  width: 100%;
 }
 
 .hero-content {
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .hero-title {
@@ -263,14 +271,17 @@ const toggleWidget = () => {
   padding: 60px 20px;
   background: #f8fafc;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .feature-grid {
-  max-width: 1400px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
+  padding: 0 20px;
 }
 
 .feature-card {
@@ -405,12 +416,11 @@ const toggleWidget = () => {
 /* Responsive Design */
 @media (max-width: 1200px) {
   .header-content {
-    max-width: 100%;
     padding: 0 16px;
   }
   
   .feature-grid {
-    max-width: 100%;
+    padding: 0 16px;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 24px;
   }
@@ -421,6 +431,10 @@ const toggleWidget = () => {
   
   .feature-section {
     padding: 50px 16px;
+  }
+  
+  .hero-content {
+    padding: 0 16px;
   }
 }
 
@@ -468,6 +482,7 @@ const toggleWidget = () => {
   }
   
   .feature-grid {
+    padding: 0 12px;
     grid-template-columns: 1fr;
     gap: 20px;
   }
@@ -510,6 +525,10 @@ const toggleWidget = () => {
   .help-icon {
     font-size: 14px;
   }
+  
+  .hero-content {
+    padding: 0 12px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -536,6 +555,10 @@ const toggleWidget = () => {
   
   .feature-section {
     padding: 30px 8px;
+  }
+  
+  .feature-grid {
+    padding: 0 8px;
   }
   
   .feature-card {
@@ -577,6 +600,10 @@ const toggleWidget = () => {
   .help-icon {
     font-size: 12px;
   }
+  
+  .hero-content {
+    padding: 0 8px;
+  }
 }
 
 /* Tablet Landscape */
@@ -587,6 +614,7 @@ const toggleWidget = () => {
   }
   
   .feature-grid {
+    padding: 0 20px;
     grid-template-columns: repeat(2, 1fr);
     gap: 28px;
   }
@@ -594,27 +622,33 @@ const toggleWidget = () => {
   .feature-card {
     padding: 28px 20px;
   }
+  
+  .hero-content {
+    padding: 0 20px;
+  }
 }
 
 /* Large Desktop */
 @media (min-width: 1400px) {
   .header-content {
     max-width: 1600px;
+    padding: 0 40px;
   }
   
   .feature-grid {
     max-width: 1600px;
+    padding: 0 40px;
     grid-template-columns: repeat(3, 1fr);
     gap: 40px;
   }
   
   .hero-section {
-    padding: 80px 20px;
+    padding: 80px 40px;
     min-height: 60vh;
   }
   
   .feature-section {
-    padding: 80px 20px;
+    padding: 80px 40px;
   }
   
   .feature-card {
@@ -624,6 +658,46 @@ const toggleWidget = () => {
   .icon-circle {
     width: 80px;
     height: 80px;
+  }
+  
+  .hero-content {
+    padding: 0 40px;
+  }
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1920px) {
+  .header-content {
+    max-width: 1800px;
+    padding: 0 60px;
+  }
+  
+  .feature-grid {
+    max-width: 1800px;
+    padding: 0 60px;
+    gap: 50px;
+  }
+  
+  .hero-section {
+    padding: 100px 60px;
+    min-height: 70vh;
+  }
+  
+  .feature-section {
+    padding: 100px 60px;
+  }
+  
+  .feature-card {
+    padding: 50px 40px;
+  }
+  
+  .icon-circle {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .hero-content {
+    padding: 0 60px;
   }
 }
 </style>

@@ -117,6 +117,7 @@ const toggleWidget = () => {
   flex-direction: column;
   width: 100vw;
   overflow-x: hidden;
+  position: relative;
 }
 
 /* Header */
@@ -133,7 +134,6 @@ const toggleWidget = () => {
 
 .header-content {
   width: 100%;
-  max-width: 100%;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
@@ -247,7 +247,7 @@ const toggleWidget = () => {
 
 .hero-content {
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -276,10 +276,10 @@ const toggleWidget = () => {
 
 .feature-grid {
   width: 100%;
-  max-width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
   padding: 0 20px;
 }
@@ -421,7 +421,7 @@ const toggleWidget = () => {
   
   .feature-grid {
     padding: 0 16px;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
   }
   
@@ -631,12 +631,12 @@ const toggleWidget = () => {
 /* Large Desktop */
 @media (min-width: 1400px) {
   .header-content {
-    max-width: 1600px;
+    max-width: 1400px;
     padding: 0 40px;
   }
   
   .feature-grid {
-    max-width: 1600px;
+    max-width: 1400px;
     padding: 0 40px;
     grid-template-columns: repeat(3, 1fr);
     gap: 40px;
@@ -668,12 +668,12 @@ const toggleWidget = () => {
 /* Extra Large Desktop */
 @media (min-width: 1920px) {
   .header-content {
-    max-width: 1800px;
+    max-width: 1600px;
     padding: 0 60px;
   }
   
   .feature-grid {
-    max-width: 1800px;
+    max-width: 1600px;
     padding: 0 60px;
     gap: 50px;
   }

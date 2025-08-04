@@ -116,10 +116,6 @@ export const useWidgetStore = defineStore('widget', () => {
 
   const toggleOpen = () => {
     isOpen.value = !isOpen.value
-    // Reset when opening for a new session
-    if (isOpen.value) {
-      reset()
-    }
   }
 
   // Mock API functions

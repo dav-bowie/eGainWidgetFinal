@@ -45,48 +45,51 @@ const toggleWidget = () => {
       </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-content">
-        <h1 class="hero-title">AI-Powered Knowledge for Customer Service</h1>
-        <p class="hero-subtitle">Transform customer service with our AI knowledge platform.</p>
-      </div>
-    </section>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1 class="hero-title">AI-Powered Knowledge for Customer Service</h1>
+          <p class="hero-subtitle">Transform customer service with our AI knowledge platform.</p>
+        </div>
+      </section>
 
-    <!-- Feature Section -->
-    <section class="feature-section">
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon smart-conversations">
-            <div class="icon-circle">
-              <div class="chat-bubble"></div>
+      <!-- Feature Section -->
+      <section class="feature-section">
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon smart-conversations">
+              <div class="icon-circle">
+                <div class="chat-bubble"></div>
+              </div>
             </div>
+            <h3 class="feature-title">Smart Conversations</h3>
+            <p class="feature-description">Engage customers with intelligent, context-aware responses powered by AI.</p>
           </div>
-          <h3 class="feature-title">Smart Conversations</h3>
-          <p class="feature-description">Engage customers with intelligent, context-aware responses powered by AI.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon knowledge-base">
-            <div class="icon-circle">
-              <div class="knowledge-icon"></div>
+          
+          <div class="feature-card">
+            <div class="feature-icon knowledge-base">
+              <div class="icon-circle">
+                <div class="knowledge-icon"></div>
+              </div>
             </div>
+            <h3 class="feature-title">Knowledge Base</h3>
+            <p class="feature-description">Access comprehensive information instantly with our advanced search capabilities.</p>
           </div>
-          <h3 class="feature-title">Knowledge Base</h3>
-          <p class="feature-description">Access comprehensive information instantly with our advanced search capabilities.</p>
-        </div>
-        
-        <div class="feature-card">
-          <div class="feature-icon availability">
-            <div class="icon-circle">
-              <div class="clock-icon"></div>
+          
+          <div class="feature-card">
+            <div class="feature-icon availability">
+              <div class="icon-circle">
+                <div class="clock-icon"></div>
+              </div>
             </div>
+            <h3 class="feature-title">24/7 Availability</h3>
+            <p class="feature-description">Provide round-the-clock support with automated intelligent assistance.</p>
           </div>
-          <h3 class="feature-title">24/7 Availability</h3>
-          <p class="feature-description">Provide round-the-clock support with automated intelligent assistance.</p>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
     <!-- Help Button -->
     <div class="help-button">
@@ -110,36 +113,39 @@ const toggleWidget = () => {
   color: #2c3e50;
   min-height: 100vh;
   background: white;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header */
 .header {
   background: white;
   border-bottom: 1px solid #e1e5e9;
-  padding: 16px 0;
+  padding: 12px 0;
   position: sticky;
   top: 0;
   z-index: 100;
+  flex-shrink: 0;
 }
 
 .header-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .logo {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   color: #2563eb;
 }
 
 .navigation {
   display: flex;
-  gap: 32px;
+  gap: 24px;
   align-items: center;
 }
 
@@ -165,8 +171,8 @@ const toggleWidget = () => {
 }
 
 .g-logo {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   background: #9333ea;
   border-radius: 50%;
   display: flex;
@@ -185,7 +191,7 @@ const toggleWidget = () => {
 .g-text {
   color: white;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .notification-dot {
@@ -213,12 +219,24 @@ const toggleWidget = () => {
   text-align: center;
 }
 
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Hero Section */
 .hero-section {
   background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
-  padding: 80px 24px;
+  padding: 60px 20px;
   text-align: center;
   color: white;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
 }
 
 .hero-content {
@@ -227,14 +245,14 @@ const toggleWidget = () => {
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 700;
-  margin: 0 0 24px 0;
+  margin: 0 0 20px 0;
   line-height: 1.2;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
   margin: 0;
   opacity: 0.9;
   line-height: 1.6;
@@ -242,39 +260,40 @@ const toggleWidget = () => {
 
 /* Feature Section */
 .feature-section {
-  padding: 80px 24px;
+  padding: 60px 20px;
   background: #f8fafc;
+  flex-shrink: 0;
 }
 
 .feature-grid {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 48px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
 }
 
 .feature-card {
   text-align: center;
-  padding: 40px 24px;
+  padding: 30px 20px;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .feature-icon {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .icon-circle {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -295,72 +314,72 @@ const toggleWidget = () => {
 }
 
 .chat-bubble {
-  width: 32px;
-  height: 24px;
+  width: 28px;
+  height: 20px;
   border: 2px solid #9333ea;
-  border-radius: 12px;
+  border-radius: 10px;
   position: relative;
 }
 
 .chat-bubble::after {
   content: '';
   position: absolute;
-  bottom: -6px;
-  left: 8px;
+  bottom: -5px;
+  left: 6px;
   width: 0;
   height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid #9333ea;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #9333ea;
 }
 
 .knowledge-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #3b82f6;
-  border-radius: 4px;
+  border-radius: 3px;
   position: relative;
 }
 
 .knowledge-icon::before {
   content: '';
   position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 16px;
-  height: 16px;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
   background: white;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 .clock-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #22c55e;
   border-radius: 50%;
 }
 
 .feature-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #1f2937;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
 }
 
 .feature-description {
   color: #6b7280;
   line-height: 1.6;
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 /* Help Button */
 .help-button {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 48px;
-  height: 48px;
+  bottom: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
   background: #3b82f6;
   border-radius: 50%;
   display: flex;
@@ -380,13 +399,42 @@ const toggleWidget = () => {
 .help-icon {
   color: white;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .header-content {
+    max-width: 100%;
     padding: 0 16px;
+  }
+  
+  .feature-grid {
+    max-width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+  }
+  
+  .hero-section {
+    padding: 50px 16px;
+  }
+  
+  .feature-section {
+    padding: 50px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 0;
+  }
+  
+  .header-content {
+    padding: 0 12px;
+  }
+  
+  .logo {
+    font-size: 20px;
   }
   
   .navigation {
@@ -397,21 +445,70 @@ const toggleWidget = () => {
     font-size: 13px;
   }
   
-  .hero-title {
-    font-size: 2.5rem;
+  .g-logo {
+    width: 32px;
+    height: 32px;
   }
   
-  .hero-subtitle {
-    font-size: 1.1rem;
+  .g-text {
+    font-size: 14px;
+  }
+  
+  .hero-section {
+    padding: 40px 12px;
+    min-height: 40vh;
+  }
+  
+  .hero-title {
+    margin-bottom: 16px;
+  }
+  
+  .feature-section {
+    padding: 40px 12px;
   }
   
   .feature-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 20px;
   }
   
   .feature-card {
-    padding: 32px 20px;
+    padding: 24px 16px;
+  }
+  
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .chat-bubble {
+    width: 24px;
+    height: 18px;
+  }
+  
+  .knowledge-icon,
+  .clock-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .feature-title {
+    font-size: 1.1rem;
+  }
+  
+  .feature-description {
+    font-size: 0.9rem;
+  }
+  
+  .help-button {
+    width: 40px;
+    height: 40px;
+    bottom: 16px;
+    right: 16px;
+  }
+  
+  .help-icon {
+    font-size: 14px;
   }
 }
 
@@ -420,12 +517,113 @@ const toggleWidget = () => {
     display: none;
   }
   
-  .hero-title {
-    font-size: 2rem;
+  .header-content {
+    padding: 0 8px;
   }
   
-  .hero-subtitle {
+  .logo {
+    font-size: 18px;
+  }
+  
+  .hero-section {
+    padding: 30px 8px;
+    min-height: 35vh;
+  }
+  
+  .hero-title {
+    margin-bottom: 12px;
+  }
+  
+  .feature-section {
+    padding: 30px 8px;
+  }
+  
+  .feature-card {
+    padding: 20px 12px;
+  }
+  
+  .icon-circle {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .chat-bubble {
+    width: 20px;
+    height: 16px;
+  }
+  
+  .knowledge-icon,
+  .clock-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .feature-title {
     font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  .feature-description {
+    font-size: 0.85rem;
+  }
+  
+  .help-button {
+    width: 36px;
+    height: 36px;
+    bottom: 12px;
+    right: 12px;
+  }
+  
+  .help-icon {
+    font-size: 12px;
+  }
+}
+
+/* Tablet Landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero-section {
+    padding: 50px 20px;
+    min-height: 45vh;
+  }
+  
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  
+  .feature-card {
+    padding: 28px 20px;
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1400px) {
+  .header-content {
+    max-width: 1600px;
+  }
+  
+  .feature-grid {
+    max-width: 1600px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  
+  .hero-section {
+    padding: 80px 20px;
+    min-height: 60vh;
+  }
+  
+  .feature-section {
+    padding: 80px 20px;
+  }
+  
+  .feature-card {
+    padding: 40px 30px;
+  }
+  
+  .icon-circle {
+    width: 80px;
+    height: 80px;
   }
 }
 </style>

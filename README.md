@@ -149,6 +149,7 @@ This project implements a sophisticated guidance system that walks users through
 ## Installation and Setup
 
 ### Important Usage Note
+
 **Highly Recommended**: Once the widget is opened, drag it to your preferred position on the screen. The widget is designed to be repositioned for optimal user experience and can be moved anywhere within the viewport boundaries.
 
 ### Prerequisites
@@ -179,6 +180,30 @@ npm run build
 # Preview the build
 npm run preview
 ```
+
+### Deployment
+
+#### Netlify Deployment (Recommended)
+1. **Connect Repository**: Link your GitHub repository to Netlify
+2. **Build Settings**:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+   - Node version: `20.19.0`
+3. **Deploy**: Netlify will automatically deploy on every push to main branch
+
+#### Manual Deployment
+```bash
+# Build the project
+npm run build
+
+# Upload the 'dist' folder to your web server
+# The dist folder contains all production-ready files
+```
+
+#### Alternative Deployment Platforms
+- **Vercel**: Connect repository and use same build settings
+- **GitHub Pages**: Use GitHub Actions for automatic deployment
+- **AWS S3**: Upload dist folder to S3 bucket with static website hosting
 
 ## Configuration and Customization
 

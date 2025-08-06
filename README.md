@@ -122,8 +122,8 @@ You can also auto-initialize using data attributes:
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd eGainFinal
+git clone https://github.com/dav-bowie/eGainWidgetFinal.git
+cd eGainWidgetFinal
 
 # Install dependencies
 npm install
@@ -145,7 +145,7 @@ npm run preview
 ## 📁 Project Structure
 
 ```
-eGainFinal/
+eGainWidgetFinal/
 ├── src/
 │   ├── components/
 │   │   ├── GuidanceWidget.vue          # Main widget component

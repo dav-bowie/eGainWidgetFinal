@@ -20,15 +20,12 @@
   >
     <div
       class="widget-container"
-      :class="{ 'dragging': isDragging }"
+      :class="{ dragging: isDragging }"
       @mousedown="handleMouseDown"
       @touchstart="handleMouseDown"
     >
       <!-- Header -->
-      <div
-        class="widget-header"
-        :class="{ 'draggable': embedded && isOpen }"
-      >
+      <div class="widget-header" :class="{ draggable: embedded && isOpen }">
         <div class="header-content">
           <h2 class="widget-title">Interactive Guidance</h2>
           <p class="widget-subtitle">Let us help you find the perfect solution.</p>
@@ -64,28 +61,16 @@
       <!-- Content Area -->
       <div class="widget-content">
         <!-- Problem Description Step -->
-        <ProblemDescriptionStep
-          v-if="currentStep === 'problem'"
-          @next="handleProblemSubmit"
-        />
+        <ProblemDescriptionStep v-if="currentStep === 'problem'" @next="handleProblemSubmit" />
 
         <!-- Questions Step -->
-        <QuestionsStep
-          v-if="currentStep === 'questions'"
-          @next="handleQuestionsComplete"
-        />
+        <QuestionsStep v-if="currentStep === 'questions'" @next="handleQuestionsComplete" />
 
         <!-- Solution Step -->
-        <SolutionStep
-          v-if="currentStep === 'solution'"
-          @feedback="handleFeedback"
-        />
+        <SolutionStep v-if="currentStep === 'solution'" @feedback="handleFeedback" />
 
         <!-- Feedback Step -->
-        <FeedbackStep
-          v-if="currentStep === 'feedback'"
-          @complete="handleComplete"
-        />
+        <FeedbackStep v-if="currentStep === 'feedback'" @complete="handleComplete" />
       </div>
     </div>
 
@@ -247,7 +232,10 @@
                             :key="variant"
                             class="color-variant"
                             :style="{ backgroundColor: variant }"
-                            @click="adminConfig.primaryColor = variant; updateAdminConfig()"
+                            @click="
+                              adminConfig.primaryColor = variant
+                              updateAdminConfig()
+                            "
                             :title="variant"
                           ></div>
                         </div>
@@ -290,7 +278,10 @@
                             :key="variant"
                             class="color-variant"
                             :style="{ backgroundColor: variant }"
-                            @click="adminConfig.secondaryColor = variant; updateAdminConfig()"
+                            @click="
+                              adminConfig.secondaryColor = variant
+                              updateAdminConfig()
+                            "
                             :title="variant"
                           ></div>
                         </div>
@@ -318,15 +309,28 @@
                       @click="applyColorPreset(preset)"
                     >
                       <div class="preset-preview">
-                        <div class="preset-gradient" :style="{ background: `linear-gradient(135deg, ${preset.primary}, ${preset.secondary})` }"></div>
+                        <div
+                          class="preset-gradient"
+                          :style="{
+                            background: `linear-gradient(135deg, ${preset.primary}, ${preset.secondary})`,
+                          }"
+                        ></div>
                         <div class="preset-colors">
-                          <div class="preset-color" :style="{ backgroundColor: preset.primary }"></div>
-                          <div class="preset-color" :style="{ backgroundColor: preset.secondary }"></div>
+                          <div
+                            class="preset-color"
+                            :style="{ backgroundColor: preset.primary }"
+                          ></div>
+                          <div
+                            class="preset-color"
+                            :style="{ backgroundColor: preset.secondary }"
+                          ></div>
                         </div>
                       </div>
                       <div class="preset-info">
                         <span class="preset-name">{{ preset.name }}</span>
-                        <span class="preset-description">{{ getPresetDescription(preset.name) }}</span>
+                        <span class="preset-description">{{
+                          getPresetDescription(preset.name)
+                        }}</span>
                       </div>
                     </div>
                   </div>
@@ -361,7 +365,9 @@
                         <span class="font-sample" :style="{ fontFamily: font.value }">Aa</span>
                       </div>
                       <div class="font-info">
-                        <span class="font-name" :style="{ fontFamily: font.value }">{{ font.name }}</span>
+                        <span class="font-name" :style="{ fontFamily: font.value }">{{
+                          font.name
+                        }}</span>
                         <span class="font-description">{{ font.description }}</span>
                       </div>
                     </div>
@@ -435,7 +441,7 @@
                     <div class="upload-zone">
                       <div
                         class="upload-area-modern"
-                        :class="{ 'processing': isProcessingLogo }"
+                        :class="{ processing: isProcessingLogo }"
                         @click="!isProcessingLogo && triggerFileUpload()"
                         @drop="!isProcessingLogo && handleFileDrop($event)"
                         @dragover.prevent
@@ -559,7 +565,17 @@
                 <div class="widget-preview">
                   <!-- Mini widget preview here -->
                   <div class="preview-widget" :style="previewStyles">
-                    <div class="preview-header" :style="{ background: 'linear-gradient(135deg, ' + adminConfig.primaryColor + ', ' + adminConfig.secondaryColor + ')' }">
+                    <div
+                      class="preview-header"
+                      :style="{
+                        background:
+                          'linear-gradient(135deg, ' +
+                          adminConfig.primaryColor +
+                          ', ' +
+                          adminConfig.secondaryColor +
+                          ')',
+                      }"
+                    >
                       <span class="preview-title">Widget Preview</span>
                     </div>
                     <div class="preview-content">
@@ -597,7 +613,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  embedded: false
+  embedded: false,
 })
 
 const store = useWidgetStore()
@@ -632,7 +648,7 @@ const colorPresets = ref([
   { name: 'Emerald Green', primary: '#10b981', secondary: '#34d399' },
   { name: 'Sunset Orange', primary: '#f59e0b', secondary: '#ef4444' },
   { name: 'Rose Pink', primary: '#ec4899', secondary: '#f97316' },
-  { name: 'Midnight Dark', primary: '#1f2937', secondary: '#374151' }
+  { name: 'Midnight Dark', primary: '#1f2937', secondary: '#374151' },
 ])
 
 // Font options
@@ -642,14 +658,14 @@ const fontOptions = ref([
   { name: 'Georgia', value: 'Georgia, serif', description: 'Classic Serif' },
   { name: 'Poppins', value: 'Poppins, sans-serif', description: 'Friendly & Round' },
   { name: 'Roboto', value: 'Roboto, sans-serif', description: 'Google Style' },
-  { name: 'Monospace', value: 'Monaco, monospace', description: 'Code Style' }
+  { name: 'Monospace', value: 'Monaco, monospace', description: 'Code Style' },
 ])
 
 // Font sizes
 const fontSizes = ref([
   { name: 'Small', value: '14px' },
   { name: 'Medium', value: '16px' },
-  { name: 'Large', value: '18px' }
+  { name: 'Large', value: '18px' },
 ])
 
 // Admin config (temporary until saved)
@@ -659,7 +675,7 @@ const adminConfig = ref({
   fontFamily: 'Inter, sans-serif',
   fontSize: '16px',
   logoUrl: '/eGainLogo.png',
-  maxQuestionsBeforeSolution: 3
+  maxQuestionsBeforeSolution: 3,
 })
 
 // Computed properties
@@ -686,7 +702,7 @@ onMounted(() => {
     embedded: props.embedded,
     isOpen: isOpen.value,
     position: widgetPosition.value,
-    config: widgetConfig.value
+    config: widgetConfig.value,
   })
 
   // Log FAB position for debugging
@@ -712,7 +728,7 @@ const widgetStyles = computed(() => {
     '--font-family': widgetConfig.value.fontFamily,
     '--font-size': widgetConfig.value.fontSize,
     '--widget-x': `${widgetPosition.value.x}px`,
-    '--widget-y': `${widgetPosition.value.y}px`
+    '--widget-y': `${widgetPosition.value.y}px`,
   }
   console.log('Widget styles computed:', styles)
   return styles
@@ -776,7 +792,12 @@ const handleMouseDown = (event: MouseEvent | TouchEvent) => {
 
   // Prevent dragging if clicking on interactive elements
   const target = event.target as HTMLElement
-  if (target.closest('button') || target.closest('input') || target.closest('textarea') || target.closest('a')) {
+  if (
+    target.closest('button') ||
+    target.closest('input') ||
+    target.closest('textarea') ||
+    target.closest('a')
+  ) {
     return
   }
 
@@ -787,7 +808,7 @@ const handleMouseDown = (event: MouseEvent | TouchEvent) => {
 
   dragOffset.value = {
     x: clientX - rect.left,
-    y: clientY - rect.top
+    y: clientY - rect.top,
   }
 
   document.addEventListener('mousemove', handleMouseMove)
@@ -857,11 +878,9 @@ const calculateTopRightPosition = () => {
 
   return {
     x: Math.max(margin, x), // Ensure it doesn't go off-screen
-    y: Math.max(margin, Math.min(y, viewportHeight - widgetHeight - margin)) // Ensure it doesn't go off-screen
+    y: Math.max(margin, Math.min(y, viewportHeight - widgetHeight - margin)), // Ensure it doesn't go off-screen
   }
 }
-
-
 
 const resetPosition = () => {
   const topRightPos = calculateTopRightPosition()
@@ -896,7 +915,7 @@ const showAdminPanel = () => {
     fontFamily: widgetConfig.value.fontFamily,
     fontSize: widgetConfig.value.fontSize,
     logoUrl: widgetConfig.value.logoUrl || '/eGainLogo.png',
-    maxQuestionsBeforeSolution: widgetConfig.value.maxQuestionsBeforeSolution
+    maxQuestionsBeforeSolution: widgetConfig.value.maxQuestionsBeforeSolution,
   }
 
   // Focus password input after modal opens
@@ -932,7 +951,7 @@ const updateAdminConfig = () => {
     fontFamily: adminConfig.value.fontFamily,
     fontSize: adminConfig.value.fontSize,
     logoUrl: adminConfig.value.logoUrl,
-    maxQuestionsBeforeSolution: adminConfig.value.maxQuestionsBeforeSolution
+    maxQuestionsBeforeSolution: adminConfig.value.maxQuestionsBeforeSolution,
   })
 }
 
@@ -1114,8 +1133,18 @@ const applyColorPreset = (preset: { primary: string; secondary: string }) => {
 
 const generateRandomColors = () => {
   const colors = [
-    '#8b5cf6', '#d946ef', '#3b82f6', '#06b6d4', '#10b981', '#34d399',
-    '#f59e0b', '#ef4444', '#ec4899', '#f97316', '#1f2937', '#374151'
+    '#8b5cf6',
+    '#d946ef',
+    '#3b82f6',
+    '#06b6d4',
+    '#10b981',
+    '#34d399',
+    '#f59e0b',
+    '#ef4444',
+    '#ec4899',
+    '#f97316',
+    '#1f2937',
+    '#374151',
   ]
   const primary = colors[Math.floor(Math.random() * colors.length)]
   const secondary = colors[Math.floor(Math.random() * colors.length)]
@@ -1135,28 +1164,34 @@ const getColorVariants = (baseColor: string) => {
 
   // Lighter variants
   for (let i = 1; i <= 3; i++) {
-    const factor = 1 + (i * 0.2)
+    const factor = 1 + i * 0.2
     const newR = Math.min(255, Math.round(r * factor))
     const newG = Math.min(255, Math.round(g * factor))
     const newB = Math.min(255, Math.round(b * factor))
-    variants.push(`#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`)
+    variants.push(
+      `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`,
+    )
   }
 
   // Darker variants
   for (let i = 1; i <= 3; i++) {
-    const factor = 1 - (i * 0.15)
+    const factor = 1 - i * 0.15
     const newR = Math.max(0, Math.round(r * factor))
     const newG = Math.max(0, Math.round(g * factor))
     const newB = Math.max(0, Math.round(b * factor))
-    variants.push(`#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`)
+    variants.push(
+      `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`,
+    )
   }
 
   return variants
 }
 
 const isPresetActive = (preset: { primary: string; secondary: string }) => {
-  return adminConfig.value.primaryColor === preset.primary &&
-         adminConfig.value.secondaryColor === preset.secondary
+  return (
+    adminConfig.value.primaryColor === preset.primary &&
+    adminConfig.value.secondaryColor === preset.secondary
+  )
 }
 
 const getPresetDescription = (presetName: string) => {
@@ -1166,7 +1201,7 @@ const getPresetDescription = (presetName: string) => {
     'Emerald Green': 'Fresh & natural',
     'Sunset Orange': 'Warm & energetic',
     'Rose Pink': 'Playful & creative',
-    'Midnight Dark': 'Sophisticated & bold'
+    'Midnight Dark': 'Sophisticated & bold',
   }
   return descriptions[presetName] || 'Beautiful combination'
 }
@@ -1186,7 +1221,7 @@ const previewStyles = computed(() => ({
   '--primary-color': adminConfig.value.primaryColor,
   '--secondary-color': adminConfig.value.secondaryColor,
   '--font-family': adminConfig.value.fontFamily,
-  '--font-size': adminConfig.value.fontSize
+  '--font-size': adminConfig.value.fontSize,
 }))
 
 const embedCode = computed(() => {
@@ -1203,7 +1238,7 @@ const copyEmbedCode = () => {
 
 const exportConfig = () => {
   const configBlob = new Blob([JSON.stringify(adminConfig.value, null, 2)], {
-    type: 'application/json'
+    type: 'application/json',
   })
   const url = URL.createObjectURL(configBlob)
   const a = document.createElement('a')
@@ -1248,13 +1283,18 @@ const exportConfig = () => {
   z-index: 9999;
   font-family: var(--font-family);
   font-size: var(--font-size);
+  /* Prevent iOS Safari address bar from causing layout shifts */
+  height: 100vh;
+  height: 100dvh;
 }
 
 .widget-embedded {
   top: var(--widget-y, 50px);
   left: var(--widget-x, auto);
   right: auto;
-  transition: top 0.3s ease, left 0.3s ease;
+  transition:
+    top 0.3s ease,
+    left 0.3s ease;
   will-change: transform;
 }
 
@@ -1272,6 +1312,8 @@ const exportConfig = () => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(99, 102, 241, 0.08);
   backdrop-filter: blur(10px);
+  /* Prevent touch events from interfering with scrolling on mobile */
+  touch-action: pan-y;
 }
 
 .widget-container:hover {
@@ -1305,13 +1347,22 @@ const exportConfig = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
   animation: shimmer 3s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .header-content {
@@ -1383,6 +1434,10 @@ const exportConfig = () => {
   overflow: hidden;
   background: #fafbfc;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Ensure proper height calculation on mobile */
+  min-height: 0;
 }
 
 /* Floating Action Button */
@@ -1406,11 +1461,14 @@ const exportConfig = () => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 12px 40px rgba(99, 102, 241, 0.3);
   }
   50% {
-    box-shadow: 0 12px 40px rgba(99, 102, 241, 0.5), 0 0 0 12px rgba(99, 102, 241, 0.1);
+    box-shadow:
+      0 12px 40px rgba(99, 102, 241, 0.5),
+      0 0 0 12px rgba(99, 102, 241, 0.1);
   }
 }
 
@@ -1463,8 +1521,12 @@ const exportConfig = () => {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .admin-modal {
@@ -2531,7 +2593,7 @@ const exportConfig = () => {
   cursor: pointer;
 }
 
-.color-input input[type="color"] {
+.color-input input[type='color'] {
   width: 100%;
   height: 48px;
   border: 2px solid #e2e8f0;
@@ -2541,7 +2603,7 @@ const exportConfig = () => {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.color-input input[type="color"]:hover {
+.color-input input[type='color']:hover {
   border-color: var(--primary-color);
   transform: translateY(-1px);
 }
@@ -2562,7 +2624,7 @@ const exportConfig = () => {
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
-.font-input input[type="range"] {
+.font-input input[type='range'] {
   width: 100%;
   margin: 12px 0;
   accent-color: var(--primary-color);
@@ -2755,8 +2817,12 @@ const exportConfig = () => {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .upload-icon {
@@ -2860,8 +2926,6 @@ const exportConfig = () => {
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-
 
 .cancel-btn {
   background: #f1f5f9;
@@ -2985,8 +3049,15 @@ const exportConfig = () => {
 @media (max-width: 768px) {
   .widget-container {
     width: calc(100vw - 30px);
-    height: 80vh;
+    height: 85vh;
     max-width: 500px;
+    max-height: 600px;
+    /* Prevent iOS Safari from interfering with scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Handle iOS safe area insets */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .widget-embedded .widget-container {
@@ -2995,8 +3066,43 @@ const exportConfig = () => {
     left: auto;
     width: calc(100vw - 30px);
     max-width: 400px;
-    height: 80vh;
+    height: 85vh;
+    max-height: 600px;
     border-radius: 20px;
+    /* Prevent iOS Safari from interfering with scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Handle iOS safe area insets */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .widget-content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Ensure proper scrolling on mobile */
+    touch-action: pan-y;
+  }
+
+  /* Ensure proper touch scrolling on iOS */
+  .widget-content * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Allow text selection in input fields */
+  .widget-content input,
+  .widget-content textarea {
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
   }
 
   .widget-header {
@@ -3041,10 +3147,37 @@ const exportConfig = () => {
 @media (max-width: 480px) {
   .widget-container {
     border-radius: 16px;
+    height: 90vh;
+    max-height: 500px;
+    /* Prevent iOS Safari from interfering with scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Handle iOS safe area insets */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .widget-embedded .widget-container {
+    height: 90vh;
+    max-height: 500px;
+    /* Prevent iOS Safari from interfering with scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Handle iOS safe area insets */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .widget-header {
     padding: 16px;
+  }
+
+  .widget-content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Ensure proper scrolling on mobile */
+    touch-action: pan-y;
   }
 
   .admin-modal {

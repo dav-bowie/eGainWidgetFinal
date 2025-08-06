@@ -182,6 +182,9 @@ const handleSubmit = () => {
   border-radius: 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.06);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .step-content {
@@ -189,6 +192,8 @@ const handleSubmit = () => {
   flex-direction: column;
   gap: 24px;
   height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 
@@ -414,10 +419,16 @@ const handleSubmit = () => {
 @media (max-width: 768px) {
   .problem-step {
     padding: 20px;
+    /* Ensure proper scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   .step-content {
     gap: 24px;
+    /* Ensure proper scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   .step-title {
@@ -448,6 +459,16 @@ const handleSubmit = () => {
     padding: 14px 24px;
     font-size: 15px;
     min-width: 120px;
+  }
+
+  /* Improve touch targets on mobile */
+  .suggestion-button {
+    min-height: 48px;
+  }
+
+  .send-button {
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 

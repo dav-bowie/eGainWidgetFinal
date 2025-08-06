@@ -148,6 +148,9 @@ This project implements a sophisticated guidance system that walks users through
 
 ## Installation and Setup
 
+### Important Usage Note
+**Highly Recommended**: Once the widget is opened, drag it to your preferred position on the screen. The widget is designed to be repositioned for optimal user experience and can be moved anywhere within the viewport boundaries.
+
 ### Prerequisites
 
 - Node.js 20.19.0 or higher

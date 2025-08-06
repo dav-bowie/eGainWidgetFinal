@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { 
-  Question, 
-  Answer, 
-  Solution, 
-  WidgetConfig, 
+import type {
+  Question,
+  Answer,
+  Solution,
+  WidgetConfig,
   WidgetState,
-  MockApiResponse 
+  MockApiResponse
 } from '@/types/widget'
 
 export const useWidgetStore = defineStore('widget', () => {
@@ -18,7 +18,7 @@ export const useWidgetStore = defineStore('widget', () => {
   const currentSolution = ref<Solution | null>(null)
   const feedback = ref<WidgetState['feedback']>({ helpful: null })
   const displayMode = ref<'sequential' | 'batch'>('sequential')
-  const isOpen = ref(false)
+  const isOpen = ref(true) // Temporarily set to true for testing
 
   // Configuration
   const config = ref<WidgetConfig>({
@@ -32,13 +32,13 @@ export const useWidgetStore = defineStore('widget', () => {
 
   // Computed
   const answeredQuestions = computed(() => {
-    return currentQuestions.value.filter(q => 
+    return currentQuestions.value.filter(q =>
       answers.value.some(a => a.questionId === q.id)
     )
   })
 
   const unansweredQuestions = computed(() => {
-    return currentQuestions.value.filter(q => 
+    return currentQuestions.value.filter(q =>
       !answers.value.some(a => a.questionId === q.id)
     )
   })
@@ -103,6 +103,9 @@ export const useWidgetStore = defineStore('widget', () => {
 
   const updateConfig = (newConfig: Partial<WidgetConfig>) => {
     config.value = { ...config.value, ...newConfig }
+
+    // Log config updates for debugging
+    console.log('Widget config updated:', config.value)
   }
 
   const reset = () => {
@@ -122,7 +125,7 @@ export const useWidgetStore = defineStore('widget', () => {
   const fetchNextQuestions = async (): Promise<MockApiResponse> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500))
-    
+
     // Mock questions based on problem description
     const mockQuestions: Question[] = [
       {
@@ -138,15 +141,15 @@ export const useWidgetStore = defineStore('widget', () => {
         ]
       },
       {
-        id: 'issue-type',
-        type: 'text-choices',
-        title: 'What type of issue are you experiencing?',
+        id: 'issue-category',
+        type: 'image-choices',
+        title: 'Which category best describes your issue?',
         required: true,
         options: [
-          { id: 'hardware', label: 'Hardware Issues' },
-          { id: 'software', label: 'Software Issues' },
-          { id: 'network', label: 'Network Issues' },
-          { id: 'performance', label: 'Performance Issues' }
+          { id: 'hardware', label: 'Hardware', image: '/hardware-icon.png' },
+          { id: 'software', label: 'Software', image: '/software-icon.png' },
+          { id: 'network', label: 'Network', image: '/network-icon.png' },
+          { id: 'performance', label: 'Performance', image: '/performance-icon.png' }
         ]
       },
       {
@@ -254,4 +257,4 @@ export const useWidgetStore = defineStore('widget', () => {
     saveAnswer,
     saveFeedback
   }
-}) 
+})

@@ -2,9 +2,9 @@
   <div class="questions-step">
     <div class="step-content">
       <div class="step-header">
-        <h3 class="step-title">Step 1: Answer Questions</h3>
+        <h3 class="step-title">A few quick questions</h3>
         <p class="step-description">
-          Please answer the following questions to help us provide the best solution.
+          Help us understand your needs better.
         </p>
       </div>
 
@@ -37,7 +37,7 @@
               @answer="handleAnswer"
             />
           </div>
-          
+
           <div v-else class="no-questions">
             <p>All questions completed!</p>
           </div>
@@ -62,7 +62,7 @@
       <!-- Answered Questions Panel -->
       <div v-if="answeredQuestions.length > 0" class="answered-panel">
         <div class="panel-header">
-          <h4 class="panel-title">Answered Questions</h4>
+          <h4 class="panel-title">Your answers</h4>
           <span class="answer-count">{{ answeredQuestions.length }}</span>
         </div>
         <div class="answered-list">
@@ -83,25 +83,68 @@
 
       <!-- Step Actions -->
       <div class="step-actions">
-        <button
-          v-if="displayMode === 'sequential' && currentQuestion"
-          class="next-button"
-          :disabled="!canProceed"
-          @click="handleNext"
-        >
-          Next Question
-          <span class="button-icon">→</span>
-        </button>
-        
-        <button
-          v-else-if="displayMode === 'batch' || !currentQuestion"
-          class="next-button"
-          :disabled="!canProceed"
-          @click="handleComplete"
-        >
-          Continue to Solution
-          <span class="button-icon">→</span>
-        </button>
+                  <button
+            v-if="displayMode === 'sequential' && currentQuestion"
+            class="next-button"
+            :disabled="!canProceed || isLoading"
+            @click="handleNext"
+          >
+            <span v-if="isLoading" class="loading-spinner"></span>
+            {{ isLoading ? 'Processing...' : 'Next' }}
+            <span v-if="!isLoading" class="button-icon">→</span>
+          </button>
+
+          <button
+            v-else-if="displayMode === 'batch' || !currentQuestion"
+            class="next-button"
+            :disabled="!canProceed || isLoading"
+            @click="handleComplete"
+          >
+            <span v-if="isLoading" class="loading-spinner"></span>
+            {{ isLoading ? 'Processing...' : 'Get Solution' }}
+            <span v-if="!isLoading" class="button-icon">→</span>
+          </button>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div v-if="isLoading" class="loading-overlay">
+      <div class="loading-content">
+        <div class="loading-icon">
+          <div class="loading-spinner-container">
+            <div class="loading-spinner-ring"></div>
+            <div class="loading-spinner-ring"></div>
+            <div class="loading-spinner-ring"></div>
+          </div>
+        </div>
+        <h3 class="loading-title">Processing your information...</h3>
+        <p class="loading-description">Analyzing your responses to generate a personalized solution.</p>
+
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" :style="{ width: progress + '%' }"></div>
+          </div>
+          <div class="progress-text">{{ Math.round(progress) }}%</div>
+        </div>
+
+        <div class="loading-steps">
+          <div class="loading-step" :class="{ active: progress > 20 }">
+            <span class="step-icon">●</span>
+            <span class="step-text">Analyzing patterns</span>
+          </div>
+          <div class="loading-step" :class="{ active: progress > 40 }">
+            <span class="step-icon">●</span>
+            <span class="step-text">Searching solutions</span>
+          </div>
+          <div class="loading-step" :class="{ active: progress > 60 }">
+            <span class="step-icon">●</span>
+            <span class="step-text">Finding best match</span>
+          </div>
+          <div class="loading-step" :class="{ active: progress > 80 }">
+            <span class="step-icon">●</span>
+            <span class="step-text">Preparing solution</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -136,6 +179,8 @@ const emit = defineEmits<{
 
 const store = useWidgetStore()
 const editingQuestionId = ref<string | null>(null)
+const isLoading = ref(false)
+const progress = ref(0)
 
 // Computed properties
 const currentQuestions = computed(() => store.currentQuestions)
@@ -144,7 +189,7 @@ const displayMode = computed(() => store.displayMode)
 
 const currentQuestion = computed(() => {
   if (displayMode.value === 'sequential') {
-    const unanswered = currentQuestions.value.filter(q => 
+    const unanswered = currentQuestions.value.filter(q =>
       !answers.value.some(a => a.questionId === q.id)
     )
     return unanswered[0] || null
@@ -153,7 +198,7 @@ const currentQuestion = computed(() => {
 })
 
 const answeredQuestions = computed(() => {
-  return currentQuestions.value.filter(q => 
+  return currentQuestions.value.filter(q =>
     answers.value.some(a => a.questionId === q.id)
   )
 })
@@ -177,7 +222,7 @@ const getAnswer = (questionId: string): Answer | null => {
 const getAnswerDisplay = (questionId: string): string => {
   const answer = getAnswer(questionId)
   if (!answer) return ''
-  
+
   if (answer.label) return answer.label
   return String(answer.value)
 }
@@ -195,12 +240,36 @@ const handleAnswer = async (questionId: string, value: string | number, label?: 
   })
 }
 
-const handleNext = () => {
+const handleNext = async () => {
   // In sequential mode, the next question will be automatically shown
   // as currentQuestion updates when the answer is saved
+  // Add a small loading delay for better UX
+  isLoading.value = true
+  await new Promise(resolve => setTimeout(resolve, 800))
+  isLoading.value = false
 }
 
-const handleComplete = () => {
+const handleComplete = async () => {
+  isLoading.value = true
+  progress.value = 0
+
+  // Simulate progress bar animation
+  const progressInterval = setInterval(() => {
+    if (progress.value < 90) {
+      progress.value += Math.random() * 15 + 5 // Random increment between 5-20
+    }
+  }, 200)
+
+  // Simulate processing time
+  await new Promise(resolve => setTimeout(resolve, 2500))
+
+  clearInterval(progressInterval)
+  progress.value = 100
+
+  // Small delay to show 100% completion
+  await new Promise(resolve => setTimeout(resolve, 300))
+
+  isLoading.value = false
   emit('next')
 }
 
@@ -420,6 +489,23 @@ const closeEditModal = () => {
   transform: translateX(2px);
 }
 
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Edit Modal */
 .edit-modal-overlay {
   position: fixed;
@@ -483,6 +569,180 @@ const closeEditModal = () => {
   overflow-y: auto;
 }
 
+/* Loading Overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1002;
+  backdrop-filter: blur(2px);
+  border-radius: 12px;
+}
+
+.loading-content {
+  text-align: center;
+  max-width: 350px;
+  padding: 32px 20px;
+}
+
+.loading-icon {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-spinner-container {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.loading-spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.loading-spinner-ring:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-spinner-ring:nth-child(2) {
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0.2s;
+  animation-duration: 1.2s;
+  border-top-color: #7c3aed;
+}
+
+.loading-spinner-ring:nth-child(3) {
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+  animation-delay: 0.4s;
+  animation-duration: 0.9s;
+  border-top-color: #a855f7;
+}
+
+.loading-title {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.loading-description {
+  margin: 0 0 32px 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.progress-container {
+  margin-bottom: 32px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e1e5e9;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), #7c3aed);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+.progress-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.loading-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loading-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #f8f9fa;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.loading-step.active {
+  opacity: 1;
+  background: rgba(147, 51, 234, 0.1);
+  transform: translateX(8px);
+}
+
+.step-icon {
+  font-size: 12px;
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.loading-step.active .step-icon {
+  color: var(--primary-color);
+}
+
+.step-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 /* Accessibility */
 .mode-button:focus-visible,
 .next-button:focus-visible,
@@ -490,4 +750,4 @@ const closeEditModal = () => {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
-</style> 
+</style>

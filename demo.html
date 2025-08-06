@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eGain AI Guidance Widget Demo</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+        }
+        
+        .demo-section h2 {
+            color: #333;
+            margin-bottom: 16px;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .config-item {
+            padding: 16px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .config-item h3 {
+            margin: 0 0 8px 0;
+            color: #333;
+        }
+        
+        .config-item p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .button {
+            background: #9333ea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .button:hover {
+            background: #7c3aed;
+            transform: translateY(-1px);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature {
+            padding: 20px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        
+        .feature h3 {
+            margin: 0 0 8px 0;
+            color: #333;
+        }
+        
+        .feature p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 eGain AI Guidance Widget Demo</h1>
+        
+        <div class="demo-section">
+            <h2>Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">💬</div>
+                    <h3>Problem Description</h3>
+                    <p>Users can describe their issues with free text or quick options</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">❓</div>
+                    <h3>Smart Questions</h3>
+                    <p>Multiple question types: text choices, image choices, free text, and numeric</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">✅</div>
+                    <h3>Answered Section</h3>
+                    <p>Users can review and edit their previous answers</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎯</div>
+                    <h3>AI Solutions</h3>
+                    <p>Intelligent solutions based on user responses</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Feedback System</h3>
+                    <p>Collect user feedback to improve the service</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Customizable</h3>
+                    <p>Easy to customize colors, fonts, and branding</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Quick Start</h2>
+            <p>Add this script to your website to embed the widget:</p>
+            <div class="code-block">
+&lt;script src="http://localhost:5173/widget.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.initGuidanceWidget({
+    primaryColor: '#9333ea',
+    secondaryColor: '#f1f5f9',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '16px',
+    logoUrl: '/your-logo.png'
+  });
+&lt;/script&gt;
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Configuration Options</h2>
+            <div class="config-grid">
+                <div class="config-item">
+                    <h3>primaryColor</h3>
+                    <p>Main brand color for buttons and highlights</p>
+                    <div class="code-block">primaryColor: '#9333ea'</div>
+                </div>
+                <div class="config-item">
+                    <h3>secondaryColor</h3>
+                    <p>Background color for secondary elements</p>
+                    <div class="code-block">secondaryColor: '#f1f5f9'</div>
+                </div>
+                <div class="config-item">
+                    <h3>fontFamily</h3>
+                    <p>Font family for all text in the widget</p>
+                    <div class="code-block">fontFamily: 'Inter, sans-serif'</div>
+                </div>
+                <div class="config-item">
+                    <h3>fontSize</h3>
+                    <p>Base font size for the widget</p>
+                    <div class="code-block">fontSize: '16px'</div>
+                </div>
+                <div class="config-item">
+                    <h3>logoUrl</h3>
+                    <p>URL to your company logo (optional)</p>
+                    <div class="code-block">logoUrl: '/your-logo.png'</div>
+                </div>
+                <div class="config-item">
+                    <h3>maxQuestionsBeforeSolution</h3>
+                    <p>Number of questions before showing solution</p>
+                    <div class="code-block">maxQuestionsBeforeSolution: 3</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Auto-Initialization</h2>
+            <p>You can also auto-initialize the widget using data attributes:</p>
+            <div class="code-block">
+&lt;script 
+  src="http://localhost:5173/widget.js" 
+  data-auto-init="true"
+  data-primary-color="#9333ea"
+  data-secondary-color="#f1f5f9"
+  data-font-family="Inter, sans-serif"
+  data-font-size="16px"
+  data-logo-url="/your-logo.png"
+&gt;&lt;/script&gt;
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Question Types Supported</h2>
+            <div class="config-grid">
+                <div class="config-item">
+                    <h3>Text Choices</h3>
+                    <p>Multiple choice questions with text options</p>
+                </div>
+                <div class="config-item">
+                    <h3>Image Choices</h3>
+                    <p>Multiple choice questions with image options</p>
+                </div>
+                <div class="config-item">
+                    <h3>Free Text</h3>
+                    <p>Open-ended text input for detailed responses</p>
+                </div>
+                <div class="config-item">
+                    <h3>Numeric</h3>
+                    <p>Number input with optional min/max validation</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Try the Widget</h2>
+            <p>Click the button below to test the widget functionality:</p>
+            <button class="button" onclick="testWidget()">Test Widget</button>
+        </div>
+    </div>
+
+    <script src="http://localhost:5173/widget.js"></script>
+    <script>
+        function testWidget() {
+            window.initGuidanceWidget({
+                primaryColor: '#9333ea',
+                secondaryColor: '#f1f5f9',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '16px',
+                logoUrl: '/eGainLogo.png'
+            });
+        }
+    </script>
+</body>
+</html> 

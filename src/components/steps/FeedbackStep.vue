@@ -2,9 +2,9 @@
   <div class="feedback-step">
     <div class="step-content">
       <div class="step-header">
-        <h3 class="step-title">Step 5: Rate Your Experience</h3>
+        <h3 class="step-title">How was your experience?</h3>
         <p class="step-description">
-          Help us improve by sharing your feedback about this guidance experience.
+          Your feedback helps us improve our service.
         </p>
       </div>
 
@@ -21,7 +21,7 @@
           </div>
           <div class="review-count">120 reviews</div>
         </div>
-        
+
         <div class="rating-distribution">
           <div class="distribution-item">
             <span class="star-label">5</span>
@@ -63,13 +63,13 @@
 
       <!-- User Rating -->
       <div class="user-rating-section">
-        <h4 class="rating-title">How would you rate this experience?</h4>
+        <h4 class="rating-title">Rate your experience</h4>
         <div class="star-input">
           <button
             v-for="star in 5"
             :key="star"
             class="star-button"
-            :class="{ 
+            :class="{
               'filled': star <= userRating,
               'hovered': star <= hoverRating
             }"
@@ -89,13 +89,13 @@
       <!-- Additional Feedback -->
       <div class="additional-feedback">
         <label for="feedback-comment" class="feedback-label">
-          Share your thoughts (optional)
+          Additional comments (optional)
         </label>
         <textarea
           id="feedback-comment"
           v-model="feedbackComment"
           class="feedback-textarea"
-          placeholder="Tell us what you think about this guidance experience..."
+          placeholder="Share your thoughts..."
           rows="4"
           maxlength="500"
         ></textarea>
@@ -111,7 +111,7 @@
           :disabled="!canSubmit"
           @click="handleSubmit"
         >
-          Submit Feedback
+          Submit
         </button>
         <button
           class="skip-button"
@@ -173,7 +173,7 @@ const handleSubmit = async () => {
     rating: userRating.value,
     comment: feedbackComment.value.trim() || undefined
   })
-  
+
   emit('complete')
 }
 
@@ -470,21 +470,21 @@ const handleSkip = () => {
     gap: 16px;
     text-align: center;
   }
-  
+
   .average-rating {
     min-width: auto;
   }
-  
+
   .star-input {
     gap: 4px;
   }
-  
+
   .star-button {
     font-size: 28px;
   }
-  
+
   .step-actions {
     flex-direction: column;
   }
 }
-</style> 
+</style>

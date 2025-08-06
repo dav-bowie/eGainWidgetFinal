@@ -1,46 +1,109 @@
-# 🤖 eGain AI Guidance Widget
+# eGain AI Guidance Widget
 
-A modern, responsive AI-powered guidance widget that can be embedded on any website to provide intelligent customer support and problem-solving assistance.
+A responsive AI-powered guidance widget designed to provide intelligent customer support and problem-solving assistance. This widget can be embedded on any website and features an admin panel for customization.
 
-## ✨ Features
+## Overview
 
-### Core Functionality
+This project implements a comprehensive guidance system that walks users through problem description, question answering, and solution delivery. The widget is built with Vue 3, TypeScript, and Pinia for state management.
 
-- **Problem Description**: Users can describe their issues with free text or quick option buttons
-- **Smart Question System**: Multiple question types to gather detailed information
-- **Answered Questions Section**: Users can review and edit their previous answers
-- **AI-Powered Solutions**: Intelligent solutions based on user responses
-- **Feedback Collection**: Comprehensive feedback system with ratings and comments
-- **Responsive Design**: Works perfectly on all screen sizes
+## Core Features
+
+### User Experience Flow
+1. **Problem Description**: Users describe their issue using free text or quick option buttons
+2. **Question System**: Multiple question types gather detailed information
+3. **Answer Management**: Users can review and edit previous answers
+4. **Solution Delivery**: AI-powered solutions based on user responses
+5. **Feedback Collection**: Rating system for solution effectiveness
 
 ### Question Types Supported
+- **Text Choices**: Multiple choice questions with text options
+- **Image Choices**: Multiple choice questions with image options  
+- **Free Text**: Open-ended text input for detailed responses
+- **Numeric**: Number input with validation
 
-1. **Text Choices**: Multiple choice questions with text options
-2. **Image Choices**: Multiple choice questions with image options
-3. **Free Text**: Open-ended text input for detailed responses
-4. **Numeric**: Number input with optional min/max validation
+### Admin Panel
+- **Password Protection**: Access with `admin123`
+- **Color Customization**: Primary and secondary color pickers
+- **Typography Control**: Font family selection and size adjustment
+- **Logo Management**: Upload, preview, and remove logos
+- **Real-time Preview**: Changes apply immediately
 
-### Customization Options
+## Technical Implementation
 
-- **Colors**: Customizable primary and secondary colors
-- **Fonts**: Configurable font family and size
-- **Logo**: Easy logo integration in the top-right corner
-- **Branding**: Full white-label support
+### Architecture
+- **Frontend**: Vue 3 with Composition API
+- **State Management**: Pinia store for widget state
+- **Styling**: CSS with CSS variables for theming
+- **Build Tool**: Vite for development and production builds
+- **TypeScript**: Full type safety throughout the application
 
-### Technical Features
+### Component Structure
+```
+src/
+├── components/
+│   ├── GuidanceWidget.vue          # Main widget container
+│   └── steps/
+│       ├── ProblemDescriptionStep.vue
+│       ├── QuestionsStep.vue
+│       ├── QuestionComponent.vue
+│       ├── SolutionStep.vue
+│       └── FeedbackStep.vue
+├── stores/
+│   └── widget.ts                   # State management
+├── types/
+│   └── widget.ts                   # TypeScript definitions
+└── views/
+    └── HomeView.vue                # Demo page
+```
 
-- **Embeddable**: Can be embedded on any website
-- **Responsive**: Adapts to different screen dimensions
-- **Accessible**: WCAG compliant with keyboard navigation
-- **Lightweight**: Minimal performance impact
-- **Secure**: No external dependencies or tracking
+### Key Design Decisions
 
-## 🚀 Quick Start
+#### Responsive Design
+- **Mobile First**: Widget adapts to screen size with breakpoints at 768px and 1024px
+- **Touch Friendly**: Proper touch targets and gesture support
+- **Flexible Layout**: CSS Grid and Flexbox for adaptive layouts
 
-### 1. Basic Implementation
+#### Positioning System
+- **FAB (Floating Action Button)**: Fixed positioning in top-right corner
+- **Widget Container**: Draggable when open, returns to top-right when closed
+- **Boundary Constraints**: Widget stays within viewport bounds
 
-Add this script to your website:
+#### State Management
+- **Centralized Store**: All widget state managed in Pinia store
+- **Reactive Updates**: Real-time UI updates based on state changes
+- **Persistence**: State maintained during widget interactions
 
+## Installation and Setup
+
+### Prerequisites
+- Node.js 16 or higher
+- npm or yarn package manager
+
+### Development Setup
+```bash
+# Clone the repository
+git clone https://github.com/dav-bowie/eGainWidgetFinal.git
+cd eGainWidgetFinal
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+### Production Build
+```bash
+# Build the application
+npm run build
+
+# Preview the build
+npm run preview
+```
+
+## Configuration
+
+### Basic Implementation
 ```html
 <script src="http://localhost:5173/widget.js"></script>
 <script>
@@ -54,175 +117,70 @@ Add this script to your website:
 </script>
 ```
 
-### 2. Auto-Initialization
+### Configuration Options
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `primaryColor` | string | `#9333ea` | Main brand color |
+| `secondaryColor` | string | `#f1f5f9` | Background color |
+| `fontFamily` | string | `Inter, sans-serif` | Font family |
+| `fontSize` | string | `16px` | Base font size |
+| `logoUrl` | string | `undefined` | Logo URL |
+| `maxQuestionsBeforeSolution` | number | `3` | Questions before solution |
 
-You can also auto-initialize using data attributes:
+## UX Development Process
 
-```html
-<script
-  src="http://localhost:5173/widget.js"
-  data-auto-init="true"
-  data-primary-color="#9333ea"
-  data-secondary-color="#f1f5f9"
-  data-font-family="Inter, sans-serif"
-  data-font-size="16px"
-  data-logo-url="/your-logo.png"
-></script>
-```
+### Research Phase
+- **User Journey Mapping**: Identified key touchpoints in customer support
+- **Competitive Analysis**: Studied existing chat widgets and support systems
+- **Accessibility Review**: Ensured WCAG compliance for inclusive design
 
-## ⚙️ Configuration Options
+### Design Phase
+- **Wireframing**: Created low-fidelity prototypes for user flow
+- **Component Design**: Designed reusable UI components
+- **Interaction Design**: Defined drag-and-drop behavior and animations
 
-| Option                       | Type   | Default             | Description                                 |
-| ---------------------------- | ------ | ------------------- | ------------------------------------------- |
-| `primaryColor`               | string | `#9333ea`           | Main brand color for buttons and highlights |
-| `secondaryColor`             | string | `#f1f5f9`           | Background color for secondary elements     |
-| `fontFamily`                 | string | `Inter, sans-serif` | Font family for all text                    |
-| `fontSize`                   | string | `16px`              | Base font size                              |
-| `logoUrl`                    | string | `undefined`         | URL to your company logo                    |
-| `maxQuestionsBeforeSolution` | number | `3`                 | Questions before showing solution           |
+### Development Phase
+- **Component Architecture**: Built modular Vue components
+- **State Management**: Implemented Pinia store for data flow
+- **Responsive Implementation**: Created adaptive layouts for all devices
 
-## 📋 Requirements Met
+### Testing Phase
+- **Cross-browser Testing**: Verified functionality across Chrome, Firefox, Safari, Edge
+- **Device Testing**: Tested on mobile, tablet, and desktop devices
+- **Accessibility Testing**: Ensured keyboard navigation and screen reader support
 
-### ✅ Core Requirements
+## Technical Considerations
 
-1. **Problem Description**: ✅ Widget asks user for description of the problem
-2. **Question System**: ✅ Widget presents questions and records answers
-3. **Multiple Question Types**: ✅ Supports text choices, image choices, free text, and numeric
-4. **Answered Section**: ✅ All answered questions displayed with edit capability
-5. **Solution Delivery**: ✅ System provides solutions after answering questions
-6. **Feedback System**: ✅ Users can provide feedback on solution helpfulness
-7. **Embeddable**: ✅ Can be embedded on any web page
-8. **Customizable**: ✅ Admin can change colors, fonts, and font sizes
-9. **Logo Support**: ✅ Features logo in top-right corner, easily changeable
-10. **Responsive**: ✅ Fits different screen dimensions
+### Performance
+- **Lazy Loading**: Components load only when needed
+- **Optimized Assets**: Images and fonts optimized for web
+- **Minimal Dependencies**: Reduced bundle size for faster loading
 
-### ✅ Question Types Implemented
+### Security
+- **Input Validation**: All user inputs validated and sanitized
+- **Admin Protection**: Password-protected admin panel
+- **No External Tracking**: No third-party analytics or tracking
 
-- **Text Enumerated Form**: ✅ Show text options, user picks one
-- **Image Enumerated Form**: ✅ Show images, user picks one
-- **Text Box**: ✅ Freeform text box for typing
-- **Numerical Answer**: ✅ Freeform text box that accepts only numbers
+### Accessibility
+- **Keyboard Navigation**: Full keyboard support for all interactions
+- **Screen Reader Support**: Proper ARIA labels and semantic HTML
+- **Color Contrast**: WCAG AA compliant color combinations
 
-### ✅ User Experience Features
-
-- **Minimal Design**: ✅ Clean, step-free interface
-- **Easy Interaction**: ✅ Simple, intuitive user flow
-- **Answer Editing**: ✅ Click on answered questions to change answers
-- **Visual Feedback**: ✅ Clear progress indicators and status
-- **Mobile Optimized**: ✅ Touch-friendly interface
-
-## 🛠️ Development
-
-### Prerequisites
-
-- Node.js 16+
-- npm or yarn
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/dav-bowie/eGainWidgetFinal.git
-cd eGainWidgetFinal
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-### Build for Production
-
-```bash
-# Build the application
-npm run build
-
-# Preview the build
-npm run preview
-```
-
-## 📁 Project Structure
-
-```
-eGainWidgetFinal/
-├── src/
-│   ├── components/
-│   │   ├── GuidanceWidget.vue          # Main widget component
-│   │   └── steps/
-│   │       ├── ProblemDescriptionStep.vue
-│   │       ├── QuestionsStep.vue
-│   │       ├── QuestionComponent.vue
-│   │       ├── SolutionStep.vue
-│   │       └── FeedbackStep.vue
-│   ├── stores/
-│   │   └── widget.ts                   # State management
-│   ├── types/
-│   │   └── widget.ts                   # TypeScript definitions
-│   └── views/
-│       └── WidgetView.vue              # Widget demo page
-├── public/
-│   └── widget.js                       # Embed script
-├── demo.html                           # Demo page
-└── README.md
-```
-
-## 🎨 Customization Examples
-
-### Different Color Schemes
-
-```javascript
-// Purple theme (default)
-{
-  primaryColor: '#9333ea',
-  secondaryColor: '#f1f5f9'
-}
-
-// Blue theme
-{
-  primaryColor: '#3b82f6',
-  secondaryColor: '#eff6ff'
-}
-
-// Green theme
-{
-  primaryColor: '#10b981',
-  secondaryColor: '#f0fdf4'
-}
-```
-
-### Custom Fonts
-
-```javascript
-// Google Fonts
-{
-  fontFamily: 'Roboto, sans-serif',
-  fontSize: '14px'
-}
-
-// System fonts
-{
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-  fontSize: '16px'
-}
-```
-
-## 🔧 API Integration
-
-The widget is designed to work with any backend API. The current implementation includes mock data, but you can easily integrate with your own API by modifying the store methods:
-
-- `fetchNextQuestions()`: Fetch questions from your API
-- `saveAnswer()`: Save answers to your backend
-- `saveFeedback()`: Submit feedback to your system
-
-## 📱 Browser Support
-
+## Browser Support
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
 - Edge 90+
 
-## 🤝 Contributing
+## API Integration
+
+The widget includes mock data for demonstration. To integrate with your backend:
+
+1. **Questions API**: Replace `fetchNextQuestions()` in the store
+2. **Answer Storage**: Implement `saveAnswer()` for your database
+3. **Feedback System**: Connect `saveFeedback()` to your analytics
+
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -230,10 +188,10 @@ The widget is designed to work with any backend API. The current implementation 
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License.
 
-## 🆘 Support
+## Support
 
-For support and questions, please contact the development team or create an issue in the repository.
+For technical support or questions, please create an issue in the repository.

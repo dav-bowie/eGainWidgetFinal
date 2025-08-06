@@ -18,7 +18,7 @@ export const useWidgetStore = defineStore('widget', () => {
   const currentSolution = ref<Solution | null>(null)
   const feedback = ref<WidgetState['feedback']>({ helpful: null })
   const displayMode = ref<'sequential' | 'batch'>('sequential')
-  const isOpen = ref(true) // Temporarily set to true for testing
+  const isOpen = ref(false) // Widget starts closed, showing FAB
 
   // Configuration
   const config = ref<WidgetConfig>({
@@ -126,18 +126,18 @@ export const useWidgetStore = defineStore('widget', () => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500))
 
-    // Mock questions based on problem description
+    // Focused company policy/service scenario
     const mockQuestions: Question[] = [
       {
-        id: 'device-type',
+        id: 'service-type',
         type: 'text-choices',
-        title: 'What type of device are you having issues with?',
+        title: 'What type of service are you inquiring about?',
         required: true,
         options: [
-          { id: 'computer', label: 'Computer' },
-          { id: 'mobile', label: 'Mobile Device' },
-          { id: 'tablet', label: 'Tablet' },
-          { id: 'other', label: 'Other Device' }
+          { id: 'technical-support', label: 'Technical Support' },
+          { id: 'billing-inquiry', label: 'Billing Inquiry' },
+          { id: 'account-management', label: 'Account Management' },
+          { id: 'product-information', label: 'Product Information' }
         ]
       },
       {
@@ -146,10 +146,10 @@ export const useWidgetStore = defineStore('widget', () => {
         title: 'Which category best describes your issue?',
         required: true,
         options: [
-          { id: 'hardware', label: 'Hardware', image: '/hardware-icon.png' },
-          { id: 'software', label: 'Software', image: '/software-icon.png' },
-          { id: 'network', label: 'Network', image: '/network-icon.png' },
-          { id: 'performance', label: 'Performance', image: '/performance-icon.png' }
+          { id: 'hardware', label: 'Hardware', image: '/hardware-icon.svg' },
+          { id: 'software', label: 'Software', image: '/software-icon.svg' },
+          { id: 'network', label: 'Network', image: '/network-icon.svg' },
+          { id: 'performance', label: 'Performance', image: '/performance-icon.svg' }
         ]
       },
       {
@@ -158,27 +158,29 @@ export const useWidgetStore = defineStore('widget', () => {
         title: 'How urgent is this issue?',
         required: true,
         options: [
-          { id: 'low', label: 'Low - Minor inconvenience' },
-          { id: 'medium', label: 'Medium - Affects daily work' },
-          { id: 'high', label: 'High - Significantly impacted' },
-          { id: 'critical', label: 'Critical - Cannot work' }
+          { id: 'low', label: 'Low - Can wait a few days' },
+          { id: 'medium', label: 'Medium - Need resolution this week' },
+          { id: 'high', label: 'High - Need resolution today' },
+          { id: 'critical', label: 'Critical - Immediate attention required' }
+        ]
+      },
+      {
+        id: 'policy-inquiry',
+        type: 'text-choices',
+        title: 'Are you asking about a specific company policy?',
+        required: true,
+        options: [
+          { id: 'refund-policy', label: 'Refund Policy' },
+          { id: 'warranty-policy', label: 'Warranty Policy' },
+          { id: 'support-policy', label: 'Support Policy' },
+          { id: 'service-level', label: 'Service Level Agreement' }
         ]
       },
       {
         id: 'additional-info',
         type: 'free-text',
-        title: 'Any additional information that might help?',
+        title: 'Please provide any additional details about your inquiry:',
         required: false
-      },
-      {
-        id: 'budget',
-        type: 'numeric',
-        title: 'What is your budget for a solution (if applicable)?',
-        required: false,
-        validation: {
-          min: 0,
-          max: 10000
-        }
       }
     ]
 
@@ -186,17 +188,62 @@ export const useWidgetStore = defineStore('widget', () => {
     let solution: Solution | undefined
 
     if (solutionReady) {
+      // Generate solution based on answers
+      // const serviceType = answers.value.find(a => a.questionId === 'service-type')?.value
+      // const issueCategory = answers.value.find(a => a.questionId === 'issue-category')?.value
+      const urgency = answers.value.find(a => a.questionId === 'urgency')?.value
+      const policyInquiry = answers.value.find(a => a.questionId === 'policy-inquiry')?.value
+
+      let solutionTitle = 'Company Policy Information'
+      const solutionDescription = 'Based on your inquiry, here is the relevant information:'
+      let solutionSteps: string[] = []
+      let priority = 'medium'
+
+      // Customize solution based on service type and policy inquiry
+      if (policyInquiry === 'refund-policy') {
+        solutionTitle = 'Refund Policy Information'
+        solutionSteps = [
+          '**30-Day Return Window** - Products can be returned within 30 days of purchase',
+          '**Original Packaging** - Item must be in original condition with all packaging',
+          '**Proof of Purchase** - Receipt or order confirmation required',
+          '**Processing Time** - Refunds processed within 5-7 business days'
+        ]
+      } else if (policyInquiry === 'warranty-policy') {
+        solutionTitle = 'Warranty Policy Information'
+        solutionSteps = [
+          '**Standard Warranty** - 1-year limited warranty on all products',
+          '**Extended Coverage** - Available for purchase up to 3 years',
+          '**Coverage Details** - Covers manufacturing defects and hardware failures',
+          '**Service Process** - Contact support for warranty claims and repairs'
+        ]
+      } else if (policyInquiry === 'support-policy') {
+        solutionTitle = 'Support Policy Information'
+        solutionSteps = [
+          '**24/7 Support** - Round-the-clock technical assistance available',
+          '**Response Times** - Critical issues: 2 hours, High: 4 hours, Medium: 24 hours',
+          '**Support Channels** - Phone, email, chat, and ticket system',
+          '**Escalation Process** - Complex issues escalated to senior technicians'
+        ]
+      } else if (policyInquiry === 'service-level') {
+        solutionTitle = 'Service Level Agreement (SLA)'
+        solutionSteps = [
+          '**Uptime Guarantee** - 99.9% service availability',
+          '**Response Commitments** - Based on issue severity and urgency',
+          '**Compensation** - Service credits for SLA violations',
+          '**Monitoring** - Real-time system monitoring and alerts'
+        ]
+      }
+
+      // Adjust priority based on urgency
+      if (urgency === 'critical') priority = 'critical'
+      else if (urgency === 'high') priority = 'high'
+
       solution = {
         id: 'solution-1',
-        title: 'Recommended Solution',
-        description: 'Based on your description and the information provided, we recommend:',
-        steps: [
-          '**Document the issue** - Note when it occurs and any error messages',
-          '**Check for updates** - Ensure all software is current',
-          '**Restart your device** - This resolves many common issues',
-          '**Contact support** - Given the high priority, consider professional help'
-        ],
-        priority: 'high'
+        title: solutionTitle,
+        description: solutionDescription,
+        steps: solutionSteps,
+        priority: priority as 'low' | 'medium' | 'high'
       }
     }
 

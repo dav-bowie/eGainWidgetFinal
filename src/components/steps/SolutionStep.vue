@@ -180,19 +180,18 @@ onMounted(async () => {
 
 const generateSolution = () => {
   const answers = store.answers
-  const problemDescription = store.problemDescription
 
   // Analyze answers to generate personalized solution
   let priority = 'medium'
-  let title = 'Recommended Solution'
-  let description = 'Based on your responses, here\'s our recommended approach:'
-  let steps: string[] = []
+  const title = 'Recommended Solution'
+  const description = 'Based on your responses, here\'s our recommended approach:'
+  const steps: string[] = []
 
   // Check device type
   const deviceType = answers.find(a => a.questionId === 'device-type')
   const issueCategory = answers.find(a => a.questionId === 'issue-category')
   const urgency = answers.find(a => a.questionId === 'urgency')
-  const additionalInfo = answers.find(a => a.questionId === 'additional-info')
+  // const additionalInfo = answers.find(a => a.questionId === 'additional-info')
   const budget = answers.find(a => a.questionId === 'budget')
 
   // Set priority based on urgency

@@ -157,7 +157,8 @@
         </div>
         <div class="modal-content">
           <QuestionComponent
-            :question="getQuestionById(editingQuestionId)"
+            v-if="getQuestionById(editingQuestionId)"
+            :question="getQuestionById(editingQuestionId)!"
             :answer="getAnswer(editingQuestionId)"
             @answer="handleEditAnswer"
           />
@@ -205,9 +206,23 @@ const answeredQuestions = computed(() => {
 
 const canProceed = computed(() => {
   if (displayMode.value === 'sequential') {
-    return currentQuestion.value && getAnswer(currentQuestion.value.id)
+    // In sequential mode, can proceed if:
+    // 1. There's a current question and it has an answer, OR
+    // 2. All questions are answered (no current question but all questions have answers)
+    if (currentQuestion.value) {
+      const canProceedWithCurrent = getAnswer(currentQuestion.value.id)
+      console.log('Sequential mode - current question:', currentQuestion.value.title, 'can proceed:', canProceedWithCurrent)
+      return canProceedWithCurrent
+    } else {
+      // No current question means all questions are answered
+      const allAnswered = answeredQuestions.value.length === currentQuestions.value.length
+      console.log('Sequential mode - all questions answered:', allAnswered, 'answered:', answeredQuestions.value.length, 'total:', currentQuestions.value.length)
+      return allAnswered
+    }
   }
-  return answeredQuestions.value.length > 0
+  const batchCanProceed = answeredQuestions.value.length > 0
+  console.log('Batch mode - can proceed:', batchCanProceed, 'answered:', answeredQuestions.value.length)
+  return batchCanProceed
 })
 
 // Methods

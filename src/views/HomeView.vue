@@ -48,6 +48,7 @@ const handleLogoError = (event: Event) => {
           <a href="#" class="nav-link">Resources</a>
           <a href="#" class="nav-link">Company</a>
           <a href="#" class="nav-link">Contact Us</a>
+          <router-link to="/chat-widget" class="nav-link">Chat Widget Demo</router-link>
         </nav>
         <div class="header-actions">
           <!-- Widget will be positioned here -->

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import WidgetView from '../views/WidgetView.vue'
+import ChatWidgetView from '../views/ChatWidgetView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,11 @@ const router = createRouter({
       path: '/widget',
       name: 'widget',
       component: WidgetView
+    },
+    {
+      path: '/chat-widget',
+      name: 'chat-widget',
+      component: ChatWidgetView
     },
     {
       path: '/about',

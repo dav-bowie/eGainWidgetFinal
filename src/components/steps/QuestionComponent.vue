@@ -25,7 +25,10 @@
             @change="handleTextChoice(option.id, option.label)"
             class="radio-input"
           />
-          <span class="option-label">{{ option.label }}</span>
+          <div class="option-content">
+            <div class="radio-custom"></div>
+            <span class="option-label">{{ option.label }}</span>
+          </div>
         </label>
       </div>
     </div>
@@ -65,31 +68,54 @@
 
     <!-- Free Text -->
     <div v-else-if="question.type === 'free-text'" class="free-text">
-      <textarea
-        :value="getTextValue()"
-        @input="handleTextInput"
-        class="text-input"
-        :placeholder="question.description || 'Enter your answer...'"
-        rows="3"
-        maxlength="1000"
-      ></textarea>
-      <div class="character-count">
-        {{ getTextValue().length }}/1000 characters
+      <div class="text-input-container">
+        <textarea
+          v-model="localTextValue"
+          @input="handleTextInput"
+          @keydown="handleTextKeydown"
+          @focus="handleFocus"
+          @blur="handleBlur"
+          class="text-input"
+          :class="{ focused: isFocused }"
+          :placeholder="question.description || 'Enter your answer...'"
+          rows="3"
+          ref="textAreaRef"
+        ></textarea>
+        <div class="input-border"></div>
+      </div>
+      <div class="text-input-actions">
+        <div class="character-count" :class="{ 'near-limit': localTextValue.length > 800 }">
+          {{ localTextValue.length }}/1000 characters
+        </div>
+        <button
+          @click="handleTextSubmit"
+          class="submit-button"
+          :disabled="!localTextValue.trim()"
+        >
+          <span class="submit-icon">→</span>
+          <span class="submit-text">Send</span>
+        </button>
       </div>
     </div>
 
     <!-- Numeric -->
     <div v-else-if="question.type === 'numeric'" class="numeric-input">
-      <input
-        type="number"
-        :value="getNumericValue()"
-        @input="handleNumericInput"
-        class="number-input"
-        :placeholder="question.description || 'Enter a number...'"
-        :min="question.validation?.min"
-        :max="question.validation?.max"
-        step="1"
-      />
+      <div class="number-input-container">
+        <input
+          type="number"
+          :value="getNumericValue()"
+          @input="handleNumericInput"
+          @focus="handleFocus"
+          @blur="handleBlur"
+          class="number-input"
+          :class="{ focused: isFocused }"
+          :placeholder="question.description || 'Enter a number...'"
+          :min="question.validation?.min"
+          :max="question.validation?.max"
+          step="1"
+        />
+        <div class="input-border"></div>
+      </div>
       <div v-if="question.validation" class="validation-info">
         <span v-if="question.validation.min !== undefined">
           Min: {{ question.validation.min }}
@@ -103,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, nextTick, watch } from 'vue'
 import type { Question, Answer } from '@/types/widget'
 
 interface Props {
@@ -117,14 +143,19 @@ const emit = defineEmits<{
   answer: [questionId: string, value: string | number, label?: string]
 }>()
 
+// Reactive state
+const isFocused = ref(false)
+const textAreaRef = ref<HTMLTextAreaElement>()
+const localTextValue = ref(props.answer?.value?.toString() || '')
+
 // Computed
 const isSelected = (optionId: string): boolean => {
   return props.answer?.value === optionId
 }
 
-const getTextValue = (): string => {
-  return props.answer?.value?.toString() || ''
-}
+// const getTextValue = (): string => {
+//   return props.answer?.value?.toString() || ''
+// }
 
 const getNumericValue = (): number | '' => {
   if (props.answer?.value !== undefined && props.answer?.value !== null) {
@@ -142,15 +173,31 @@ const handleImageChoice = (optionId: string, label: string) => {
   emit('answer', props.question.id, optionId, label)
 }
 
-const handleTextInput = (event: Event) => {
-  const target = event.target as HTMLTextAreaElement
-  emit('answer', props.question.id, target.value)
+const handleTextInput = () => {
+  // Auto-resize textarea
+  nextTick(() => {
+    if (textAreaRef.value) {
+      textAreaRef.value.style.height = 'auto'
+      textAreaRef.value.style.height = `${textAreaRef.value.scrollHeight}px`
+    }
+  })
+}
+
+const handleTextSubmit = () => {
+  emit('answer', props.question.id, localTextValue.value)
+}
+
+const handleTextKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault()
+    handleTextSubmit()
+  }
 }
 
 const handleNumericInput = (event: Event) => {
   const target = event.target as HTMLInputElement
   const value = target.value === '' ? '' : Number(target.value)
-  
+
   // Validate numeric input
   if (value !== '' && props.question.validation) {
     const numValue = Number(value)
@@ -161,253 +208,419 @@ const handleNumericInput = (event: Event) => {
       return
     }
   }
-  
+
   emit('answer', props.question.id, value)
 }
+
+const handleFocus = () => {
+  isFocused.value = true
+}
+
+const handleBlur = () => {
+  isFocused.value = false
+}
+
+// Watch for prop changes and update local state
+watch(() => props.answer?.value, (newValue) => {
+  localTextValue.value = newValue?.toString() || ''
+})
 </script>
 
 <style scoped>
 .question-component {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.question-component:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
 }
 
 .question-header {
-  position: relative;
+  margin-bottom: 24px;
 }
 
 .question-title {
-  margin: 0 0 8px 0;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: #1e293b;
+  margin: 0 0 8px 0;
   line-height: 1.4;
 }
 
 .question-description {
-  margin: 0 0 8px 0;
   font-size: 14px;
-  color: #666;
+  color: #64748b;
+  margin: 0;
   line-height: 1.5;
 }
 
 .required-indicator {
-  color: #dc2626;
-  font-weight: bold;
+  color: #ef4444;
+  font-weight: 600;
   margin-left: 4px;
 }
 
 /* Text Choices */
 .text-choices {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .options-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  gap: 12px;
 }
 
 .option-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   background: white;
 }
 
 .option-item:hover {
-  border-color: var(--primary-color);
-  background: rgba(147, 51, 234, 0.02);
+  border-color: #6366f1;
+  background: #f8fafc;
+  transform: translateY(-1px);
 }
 
 .option-item.selected {
-  border-color: var(--primary-color);
-  background: rgba(147, 51, 234, 0.1);
+  border-color: #6366f1;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
 }
 
 .radio-input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--primary-color);
+  display: none;
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.radio-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.option-item:hover .radio-custom {
+  border-color: #6366f1;
+}
+
+.option-item.selected .radio-custom {
+  border-color: white;
+  background: white;
+}
+
+.option-item.selected .radio-custom::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: #6366f1;
+  border-radius: 50%;
 }
 
 .option-label {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
-  color: #333;
-  flex: 1;
+  color: #374151;
+  transition: color 0.2s ease;
+}
+
+.option-item.selected .option-label {
+  color: white;
 }
 
 /* Image Choices */
 .image-choices {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .image-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
 }
 
 .image-option {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
   cursor: pointer;
-  padding: 8px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   background: white;
+  text-align: center;
 }
 
 .image-option:hover {
-  border-color: var(--primary-color);
-  background: rgba(147, 51, 234, 0.02);
+  border-color: #6366f1;
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
 }
 
 .image-option.selected {
-  border-color: var(--primary-color);
-  background: rgba(147, 51, 234, 0.1);
+  border-color: #6366f1;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
 }
 
 .image-container {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  overflow: hidden;
 }
 
 .option-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .image-placeholder {
   width: 100%;
   height: 100%;
-  background: var(--secondary-color);
+  background: #f1f5f9;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--primary-color);
+  font-size: 20px;
+  font-weight: 600;
+  color: #64748b;
 }
 
 .image-label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  color: #333;
-  text-align: center;
-  line-height: 1.2;
+  color: #374151;
+  transition: color 0.2s ease;
+}
+
+.image-option.selected .image-label {
+  color: white;
 }
 
 /* Free Text */
 .free-text {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.text-input-container {
+  position: relative;
 }
 
 .text-input {
-  padding: 12px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
+  width: 100%;
+  min-height: 120px;
+  padding: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
   resize: vertical;
-  min-height: 80px;
-  transition: border-color 0.2s ease;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  color: #1e293b;
 }
 
 .text-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
 }
 
 .text-input::placeholder {
-  color: #999;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.input-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.text-input:focus + .input-border {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
 .character-count {
   font-size: 12px;
-  color: #666;
+  color: #94a3b8;
+  margin-top: 8px;
   text-align: right;
+  transition: color 0.2s ease;
+}
+
+.character-count.near-limit {
+  color: #f59e0b;
+}
+
+.text-input-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.submit-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 80px;
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.submit-button:disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.submit-icon {
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+.submit-button:hover:not(:disabled) .submit-icon {
+  transform: translateX(2px);
+}
+
+.submit-text {
+  font-weight: 600;
 }
 
 /* Numeric Input */
 .numeric-input {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.number-input-container {
+  position: relative;
 }
 
 .number-input {
-  padding: 12px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   font-family: inherit;
-  font-size: 14px;
-  transition: border-color 0.2s ease;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  color: #1e293b;
 }
 
 .number-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
 }
 
 .number-input::placeholder {
-  color: #999;
+  color: #94a3b8;
+  font-style: italic;
 }
 
 .validation-info {
   display: flex;
   gap: 16px;
+  margin-top: 8px;
   font-size: 12px;
-  color: #666;
+  color: #64748b;
 }
 
-/* Accessibility */
-.option-item:focus-within,
-.image-option:focus-within,
-.text-input:focus-visible,
-.number-input:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .question-component {
+    padding: 20px;
+  }
 
-/* Responsive */
-@media (max-width: 480px) {
   .image-grid {
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
-  
+
+  .image-option {
+    padding: 12px;
+  }
+
   .image-container {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
   }
-  
-  .image-placeholder {
-    font-size: 18px;
+
+  .text-input {
+    min-height: 100px;
+    padding: 12px;
+  }
+
+  .number-input {
+    padding: 12px;
   }
 }
-</style> 
+
+/* Animation for focus states */
+@keyframes focusPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.text-input:focus,
+.number-input:focus {
+  animation: focusPulse 0.3s ease-out;
+}
+</style>

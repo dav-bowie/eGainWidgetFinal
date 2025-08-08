@@ -677,7 +677,7 @@ const adminConfig = ref({
 const isOpen = computed(() => store.isOpen)
 const currentStep = computed(() => store.currentStep)
 const widgetConfig = computed(() => store.config)
-const isMobileDevice = computed(() => window.innerWidth <= 768)
+const isMobileDevice = computed(() => window.innerWidth <= 480)
 
 // Font size computed property removed as it's not being used
 
@@ -726,7 +726,7 @@ const widgetStyles = computed(() => {
   }
 
   // Only apply JavaScript positioning for desktop devices
-  if (window.innerWidth > 768) {
+  if (window.innerWidth > 1024) {
     styles['--widget-x'] = `${widgetPosition.value.x}px`
     styles['--widget-y'] = `${widgetPosition.value.y}px`
   }
@@ -1489,15 +1489,15 @@ const selectFontSize = (sizeValue: string) => {
     border-radius: 16px !important;
     width: 95% !important;
     max-width: 400px !important;
-    margin: 10px !important;
-    max-height: 90vh !important;
+    margin: 8px !important;
+    max-height: 98vh !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
 
   .admin-content {
     padding: 16px !important;
-    max-height: calc(90vh - 40px) !important;
+    max-height: calc(98vh - 40px) !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
@@ -2084,7 +2084,7 @@ const selectFontSize = (sizeValue: string) => {
   justify-content: center;
   z-index: 10001;
   animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 10px;
+  padding: 4px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -2104,8 +2104,8 @@ const selectFontSize = (sizeValue: string) => {
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
   max-width: min(1400px, calc(100vw - 40px));
   width: min(95%, calc(100vw - 40px));
-  max-height: 95vh;
-  height: 95vh;
+  max-height: 99vh;
+  height: 99vh;
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2119,12 +2119,12 @@ const selectFontSize = (sizeValue: string) => {
 /* Responsive admin modal for all devices */
 @media (max-width: 480px) {
   .admin-modal {
-    width: calc(100vw - 16px);
-    max-width: calc(100vw - 16px);
-    height: calc(100vh - 32px);
-    max-height: calc(100vh - 32px);
+    width: calc(100vw - 8px);
+    max-width: calc(100vw - 8px);
+    height: calc(100vh - 8px);
+    max-height: calc(100vh - 8px);
     border-radius: 16px;
-    margin: 16px 8px;
+    margin: 4px;
   }
 
   .studio-header {
@@ -2164,11 +2164,11 @@ const selectFontSize = (sizeValue: string) => {
 
 @media (min-width: 481px) and (max-width: 768px) {
   .admin-modal {
-    width: calc(100vw - 20px);
-    max-width: calc(100vw - 20px);
-    height: calc(100vh - 10px);
-    max-height: calc(100vh - 10px);
-    margin: 5px 10px;
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    height: calc(100vh - 4px);
+    max-height: calc(100vh - 4px);
+    margin: 2px 8px;
     border-radius: 20px;
   }
 
@@ -2188,11 +2188,11 @@ const selectFontSize = (sizeValue: string) => {
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .admin-modal {
-    width: calc(100vw - 30px);
-    max-width: calc(100vw - 30px);
-    height: calc(100vh - 20px);
-    max-height: calc(100vh - 20px);
-    margin: 10px 15px;
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    height: calc(100vh - 6px);
+    max-height: calc(100vh - 6px);
+    margin: 3px 12px;
     border-radius: 22px;
   }
 
@@ -2214,9 +2214,9 @@ const selectFontSize = (sizeValue: string) => {
   .admin-modal {
     width: min(95%, calc(100vw - 40px));
     max-width: min(1400px, calc(100vw - 40px));
-    height: calc(100vh - 20px);
-    max-height: calc(100vh - 20px);
-    margin: 10px auto;
+    height: calc(100vh - 4px);
+    max-height: calc(100vh - 4px);
+    margin: 2px auto;
     border-radius: 24px;
   }
 
@@ -2370,18 +2370,18 @@ const selectFontSize = (sizeValue: string) => {
 
 /* Password Screen */
 .admin-password-screen {
-  padding: 40px 32px;
+  padding: 50px 32px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex: 1;
-  min-height: 400px;
+  min-height: 500px;
 }
 
 .password-header {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .password-icon {
@@ -2395,8 +2395,8 @@ const selectFontSize = (sizeValue: string) => {
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   border: 1px solid #f59e0b;
   border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 40px;
+  padding: 24px 28px;
+  margin-bottom: 50px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -2440,8 +2440,8 @@ const selectFontSize = (sizeValue: string) => {
 .password-input-group {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 32px;
+  gap: 24px;
+  margin-bottom: 40px;
   width: 100%;
   max-width: 320px;
 }
@@ -2528,7 +2528,9 @@ const selectFontSize = (sizeValue: string) => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  flex: 1;
   background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  overflow: hidden;
 }
 
 /* Studio Header */
@@ -2902,6 +2904,8 @@ const selectFontSize = (sizeValue: string) => {
   flex: 1;
   padding: 32px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100vh - 200px);
 }
 
 /* Section Headers */
@@ -4427,10 +4431,7 @@ const selectFontSize = (sizeValue: string) => {
     grid-template-columns: 1fr;
   }
 
-  .admin-modal {
-    width: 95%;
-    margin: 20px;
-  }
+
 
   .admin-content {
     padding: 24px;

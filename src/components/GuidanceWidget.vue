@@ -2104,8 +2104,8 @@ const selectFontSize = (sizeValue: string) => {
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
   max-width: min(1400px, calc(100vw - 40px));
   width: min(95%, calc(100vw - 40px));
-  max-height: 90vh;
-  height: 90vh;
+  max-height: 95vh;
+  height: 95vh;
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2166,9 +2166,9 @@ const selectFontSize = (sizeValue: string) => {
   .admin-modal {
     width: calc(100vw - 20px);
     max-width: calc(100vw - 20px);
-    height: calc(100vh - 20px);
-    max-height: calc(100vh - 20px);
-    margin: 10px;
+    height: calc(100vh - 10px);
+    max-height: calc(100vh - 10px);
+    margin: 5px 10px;
     border-radius: 20px;
   }
 
@@ -2190,9 +2190,9 @@ const selectFontSize = (sizeValue: string) => {
   .admin-modal {
     width: calc(100vw - 30px);
     max-width: calc(100vw - 30px);
-    height: calc(100vh - 30px);
-    max-height: calc(100vh - 30px);
-    margin: 15px;
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+    margin: 10px 15px;
     border-radius: 22px;
   }
 
@@ -2214,9 +2214,9 @@ const selectFontSize = (sizeValue: string) => {
   .admin-modal {
     width: min(95%, calc(100vw - 40px));
     max-width: min(1400px, calc(100vw - 40px));
-    height: calc(100vh - 40px);
-    max-height: calc(100vh - 40px);
-    margin: 20px auto;
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+    margin: 10px auto;
     border-radius: 24px;
   }
 
@@ -2370,18 +2370,18 @@ const selectFontSize = (sizeValue: string) => {
 
 /* Password Screen */
 .admin-password-screen {
-  padding: 32px;
+  padding: 40px 32px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex: 1;
-  min-height: 300px;
+  min-height: 400px;
 }
 
 .password-header {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
 .password-icon {
@@ -2395,8 +2395,8 @@ const selectFontSize = (sizeValue: string) => {
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   border: 1px solid #f59e0b;
   border-radius: 12px;
-  padding: 16px 20px;
-  margin-bottom: 32px;
+  padding: 20px 24px;
+  margin-bottom: 40px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -2440,8 +2440,8 @@ const selectFontSize = (sizeValue: string) => {
 .password-input-group {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 20px;
+  margin-bottom: 32px;
   width: 100%;
   max-width: 320px;
 }

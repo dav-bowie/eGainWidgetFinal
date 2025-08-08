@@ -3998,9 +3998,17 @@ const selectFontSize = (sizeValue: string) => {
 
 @media (max-width: 480px) {
   .widget-container {
-    border-radius: 16px;
-    height: 90vh;
+    /* Scaled down version of desktop - same features, smaller size */
+    width: calc(100vw - 20px);
+    height: 80vh;
+    max-width: 350px;
     max-height: 500px;
+    border-radius: 16px;
+    /* Position on right side like desktop */
+    right: 10px;
+    left: auto;
+    top: 50%;
+    transform: translateY(-50%);
     /* Prevent iOS Safari from interfering with scrolling */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
@@ -4010,8 +4018,17 @@ const selectFontSize = (sizeValue: string) => {
   }
 
   .widget-embedded .widget-container {
-    height: 90vh;
+    /* Same scaled down approach for embedded */
+    width: calc(100vw - 20px);
+    height: 80vh;
+    max-width: 350px;
     max-height: 500px;
+    border-radius: 16px;
+    /* Position on right side like desktop */
+    right: 10px;
+    left: auto;
+    top: 50%;
+    transform: translateY(-50%);
     /* Prevent iOS Safari from interfering with scrolling */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
@@ -4024,20 +4041,46 @@ const selectFontSize = (sizeValue: string) => {
     padding: 16px;
   }
 
+  .widget-title {
+    font-size: 16px;
+  }
+
+  .widget-subtitle {
+    font-size: 12px;
+  }
+
   .widget-content {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     /* Ensure proper scrolling on mobile */
     touch-action: pan-y;
+    /* Scaled down height */
+    height: calc(80vh - 80px);
   }
 
   .admin-modal {
     border-radius: 16px;
+    width: 95%;
+    margin: 10px;
   }
 
   .admin-content {
-    padding: 20px;
+    padding: 16px;
+  }
+
+  /* Ensure close button is visible and properly sized */
+  .close-button {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
   }
 }
 

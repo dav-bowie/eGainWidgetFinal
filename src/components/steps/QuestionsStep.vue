@@ -1104,6 +1104,25 @@ const ensureQuestionsScrollable = () => {
     /* Allow content to expand */
     height: auto;
   }
+
+  /* Scale down elements for mobile while keeping same features */
+  .step-title {
+    font-size: 18px;
+  }
+
+  .step-description {
+    font-size: 13px;
+  }
+
+  .mode-button {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .next-button {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
 }
 
 /* Extra small devices */
@@ -1146,6 +1165,25 @@ const ensureQuestionsScrollable = () => {
     padding: 12px;
     /* Allow content to expand */
     height: auto;
+  }
+
+  /* Further scale down for extra small devices */
+  .step-title {
+    font-size: 16px;
+  }
+
+  .step-description {
+    font-size: 12px;
+  }
+
+  .mode-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .next-button {
+    padding: 10px 16px;
+    font-size: 13px;
   }
 }
 

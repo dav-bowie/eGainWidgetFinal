@@ -41,7 +41,7 @@
             ⚙️
           </button>
           <button
-            v-if="embedded"
+            v-if="embedded || isMobileDevice"
             class="close-button"
             @click="toggleOpen"
             aria-label="Close widget"
@@ -613,6 +613,7 @@ const adminConfig = ref({
 const isOpen = computed(() => store.isOpen)
 const currentStep = computed(() => store.currentStep)
 const widgetConfig = computed(() => store.config)
+const isMobileDevice = computed(() => window.innerWidth <= 768)
 
 // Font size computed property removed as it's not being used
 
@@ -653,14 +654,19 @@ onUnmounted(() => {
 })
 
 const widgetStyles = computed(() => {
-  const styles = {
+  const styles: Record<string, string> = {
     '--primary-color': widgetConfig.value.primaryColor,
     '--secondary-color': widgetConfig.value.secondaryColor,
     '--font-family': widgetConfig.value.fontFamily,
     '--font-size': widgetConfig.value.fontSize,
-    '--widget-x': `${widgetPosition.value.x}px`,
-    '--widget-y': `${widgetPosition.value.y}px`,
   }
+
+  // Only apply JavaScript positioning for desktop devices
+  if (window.innerWidth > 768) {
+    styles['--widget-x'] = `${widgetPosition.value.x}px`
+    styles['--widget-y'] = `${widgetPosition.value.y}px`
+  }
+
   console.log('Widget styles computed:', styles)
   return styles
 })
@@ -1305,58 +1311,83 @@ const selectFontSize = (sizeValue: string) => {
 /* Extra small devices (phones, 320px and up) */
 @media (max-width: 480px) {
   .widget-container {
-    width: calc(100vw - 20px);
-    height: calc(100vh - 40px);
-    max-width: 320px;
-    max-height: 450px;
-    border-radius: 16px;
-    /* Ensure widget is positioned on the right side */
-    position: fixed;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    /* Full screen mobile widget */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    transform: none !important;
+    margin: 0 !important;
+    /* Override any JavaScript positioning */
+    --widget-x: unset !important;
+    --widget-y: unset !important;
+    /* Ensure it's above everything */
+    z-index: 10000 !important;
   }
 
   .widget-header {
-    padding: 16px;
+    padding: 20px;
     flex-shrink: 0;
+    /* Add safe area padding for iPhone */
+    padding-top: max(20px, env(safe-area-inset-top));
   }
 
   .widget-title {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   .widget-subtitle {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .widget-content {
-    /* Ensure content area adapts to keyboard */
-    height: calc(100% - 80px);
-    overflow: hidden;
+    /* Full height content area */
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    /* Add safe area padding for iPhone */
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
   }
 }
 
 /* Small devices (large phones, 481px and up) */
 @media (min-width: 481px) and (max-width: 768px) {
   .widget-container {
-    width: 380px;
-    height: 520px;
-    max-width: calc(100vw - 30px);
-    max-height: calc(100vh - 40px);
-    /* Ensure widget is positioned on the right side */
-    position: fixed;
-    top: 50%;
-    right: 15px;
-    transform: translateY(-50%);
-    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    /* Full screen mobile widget */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    transform: none !important;
+    margin: 0 !important;
+    /* Override any JavaScript positioning */
+    --widget-x: unset !important;
+    --widget-y: unset !important;
+    /* Ensure it's above everything */
+    z-index: 10000 !important;
   }
 
   .widget-content {
-    /* Ensure content area adapts to keyboard */
-    height: calc(100% - 80px);
-    overflow: hidden;
+    /* Full height content area */
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    /* Add safe area padding for iPhone */
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -1403,6 +1434,22 @@ const selectFontSize = (sizeValue: string) => {
     /* Ensure content area has proper height on desktop */
     height: calc(100% - 80px);
     overflow: hidden;
+  }
+}
+
+/* Mobile close button styling */
+@media (max-width: 768px) {
+  .close-button {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 24px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-weight: 600 !important;
   }
 }
 

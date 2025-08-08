@@ -239,8 +239,9 @@ const canProceed = computed(() => {
     // 1. There's a current question and it has an answer, OR
     // 2. All questions are answered (no current question but all questions have answers)
     if (currentQuestion.value) {
-      const canProceedWithCurrent = getAnswer(currentQuestion.value.id)
-      console.log('Sequential mode - current question:', currentQuestion.value.title, 'can proceed:', canProceedWithCurrent)
+      const answer = getAnswer(currentQuestion.value.id)
+      const canProceedWithCurrent = answer && (answer.value !== null && answer.value !== undefined && answer.value !== '')
+      console.log('Sequential mode - current question:', currentQuestion.value.title, 'answer:', answer, 'can proceed:', canProceedWithCurrent)
       return canProceedWithCurrent
     } else {
       // No current question means all questions are answered

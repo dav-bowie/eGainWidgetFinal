@@ -172,11 +172,23 @@ const handleTextChoice = (optionId: string, label: string) => {
   nextTick(() => {
     const selectedElement = document.querySelector(`input[value="${optionId}"]`)
     if (selectedElement) {
-      selectedElement.closest('.option-item')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest'
-      })
+      const optionItem = selectedElement.closest('.option-item')
+      if (optionItem) {
+        // Scroll the option into view within the options grid
+        const optionsGrid = optionItem.closest('.options-grid')
+        if (optionsGrid) {
+          const gridRect = optionsGrid.getBoundingClientRect()
+          const itemRect = optionItem.getBoundingClientRect()
+          
+          if (itemRect.bottom > gridRect.bottom || itemRect.top < gridRect.top) {
+            optionItem.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'nearest'
+            })
+          }
+        }
+      }
     }
   })
 }
@@ -298,6 +310,13 @@ watch(() => props.answer?.value, (newValue) => {
 .options-grid {
   display: grid;
   gap: 12px;
+  /* Ensure options are scrollable when there are many options */
+  max-height: 300px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  /* Add padding to account for scrollbar */
+  padding-right: 8px;
 }
 
 .option-item {
@@ -629,6 +648,13 @@ watch(() => props.answer?.value, (newValue) => {
 
   .options-grid {
     gap: 10px;
+    /* Enhanced scrolling for mobile */
+    max-height: 250px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Ensure proper spacing */
+    padding-right: 4px;
   }
 
   .option-item {
@@ -672,6 +698,32 @@ watch(() => props.answer?.value, (newValue) => {
   .submit-button {
     min-height: 44px;
     padding: 12px 16px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .question-component {
+    padding: 12px;
+  }
+
+  .options-grid {
+    /* Even more compact for small screens */
+    max-height: 200px;
+    gap: 8px;
+  }
+
+  .option-item {
+    padding: 12px;
+    min-height: 44px;
+  }
+
+  .question-title {
+    font-size: 15px;
+  }
+
+  .option-label {
+    font-size: 14px;
   }
 }
 

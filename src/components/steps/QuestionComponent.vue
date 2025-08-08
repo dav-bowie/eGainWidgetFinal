@@ -312,7 +312,7 @@ watch(() => props.answer?.value, (newValue) => {
   gap: 12px;
   /* Ensure options are scrollable when there are many options */
   max-height: none;
-  overflow: visible;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   /* Add padding to account for scrollbar */
@@ -652,7 +652,7 @@ watch(() => props.answer?.value, (newValue) => {
     gap: 10px;
     /* Enhanced scrolling for mobile */
     max-height: none !important;
-    overflow: visible !important;
+    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     overscroll-behavior: contain !important;
     /* Ensure proper spacing */
@@ -716,7 +716,7 @@ watch(() => props.answer?.value, (newValue) => {
     /* Even more compact for small screens */
     max-height: none !important;
     gap: 8px !important;
-    overflow: visible !important;
+    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     overscroll-behavior: contain !important;
     /* Force scrolling to work */

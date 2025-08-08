@@ -467,7 +467,9 @@ const ensureQuestionsScrollable = () => {
   display: flex;
   flex-direction: column;
   /* Ensure proper mobile layout */
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .step-content {
@@ -1097,9 +1099,10 @@ const ensureQuestionsScrollable = () => {
     /* Force scrolling to work */
     display: flex !important;
     flex-direction: column !important;
-    /* Mobile-specific scrolling fixes */
-    max-height: none !important;
-    overflow: visible !important;
+      /* Mobile-specific scrolling fixes */
+  max-height: none !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
   }
 
   /* Ensure question containers are fully visible and scrollable */
@@ -1113,7 +1116,7 @@ const ensureQuestionsScrollable = () => {
   /* Ensure options are properly scrollable */
   .options-grid {
     max-height: none !important;
-    overflow: visible !important;
+    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
 
@@ -1181,9 +1184,10 @@ const ensureQuestionsScrollable = () => {
     /* Force scrolling to work */
     display: flex !important;
     flex-direction: column !important;
-    /* Mobile-specific scrolling fixes */
-    max-height: none !important;
-    overflow: visible !important;
+      /* Mobile-specific scrolling fixes */
+  max-height: none !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
   }
 
   /* Ensure question containers are fully visible and scrollable */
@@ -1197,7 +1201,7 @@ const ensureQuestionsScrollable = () => {
   /* Ensure options are properly scrollable */
   .options-grid {
     max-height: none !important;
-    overflow: visible !important;
+    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
 

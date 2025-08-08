@@ -186,7 +186,9 @@ const handleSubmit = () => {
   display: flex;
   flex-direction: column;
   /* Ensure proper mobile layout */
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .step-content {

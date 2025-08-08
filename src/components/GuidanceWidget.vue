@@ -744,10 +744,14 @@ onMounted(() => {
 
   // Update position on window resize
   window.addEventListener('resize', resetPosition)
-  
+
   // Update viewport width on resize
   window.addEventListener('resize', () => {
     vw.value = window.innerWidth
+    // Update admin header height if modal is open
+    if (showAdminModal.value) {
+      updateAdminHeaderHeight()
+    }
   })
 
   // Debug logging
@@ -1034,10 +1038,19 @@ const showAdminPanel = () => {
     maxQuestionsBeforeSolution: widgetConfig.value.maxQuestionsBeforeSolution,
   }
 
-  // Focus password input after modal opens
+  // Update header height after modal opens
   setTimeout(() => {
+    updateAdminHeaderHeight()
     passwordInput.value?.focus()
   }, 100)
+}
+
+const updateAdminHeaderHeight = () => {
+  const header = document.querySelector('.admin-modal-header') as HTMLElement
+  if (header) {
+    const height = header.offsetHeight
+    header.style.setProperty('--admin-header-h', `${height}px`)
+  }
 }
 
 const closeAdminModal = () => {
@@ -1054,6 +1067,11 @@ const authenticateAdmin = () => {
   if (adminPassword.value === 'admin123') {
     isAdminAuthenticated.value = true
     passwordError.value = ''
+    
+    // Update header height when switching to settings screen
+    setTimeout(() => {
+      updateAdminHeaderHeight()
+    }, 100)
   } else {
     passwordError.value = 'Incorrect password. Please try again.'
     adminPassword.value = ''
@@ -1954,7 +1972,8 @@ const selectFontWeight = (weightValue: string) => {
   }
 }
 
-.header-content {
+/* Widget header only */
+.widget-header .header-content {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -2222,7 +2241,7 @@ const selectFontWeight = (weightValue: string) => {
     font-size: 11px;
   }
 
-  .device-controls {
+  .admin-modal-header .device-controls {
     display: none; /* Hide device controls on very small screens */
   }
 
@@ -2247,7 +2266,7 @@ const selectFontWeight = (weightValue: string) => {
     padding: 18px 24px;
   }
 
-  .device-controls {
+  .admin-modal-header .device-controls {
     display: flex !important;
   }
 
@@ -2271,7 +2290,7 @@ const selectFontWeight = (weightValue: string) => {
     padding: 20px 28px;
   }
 
-  .device-controls {
+  .admin-modal-header .device-controls {
     display: flex !important;
   }
 
@@ -2295,7 +2314,7 @@ const selectFontWeight = (weightValue: string) => {
     padding: 20px 32px;
   }
 
-  .device-controls {
+  .admin-modal-header .device-controls {
     display: flex !important;
   }
 
@@ -2334,6 +2353,7 @@ const selectFontWeight = (weightValue: string) => {
   position: sticky;
   top: 0;
   z-index: 50;
+  --admin-header-h: 72px; /* Dynamic header height variable */
 }
 
 .admin-modal-header .header-content {
@@ -2377,14 +2397,15 @@ const selectFontWeight = (weightValue: string) => {
   gap: 16px;
 }
 
-.device-controls {
+/* Admin modal device controls only */
+.admin-modal-header .device-controls {
   display: flex;
   gap: 8px;
 }
 
 /* Ensure device controls are visible on tablet and desktop */
 @media (min-width: 481px) {
-  .device-controls {
+  .admin-modal-header .device-controls {
     display: flex !important;
   }
 }
@@ -2629,7 +2650,8 @@ const selectFontWeight = (weightValue: string) => {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.header-content {
+/* Studio header only */
+.studio-header .header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2670,7 +2692,8 @@ const selectFontWeight = (weightValue: string) => {
   gap: 16px;
 }
 
-.device-controls {
+/* Studio device controls only */
+.studio-header .device-controls {
   display: flex;
   gap: 8px;
   background: #f1f5f9;
@@ -2745,7 +2768,7 @@ const selectFontWeight = (weightValue: string) => {
   -ms-overflow-style: none;
   scroll-behavior: smooth;
   position: sticky;
-  top: 66px;
+  top: var(--admin-header-h);
   z-index: 49;
   /* Enable momentum scrolling on iOS */
   -webkit-overflow-scrolling: touch;

@@ -992,9 +992,9 @@ const calculateTopRightPosition = () => {
     x = Math.max(margin, viewportWidth - widgetWidth - margin)
     y = Math.max(margin, (viewportHeight - widgetHeight) / 2)
   } else {
-      // For larger devices, position in top-right corner with better bounds checking
-  x = Math.max(margin, Math.min(viewportWidth - widgetWidth - margin, viewportWidth - 50))
-  y = Math.max(margin, Math.min(viewportHeight - widgetHeight - margin, viewportHeight - 50))
+    // For larger devices, position in top-right corner
+    x = viewportWidth - widgetWidth - margin
+    y = margin
   }
 
   return { x, y }
@@ -1008,8 +1008,8 @@ const resetPosition = () => {
   const viewportHeight = window.innerHeight
 
   // Ensure widget doesn't go off-screen
-  const safeX = Math.max(10, Math.min(position.x, viewportWidth - 50))
-  const safeY = Math.max(10, Math.min(position.y, viewportHeight - 50))
+  const safeX = Math.max(10, Math.min(position.x, viewportWidth - 10))
+  const safeY = Math.max(10, Math.min(position.y, viewportHeight - 10))
 
   widgetPosition.value = { x: safeX, y: safeY }
   initialPosition.x = safeX
@@ -1403,7 +1403,7 @@ const selectFontWeight = (weightValue: string) => {
 /* Main Widget Container */
 .guidance-widget {
   position: fixed;
-  top: var(--widget-y, 50px);
+  top: var(--widget-y, 20px);
   left: var(--widget-x, auto);
   right: auto;
   z-index: 9999;
@@ -1427,7 +1427,7 @@ const selectFontWeight = (weightValue: string) => {
 
 .widget-container {
   width: min(700px, calc(100vw - 40px));
-  height: min(700px, calc(100vh - 40px));
+  height: min(700px, calc(100vh - 120px));
   background: white;
   border-radius: 24px;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
@@ -1443,7 +1443,7 @@ const selectFontWeight = (weightValue: string) => {
   touch-action: pan-y;
   /* Ensure widget doesn't exceed viewport bounds */
   max-width: calc(100vw - 40px);
-  max-height: calc(100vh - 40px);
+  max-height: calc(100vh - 120px);
 }
 
 /* Comprehensive responsive design for all devices */
@@ -2165,11 +2165,11 @@ const selectFontWeight = (weightValue: string) => {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-end;
   z-index: 10001;
   animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 2px;
+  padding: 24px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -2189,8 +2189,8 @@ const selectFontWeight = (weightValue: string) => {
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
   max-width: min(1600px, calc(100vw - 20px));
   width: min(98%, calc(100vw - 20px));
-  max-height: 99.5vh;
-  height: 99.5vh;
+  max-height: calc(100vh - 64px);
+  height: auto;
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2990,7 +2990,7 @@ const selectFontWeight = (weightValue: string) => {
   padding: 40px 48px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 180px);
+  max-height: calc(100vh - 64px - 72px - 56px);
 }
 
 /* Section Headers */

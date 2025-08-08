@@ -17,6 +17,7 @@
     class="guidance-widget"
     :class="{ 'widget-open': isOpen, 'widget-embedded': embedded }"
     :style="widgetStyles"
+    :data-debug="`embedded: ${embedded}, isOpen: ${isOpen}, isMobile: ${isMobileDevice}`"
   >
     <div
       class="widget-container"
@@ -60,6 +61,11 @@
 
       <!-- Content Area -->
       <div class="widget-content">
+        <!-- Debug info for mobile -->
+        <div v-if="isMobileDevice" style="background: red; color: white; padding: 5px; font-size: 10px;">
+          DEBUG: Widget is open (isOpen: {{ isOpen }})
+        </div>
+        
         <!-- Problem Description Step -->
         <ProblemDescriptionStep v-if="currentStep === 'problem'" @next="handleProblemSubmit" />
 
@@ -673,27 +679,17 @@ const widgetStyles = computed(() => {
 
 // Methods
 const toggleOpen = () => {
+  console.log('toggleOpen called, current isOpen:', store.isOpen)
   store.toggleOpen()
+  console.log('toggleOpen completed, new isOpen:', store.isOpen)
 
   if (store.isOpen) {
     // When opening, ensure widget starts in top-right position
     resetPosition()
     console.log('Widget opened, positioned at top-right')
 
-    // Add mobile scrolling support
-    if (window.innerWidth <= 768) {
-      // On mobile, scroll to widget position
-      setTimeout(() => {
-        const widgetElement = document.querySelector('.guidance-widget')
-        if (widgetElement) {
-          widgetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'nearest',
-          })
-        }
-      }, 100)
-    }
+    // Remove problematic mobile scrolling that might cause widget to disappear
+    // The widget should stay visible without needing to scroll to it
   } else {
     // Reset position when closing widget
     resetPosition() // Always return to top-right when closed
@@ -1270,9 +1266,10 @@ const selectFontSize = (sizeValue: string) => {
   z-index: 9999;
   font-family: var(--font-family);
   font-size: var(--font-size);
-  /* Prevent iOS Safari address bar from causing layout shifts */
-  height: 100vh;
-  height: 100dvh;
+  /* Ensure widget is always visible */
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
 }
 
 .widget-embedded {

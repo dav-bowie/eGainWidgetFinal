@@ -16,6 +16,8 @@
           :key="option.id"
           class="option-item"
           :class="{ selected: isSelected(option.id) }"
+          @click="handleTextChoice(option.id, option.label)"
+          @touchstart="handleTextChoice(option.id, option.label)"
         >
           <input
             type="radio"
@@ -41,6 +43,8 @@
           :key="option.id"
           class="image-option"
           :class="{ selected: isSelected(option.id) }"
+          @click="handleImageChoice(option.id, option.label)"
+          @touchstart="handleImageChoice(option.id, option.label)"
         >
           <input
             type="radio"
@@ -166,6 +170,8 @@ const getNumericValue = (): number | '' => {
 
 // Methods
 const handleTextChoice = (optionId: string, label: string) => {
+  console.log('handleTextChoice called:', { optionId, label, questionId: props.question.id })
+  
   emit('answer', props.question.id, optionId, label)
   
   // Smooth scroll to show the selection
@@ -194,6 +200,8 @@ const handleTextChoice = (optionId: string, label: string) => {
 }
 
 const handleImageChoice = (optionId: string, label: string) => {
+  console.log('handleImageChoice called:', { optionId, label, questionId: props.question.id })
+  
   emit('answer', props.question.id, optionId, label)
   
   // Smooth scroll to show the selection
@@ -666,6 +674,10 @@ watch(() => props.answer?.value, (newValue) => {
     padding: 14px;
     /* Ensure options are fully visible */
     min-height: 48px;
+    /* Enhanced touch targets for mobile */
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: rgba(99, 102, 241, 0.1) !important;
+    touch-action: manipulation !important;
   }
 
   .image-grid {
@@ -677,6 +689,10 @@ watch(() => props.answer?.value, (newValue) => {
     padding: 12px;
     /* Ensure image options are fully visible */
     min-height: 80px;
+    /* Enhanced touch targets for mobile */
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: rgba(99, 102, 241, 0.1) !important;
+    touch-action: manipulation !important;
   }
 
   .image-container {
@@ -727,6 +743,10 @@ watch(() => props.answer?.value, (newValue) => {
   .option-item {
     padding: 12px;
     min-height: 44px;
+    /* Enhanced touch targets for mobile */
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: rgba(99, 102, 241, 0.1) !important;
+    touch-action: manipulation !important;
   }
 
   .question-title {

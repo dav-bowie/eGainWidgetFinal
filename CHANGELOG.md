@@ -2,6 +2,30 @@
 
 ## [Unreleased]
 
+## [1.1.1] - 2024-08-07
+
+### Fixed
+- **Mobile Typing Experience**: Reduced character minimum from 10 to 3 for easier input
+- **Input Field Visibility**: Fixed typing box positioning - now always accessible at bottom of screen
+- **Keyboard Handling**: Widget now adapts to virtual keyboard appearance on mobile devices
+- **Scrolling Issues**: Enhanced scrolling in batch and sequential question modes
+- **Content Overflow**: Fixed content overflow issues on all mobile device sizes
+- **Touch Targets**: Improved touch targets and responsive design for better mobile interaction
+
+### Changed
+- **Input Validation**: More lenient character requirement (3 instead of 10) for better user experience
+- **Mobile Layout**: Sticky input positioning ensures typing area is always visible
+- **Widget Positioning**: Keyboard-aware height adjustments prevent content from being hidden
+- **Responsive Design**: Better handling of different mobile screen sizes and orientations
+
+### Technical Improvements
+- **Mobile Optimization**: Enhanced CSS for better mobile performance and usability
+- **Keyboard Awareness**: Added media queries to detect keyboard presence and adjust layout accordingly
+- **Scroll Behavior**: Improved scroll handling with proper overflow management
+- **Touch Interactions**: Better touch event handling and feedback
+
+---
+
 ## [1.1.0] - 2024-08-07
 
 ### Added

@@ -852,9 +852,9 @@ const calculateTopRightPosition = () => {
     x = Math.max(margin, viewportWidth - widgetWidth - margin)
     y = Math.max(margin, (viewportHeight - widgetHeight) / 2)
   } else {
-    // For larger devices, position in top-right corner
-    x = Math.max(margin, viewportWidth - widgetWidth - margin)
-    y = Math.max(margin, Math.min(margin, viewportHeight - widgetHeight - margin))
+      // For larger devices, position in top-right corner with better bounds checking
+  x = Math.max(margin, Math.min(viewportWidth - widgetWidth - margin, viewportWidth - 50))
+  y = Math.max(margin, Math.min(viewportHeight - widgetHeight - margin, viewportHeight - 50))
   }
 
   return { x, y }
@@ -1278,8 +1278,8 @@ const selectFontSize = (sizeValue: string) => {
 }
 
 .widget-container {
-  width: 600px;
-  height: 600px;
+  width: min(600px, calc(100vw - 40px));
+  height: min(600px, calc(100vh - 40px));
   background: white;
   border-radius: 24px;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
@@ -1596,8 +1596,8 @@ const selectFontSize = (sizeValue: string) => {
 /* Medium devices (tablets, 769px and up) */
 @media (min-width: 769px) and (max-width: 1024px) {
   .widget-container {
-    width: 450px;
-    height: 580px;
+    width: min(450px, calc(100vw - 40px));
+    height: min(580px, calc(100vh - 40px));
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
   }
@@ -1606,8 +1606,8 @@ const selectFontSize = (sizeValue: string) => {
 /* Large devices (desktops, 1025px and up) */
 @media (min-width: 1025px) and (max-width: 1440px) {
   .widget-container {
-    width: 520px;
-    height: 600px;
+    width: min(520px, calc(100vw - 40px));
+    height: min(600px, calc(100vh - 40px));
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
     /* Ensure proper height for desktop content */
@@ -1624,8 +1624,8 @@ const selectFontSize = (sizeValue: string) => {
 /* Extra large devices (large desktops, 1441px and up) */
 @media (min-width: 1441px) {
   .widget-container {
-    width: 600px;
-    height: 600px;
+    width: min(600px, calc(100vw - 40px));
+    height: min(600px, calc(100vh - 40px));
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
     /* Ensure proper height for desktop content */

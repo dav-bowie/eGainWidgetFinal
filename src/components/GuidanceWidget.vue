@@ -1329,6 +1329,8 @@ const selectFontSize = (sizeValue: string) => {
     --widget-y: unset !important;
     /* Ensure it's above everything */
     z-index: 10000 !important;
+    /* Enable scrolling for the entire container */
+    overflow: hidden;
   }
 
   .widget-header {
@@ -1347,13 +1349,17 @@ const selectFontSize = (sizeValue: string) => {
   }
 
   .widget-content {
-    /* Full height content area */
-    height: calc(100vh - 80px);
+    /* Full height content area with proper header calculation */
+    height: calc(100vh - 120px);
     overflow-y: auto;
     /* Add safe area padding for iPhone */
     padding-bottom: env(safe-area-inset-bottom);
     /* Smooth scrolling */
     -webkit-overflow-scrolling: touch;
+    /* Ensure content is scrollable */
+    overscroll-behavior: contain;
+    /* Add some padding for better spacing */
+    padding: 20px;
   }
 }
 
@@ -1378,16 +1384,22 @@ const selectFontSize = (sizeValue: string) => {
     --widget-y: unset !important;
     /* Ensure it's above everything */
     z-index: 10000 !important;
+    /* Enable scrolling for the entire container */
+    overflow: hidden;
   }
 
   .widget-content {
-    /* Full height content area */
-    height: calc(100vh - 80px);
+    /* Full height content area with proper header calculation */
+    height: calc(100vh - 120px);
     overflow-y: auto;
     /* Add safe area padding for iPhone */
     padding-bottom: env(safe-area-inset-bottom);
     /* Smooth scrolling */
     -webkit-overflow-scrolling: touch;
+    /* Ensure content is scrollable */
+    overscroll-behavior: contain;
+    /* Add some padding for better spacing */
+    padding: 20px;
   }
 }
 

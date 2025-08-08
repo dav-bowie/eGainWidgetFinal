@@ -431,9 +431,11 @@ const handleSubmit = () => {
     /* Ensure proper scrolling on mobile */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    /* Reduce height to account for keyboard */
-    height: calc(100vh - 120px);
-    max-height: calc(100vh - 120px);
+    /* Full height for mobile widget */
+    height: 100%;
+    max-height: none;
+    /* Enable scrolling */
+    overflow: hidden;
   }
 
   .step-content {
@@ -441,8 +443,9 @@ const handleSubmit = () => {
     /* Ensure proper scrolling on mobile */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    /* Reduce content area to make room for input */
-    height: calc(100% - 80px);
+    /* Full height content area */
+    height: 100%;
+    overflow-y: auto;
   }
 
   .suggestions-grid {
@@ -486,13 +489,14 @@ const handleSubmit = () => {
 @media (max-width: 480px) {
   .problem-step {
     padding: 12px;
-    height: calc(100vh - 100px);
-    max-height: calc(100vh - 100px);
+    height: 100%;
+    max-height: none;
   }
 
   .step-content {
     gap: 8px;
-    height: calc(100% - 70px);
+    height: 100%;
+    overflow-y: auto;
   }
 
   .suggestions-title {

@@ -904,9 +904,11 @@ const closeEditModal = () => {
     /* Ensure proper scrolling on mobile */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    /* Reduce height to account for keyboard */
-    height: calc(100vh - 120px);
-    max-height: calc(100vh - 120px);
+    /* Full height for mobile widget */
+    height: 100%;
+    max-height: none;
+    /* Enable scrolling */
+    overflow: hidden;
   }
 
   .step-content {
@@ -914,8 +916,9 @@ const closeEditModal = () => {
     /* Ensure proper scrolling on mobile */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    /* Reduce content area to make room for actions */
-    height: calc(100% - 60px);
+    /* Full height content area */
+    height: 100%;
+    overflow-y: auto;
   }
 
   .step-title {

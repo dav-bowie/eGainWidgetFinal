@@ -722,11 +722,14 @@ const adminConfig = ref({
   maxQuestionsBeforeSolution: 3,
 })
 
+// Reactive viewport width tracking
+const vw = ref(window.innerWidth)
+
 // Computed properties
 const isOpen = computed(() => store.isOpen)
 const currentStep = computed(() => store.currentStep)
 const widgetConfig = computed(() => store.config)
-const isMobileDevice = computed(() => window.innerWidth <= 480)
+const isMobileDevice = computed(() => vw.value <= 480)
 
 // Font size computed property removed as it's not being used
 
@@ -741,6 +744,11 @@ onMounted(() => {
 
   // Update position on window resize
   window.addEventListener('resize', resetPosition)
+  
+  // Update viewport width on resize
+  window.addEventListener('resize', () => {
+    vw.value = window.innerWidth
+  })
 
   // Debug logging
   console.log('Widget mounted:', {
@@ -764,6 +772,7 @@ onUnmounted(() => {
   document.removeEventListener('touchmove', handleMouseMove)
   document.removeEventListener('touchend', handleMouseUp)
   window.removeEventListener('resize', resetPosition)
+  window.removeEventListener('resize', () => {})
 })
 
 const widgetStyles = computed(() => {
@@ -1008,6 +1017,9 @@ const showAdminPanel = () => {
   adminPassword.value = ''
   passwordError.value = ''
 
+  // Add class to remove transforms
+  document.querySelector('.guidance-widget')?.classList.add('showing-admin')
+
   // Initialize admin config with current values
   adminConfig.value = {
     primaryColor: widgetConfig.value.primaryColor,
@@ -1033,6 +1045,9 @@ const closeAdminModal = () => {
   isAdminAuthenticated.value = false
   adminPassword.value = ''
   passwordError.value = ''
+  
+  // Remove class to restore transforms
+  document.querySelector('.guidance-widget')?.classList.remove('showing-admin')
 }
 
 const authenticateAdmin = () => {
@@ -2132,10 +2147,7 @@ const selectFontWeight = (weightValue: string) => {
 /* Admin Modal */
 .admin-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   display: flex;
@@ -2145,7 +2157,7 @@ const selectFontWeight = (weightValue: string) => {
   animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 24px;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: auto;
 }
 
 @keyframes fadeIn {
@@ -2163,8 +2175,8 @@ const selectFontWeight = (weightValue: string) => {
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
   max-width: min(1600px, calc(100vw - 20px));
   width: min(98%, calc(100vw - 20px));
-  height: calc(100vh - 64px);
-  max-height: none;
+  height: auto;
+  max-height: calc(100dvh - 48px);
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2594,6 +2606,19 @@ const selectFontWeight = (weightValue: string) => {
   flex: 1;
   background: linear-gradient(135deg, #f8fafc, #f1f5f9);
   overflow: hidden;
+}
+
+/* Kill any transform on ancestors while the modal is open */
+.guidance-widget.showing-admin,
+.guidance-widget.showing-admin .widget-container {
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Hide duplicate device controls in settings screen */
+.admin-settings-screen .studio-header,
+.admin-settings-screen .device-controls {
+  display: none !important;
 }
 
 /* Studio Header */

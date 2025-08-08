@@ -81,13 +81,22 @@
         <!-- Password Screen -->
         <div v-if="!isAdminAuthenticated" class="admin-password-screen">
           <div class="password-header">
-            <div class="password-icon">🔐</div>
+            <div class="password-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V21C3 22.1 3.9 23 5 23H19C20.1 23 21 22.1 21 21V9ZM19 21H5V3H13V9H19V21Z" fill="#F59E0B"/>
+                <path d="M12 12C10.9 12 10 12.9 10 14C10 15.1 10.9 16 12 16C13.1 16 14 15.1 14 14C14 12.9 13.1 12 12 12ZM12 18C9.8 18 8 16.2 8 14C8 11.8 9.8 10 12 10C14.2 10 16 11.8 16 14C16 16.2 14.2 18 12 18Z" fill="#F59E0B"/>
+              </svg>
+            </div>
             <h3 class="admin-modal-title">Admin Access</h3>
             <p class="admin-modal-subtitle">Enter password to access Widget Studio</p>
           </div>
 
           <div class="password-hint">
-            <span class="hint-icon">💡</span>
+            <span class="hint-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="#F59E0B"/>
+              </svg>
+            </span>
             <span class="hint-text">Password: <strong>admin123</strong></span>
           </div>
 
@@ -101,13 +110,21 @@
               ref="passwordInput"
             />
             <button @click="authenticateAdmin" class="password-submit-btn">
-              <span class="btn-icon">🚀</span>
+              <span class="btn-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="white"/>
+                </svg>
+              </span>
               Access Studio
             </button>
           </div>
 
           <div v-if="passwordError" class="password-error">
-            <span class="error-icon">⚠️</span>
+            <span class="error-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="#DC2626"/>
+              </svg>
+            </span>
             {{ passwordError }}
           </div>
         </div>
@@ -2149,9 +2166,10 @@ const selectFontSize = (sizeValue: string) => {
 }
 
 .password-icon {
-  font-size: 48px;
   margin-bottom: 16px;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .password-hint {
@@ -2163,12 +2181,15 @@ const selectFontSize = (sizeValue: string) => {
   display: flex;
   align-items: center;
   gap: 12px;
-  max-width: 300px;
+  max-width: 320px;
   width: 100%;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
 }
 
 .hint-icon {
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hint-text {
@@ -2248,7 +2269,9 @@ const selectFontSize = (sizeValue: string) => {
 }
 
 .btn-icon {
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .password-error {
@@ -2268,7 +2291,9 @@ const selectFontSize = (sizeValue: string) => {
 }
 
 .error-icon {
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .password-hint {

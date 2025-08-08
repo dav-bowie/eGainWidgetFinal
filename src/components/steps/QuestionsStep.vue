@@ -26,6 +26,39 @@
         </button>
       </div>
 
+      <!-- Answered Questions Panel - Always visible and positioned higher -->
+      <div v-if="answeredQuestions.length > 0" class="answered-panel">
+        <div class="panel-header">
+          <h4 class="panel-title">Your answers</h4>
+          <span class="answer-count">{{ answeredQuestions.length }}</span>
+        </div>
+        <div class="answered-list">
+          <div
+            v-for="question in answeredQuestions"
+            :key="question.id"
+            class="answered-item"
+            @click="editAnswer(question.id)"
+          >
+            <div class="question-preview">
+              <span class="question-text">{{ question.title }}</span>
+              <span class="answer-preview">{{ getAnswerDisplay(question.id) }}</span>
+            </div>
+            <span class="edit-icon">✏️</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Empty state for batch mode when no answers yet -->
+      <div v-else-if="displayMode === 'batch' && answeredQuestions.length === 0" class="answered-panel empty-state">
+        <div class="panel-header">
+          <h4 class="panel-title">Your answers</h4>
+          <span class="answer-count">0</span>
+        </div>
+        <div class="empty-message">
+          <p>Start answering questions below to see your progress here.</p>
+        </div>
+      </div>
+
       <!-- Questions Section -->
       <div class="questions-section">
         <!-- Sequential Mode -->
@@ -59,51 +92,29 @@
         </div>
       </div>
 
-      <!-- Answered Questions Panel -->
-      <div v-if="answeredQuestions.length > 0" class="answered-panel">
-        <div class="panel-header">
-          <h4 class="panel-title">Your answers</h4>
-          <span class="answer-count">{{ answeredQuestions.length }}</span>
-        </div>
-        <div class="answered-list">
-          <div
-            v-for="question in answeredQuestions"
-            :key="question.id"
-            class="answered-item"
-            @click="editAnswer(question.id)"
-          >
-            <div class="question-preview">
-              <span class="question-text">{{ question.title }}</span>
-              <span class="answer-preview">{{ getAnswerDisplay(question.id) }}</span>
-            </div>
-            <span class="edit-icon">✏️</span>
-          </div>
-        </div>
-      </div>
-
       <!-- Step Actions -->
       <div class="step-actions">
-                  <button
-            v-if="displayMode === 'sequential' && currentQuestion"
-            class="next-button"
-            :disabled="!canProceed || isLoading"
-            @click="handleNext"
-          >
-            <span v-if="isLoading" class="loading-spinner"></span>
-            {{ isLoading ? 'Processing...' : 'Next' }}
-            <span v-if="!isLoading" class="button-icon">→</span>
-          </button>
+        <button
+          v-if="displayMode === 'sequential' && currentQuestion"
+          class="next-button"
+          :disabled="!canProceed || isLoading"
+          @click="handleNext"
+        >
+          <span v-if="isLoading" class="loading-spinner"></span>
+          {{ isLoading ? 'Processing...' : 'Next' }}
+          <span v-if="!isLoading" class="button-icon">→</span>
+        </button>
 
-          <button
-            v-else-if="displayMode === 'batch' || !currentQuestion"
-            class="next-button"
-            :disabled="!canProceed || isLoading"
-            @click="handleComplete"
-          >
-            <span v-if="isLoading" class="loading-spinner"></span>
-            {{ isLoading ? 'Processing...' : 'Get Solution' }}
-            <span v-if="!isLoading" class="button-icon">→</span>
-          </button>
+        <button
+          v-else-if="displayMode === 'batch' || !currentQuestion"
+          class="next-button"
+          :disabled="!canProceed || isLoading"
+          @click="handleComplete"
+        >
+          <span v-if="isLoading" class="loading-spinner"></span>
+          {{ isLoading ? 'Processing...' : 'Get Solution' }}
+          <span v-if="!isLoading" class="button-icon">→</span>
+        </button>
       </div>
     </div>
 
@@ -319,12 +330,14 @@ const closeEditModal = () => {
 .step-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   /* Ensure content doesn't overflow on mobile */
   padding-bottom: 0;
+  /* Ensure proper ordering of elements */
+  align-items: stretch;
 }
 
 .step-header {
@@ -390,6 +403,11 @@ const closeEditModal = () => {
   -webkit-overflow-scrolling: touch;
   /* Ensure proper scrolling on mobile */
   overscroll-behavior: contain;
+  /* Ensure questions get priority space on desktop */
+  min-height: 0;
+  /* Ensure it takes remaining space after answered panel */
+  display: flex;
+  flex-direction: column;
 }
 
 .sequential-questions,
@@ -397,6 +415,8 @@ const closeEditModal = () => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* Ensure current question is always visible */
+  flex: 1;
 }
 
 .question-container {
@@ -428,9 +448,15 @@ const closeEditModal = () => {
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 16px;
-  margin-top: 16px;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
   flex-shrink: 0;
+  /* Compact design - positioned higher in layout */
+  max-height: 120px;
+  overflow-y: auto;
+  /* Ensure it's always visible */
+  order: -1;
 }
 
 .panel-header {
@@ -465,12 +491,14 @@ const closeEditModal = () => {
 .answered-item {
   background: white;
   border-radius: 6px;
-  padding: 12px;
+  padding: 8px 12px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all 0.2s ease;
+  /* More compact for desktop */
+  margin-bottom: 4px;
 }
 
 .answered-item:hover {
@@ -486,20 +514,48 @@ const closeEditModal = () => {
 }
 
 .question-text {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: #333;
+  /* Truncate long questions */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .answer-preview {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--primary-color);
   font-weight: 500;
+  /* Truncate long answers */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .edit-icon {
   font-size: 16px;
   opacity: 0.6;
+}
+
+/* Empty state styling */
+.answered-panel.empty-state {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 16px;
+  color: #64748b;
+}
+
+.empty-message p {
+  margin: 0;
+  font-size: 13px;
+  font-style: italic;
 }
 
 /* Step Actions */
@@ -800,6 +856,47 @@ const closeEditModal = () => {
   flex: 1;
 }
 
+/* Desktop Optimizations */
+@media (min-width: 769px) {
+  .questions-step {
+    /* Ensure proper height on desktop */
+    height: 100%;
+    max-height: 100%;
+  }
+
+  .step-content {
+    /* Optimize spacing for desktop */
+    gap: 16px;
+    height: 100%;
+  }
+
+  .questions-section {
+    /* Ensure questions get priority space */
+    flex: 1;
+    min-height: 250px;
+  }
+
+  .answered-panel {
+    /* More compact on desktop - positioned higher */
+    max-height: 100px;
+    padding: 8px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    /* Ensure it's always visible at top */
+    order: -1;
+  }
+
+  .answered-item {
+    padding: 4px 8px;
+    margin-bottom: 2px;
+  }
+
+  .question-text,
+  .answer-preview {
+    max-width: 250px;
+  }
+}
+
 /* Responsive Design - Mobile Optimizations */
 @media (max-width: 768px) {
   .questions-step {
@@ -854,6 +951,8 @@ const closeEditModal = () => {
   .answered-panel {
     padding: 12px;
     margin-top: 12px;
+    /* Full height on mobile */
+    max-height: none;
   }
 
   .step-actions {

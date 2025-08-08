@@ -1367,6 +1367,14 @@ const selectFontSize = (sizeValue: string) => {
     height: 600px;
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
+    /* Ensure proper height for desktop content */
+    min-height: 500px;
+  }
+
+  .widget-content {
+    /* Ensure content area has proper height on desktop */
+    height: calc(100% - 80px);
+    overflow: hidden;
   }
 }
 
@@ -1377,6 +1385,14 @@ const selectFontSize = (sizeValue: string) => {
     height: 600px;
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
+    /* Ensure proper height for desktop content */
+    min-height: 500px;
+  }
+
+  .widget-content {
+    /* Ensure content area has proper height on desktop */
+    height: calc(100% - 80px);
+    overflow: hidden;
   }
 }
 

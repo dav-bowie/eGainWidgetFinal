@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Widget Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .test-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .test-button {
+            width: 100%;
+            padding: 15px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .test-button:hover {
+            background: #5855eb;
+        }
+        
+        .device-info {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #64748b;
+        }
+        
+        .widget-preview {
+            position: fixed;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: calc(100vw - 20px);
+            max-width: 350px;
+            height: 80vh;
+            max-height: 500px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.08);
+            z-index: 10000;
+            display: none;
+        }
+        
+        .widget-preview.show {
+            display: block;
+        }
+        
+        .widget-header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 16px;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .widget-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+        
+        .widget-subtitle {
+            font-size: 12px;
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .widget-content {
+            padding: 20px;
+            height: calc(80vh - 120px);
+            overflow-y: auto;
+        }
+        
+        .test-option {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .test-option:hover {
+            border-color: #6366f1;
+            background: #f8fafc;
+        }
+        
+        .test-option.selected {
+            border-color: #6366f1;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">Mobile Widget Test</h1>
+        
+        <button class="test-button" onclick="toggleWidget()">Toggle Widget</button>
+        <button class="test-button" onclick="testScrolling()">Test Scrolling</button>
+        <button class="test-button" onclick="testAdminModal()">Test Admin Modal</button>
+        
+        <div class="device-info">
+            <strong>Device Info:</strong><br>
+            Screen Width: <span id="screen-width"></span><br>
+            Screen Height: <span id="screen-height"></span><br>
+            Viewport Width: <span id="viewport-width"></span><br>
+            Viewport Height: <span id="viewport-height"></span><br>
+            Device Pixel Ratio: <span id="pixel-ratio"></span>
+        </div>
+    </div>
+    
+    <div class="widget-preview" id="widget-preview">
+        <div class="widget-header">
+            <h2 class="widget-title">Interactive Guidance</h2>
+            <p class="widget-subtitle">Let us help you find the perfect solution.</p>
+        </div>
+        <div class="widget-content">
+            <h3>What type of service are you inquiring about?</h3>
+            <div class="test-option" onclick="selectOption(this)">Technical Support</div>
+            <div class="test-option" onclick="selectOption(this)">Billing Inquiry</div>
+            <div class="test-option" onclick="selectOption(this)">Account Management</div>
+            <div class="test-option" onclick="selectOption(this)">Product Information</div>
+            <div class="test-option" onclick="selectOption(this)">Feature Request</div>
+            <div class="test-option" onclick="selectOption(this)">Bug Report</div>
+            <div class="test-option" onclick="selectOption(this)">General Inquiry</div>
+            <div class="test-option" onclick="selectOption(this)">Partnership</div>
+            <div class="test-option" onclick="selectOption(this)">Press/Media</div>
+            <div class="test-option" onclick="selectOption(this)">Other</div>
+        </div>
+    </div>
+    
+    <script>
+        // Update device info
+        function updateDeviceInfo() {
+            document.getElementById('screen-width').textContent = screen.width + 'px';
+            document.getElementById('screen-height').textContent = screen.height + 'px';
+            document.getElementById('viewport-width').textContent = window.innerWidth + 'px';
+            document.getElementById('viewport-height').textContent = window.innerHeight + 'px';
+            document.getElementById('pixel-ratio').textContent = window.devicePixelRatio;
+        }
+        
+        // Toggle widget visibility
+        function toggleWidget() {
+            const widget = document.getElementById('widget-preview');
+            widget.classList.toggle('show');
+        }
+        
+        // Test scrolling
+        function testScrolling() {
+            const content = document.querySelector('.widget-content');
+            content.scrollTo({
+                top: content.scrollHeight,
+                behavior: 'smooth'
+            });
+            
+            setTimeout(() => {
+                content.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }, 2000);
+        }
+        
+        // Test admin modal
+        function testAdminModal() {
+            alert('Admin modal would open here. This simulates the admin settings panel.');
+        }
+        
+        // Select option
+        function selectOption(element) {
+            // Remove selection from all options
+            document.querySelectorAll('.test-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            element.classList.add('selected');
+        }
+        
+        // Initialize
+        updateDeviceInfo();
+        window.addEventListener('resize', updateDeviceInfo);
+        
+        // Simulate mobile device
+        const meta = document.querySelector('meta[name="viewport"]');
+        meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+        
+        console.log('Mobile Widget Test Loaded');
+        console.log('Widget should appear on the right side of the screen');
+        console.log('Click "Toggle Widget" to show/hide the widget');
+    </script>
+</body>
+</html>

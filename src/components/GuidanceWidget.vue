@@ -1311,95 +1311,155 @@ const selectFontSize = (sizeValue: string) => {
 /* Extra small devices (phones, 320px and up) */
 @media (max-width: 480px) {
   .widget-container {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    max-height: none;
-    border-radius: 0;
-    /* Full screen mobile widget */
+    /* Scaled down version of desktop - same features, smaller size */
+    width: calc(100vw - 20px) !important;
+    height: 80vh !important;
+    max-width: 350px !important;
+    max-height: 500px !important;
+    border-radius: 16px !important;
+    /* Position on right side like desktop */
     position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    transform: none !important;
+    right: 10px !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
     margin: 0 !important;
-    /* Override any JavaScript positioning */
-    --widget-x: unset !important;
-    --widget-y: unset !important;
-    /* Ensure it's above everything */
+    /* Prevent iOS Safari from interfering with scrolling */
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    /* Handle iOS safe area insets */
+    padding-top: env(safe-area-inset-top) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    /* Ensure widget is in frame */
     z-index: 10000 !important;
-    /* Enable scrolling for the entire container */
-    overflow: hidden;
   }
 
   .widget-header {
-    padding: 20px;
-    flex-shrink: 0;
-    /* Add safe area padding for iPhone */
-    padding-top: max(20px, env(safe-area-inset-top));
+    padding: 16px !important;
   }
 
   .widget-title {
-    font-size: 20px;
+    font-size: 16px !important;
   }
 
   .widget-subtitle {
-    font-size: 14px;
+    font-size: 12px !important;
   }
 
   .widget-content {
-    /* Full height content area with proper header calculation */
-    height: calc(100vh - 120px);
-    overflow-y: auto;
-    /* Add safe area padding for iPhone */
-    padding-bottom: env(safe-area-inset-bottom);
-    /* Smooth scrolling */
-    -webkit-overflow-scrolling: touch;
-    /* Ensure content is scrollable */
-    overscroll-behavior: contain;
-    /* Add some padding for better spacing */
-    padding: 20px;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    /* Ensure proper scrolling on mobile */
+    touch-action: pan-y !important;
+    /* Scaled down height */
+    height: calc(80vh - 80px) !important;
+  }
+
+  /* Enhanced admin modal for mobile */
+  .admin-modal {
+    border-radius: 16px !important;
+    width: 95% !important;
+    max-width: 400px !important;
+    margin: 10px !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .admin-content {
+    padding: 16px !important;
+    max-height: calc(90vh - 40px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Mobile-optimized admin sections */
+  .color-settings,
+  .typography-settings {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .color-card {
+    padding: 16px !important;
+  }
+
+  .color-card-header {
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+
+  .color-input-group {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .color-variants {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .presets-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .logo-actions {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  /* Ensure close button is visible and properly sized */
+  .close-button {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 18px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-weight: 600 !important;
   }
 }
 
 /* Small devices (large phones, 481px and up) */
 @media (min-width: 481px) and (max-width: 768px) {
   .widget-container {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    max-height: none;
-    border-radius: 0;
-    /* Full screen mobile widget */
+    /* Scaled down version of desktop - same features, smaller size */
+    width: calc(100vw - 30px) !important;
+    height: 85vh !important;
+    max-width: 400px !important;
+    max-height: 600px !important;
+    border-radius: 20px !important;
+    /* Position on right side like desktop */
     position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    transform: none !important;
+    right: 15px !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
     margin: 0 !important;
-    /* Override any JavaScript positioning */
-    --widget-x: unset !important;
-    --widget-y: unset !important;
-    /* Ensure it's above everything */
+    /* Prevent iOS Safari from interfering with scrolling */
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    /* Handle iOS safe area insets */
+    padding-top: env(safe-area-inset-top) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    /* Ensure widget is in frame */
     z-index: 10000 !important;
-    /* Enable scrolling for the entire container */
-    overflow: hidden;
   }
 
   .widget-content {
-    /* Full height content area with proper header calculation */
-    height: calc(100vh - 120px);
-    overflow-y: auto;
-    /* Add safe area padding for iPhone */
-    padding-bottom: env(safe-area-inset-bottom);
-    /* Smooth scrolling */
-    -webkit-overflow-scrolling: touch;
-    /* Ensure content is scrollable */
-    overscroll-behavior: contain;
-    /* Add some padding for better spacing */
-    padding: 20px;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    /* Ensure proper scrolling on mobile */
+    touch-action: pan-y !important;
+    /* Scaled down height */
+    height: calc(85vh - 80px) !important;
   }
 }
 
@@ -3996,146 +4056,7 @@ const selectFontSize = (sizeValue: string) => {
   }
 }
 
-@media (max-width: 480px) {
-  .widget-container {
-    /* Scaled down version of desktop - same features, smaller size */
-    width: calc(100vw - 20px) !important;
-    height: 80vh !important;
-    max-width: 350px !important;
-    max-height: 500px !important;
-    border-radius: 16px !important;
-    /* Position on right side like desktop */
-    position: fixed !important;
-    right: 10px !important;
-    left: auto !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    margin: 0 !important;
-    /* Prevent iOS Safari from interfering with scrolling */
-    -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior: contain !important;
-    /* Handle iOS safe area insets */
-    padding-top: env(safe-area-inset-top) !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
-    /* Ensure widget is in frame */
-    z-index: 10000 !important;
-  }
 
-  .widget-embedded .widget-container {
-    /* Same scaled down approach for embedded */
-    width: calc(100vw - 20px) !important;
-    height: 80vh !important;
-    max-width: 350px !important;
-    max-height: 500px !important;
-    border-radius: 16px !important;
-    /* Position on right side like desktop */
-    position: fixed !important;
-    right: 10px !important;
-    left: auto !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    margin: 0 !important;
-    /* Prevent iOS Safari from interfering with scrolling */
-    -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior: contain !important;
-    /* Handle iOS safe area insets */
-    padding-top: env(safe-area-inset-top) !important;
-    padding-bottom: env(safe-area-inset-bottom) !important;
-    /* Ensure widget is in frame */
-    z-index: 10000 !important;
-  }
-
-  .widget-header {
-    padding: 16px !important;
-  }
-
-  .widget-title {
-    font-size: 16px !important;
-  }
-
-  .widget-subtitle {
-    font-size: 12px !important;
-  }
-
-  .widget-content {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior: contain !important;
-    /* Ensure proper scrolling on mobile */
-    touch-action: pan-y !important;
-    /* Scaled down height */
-    height: calc(80vh - 80px) !important;
-  }
-
-  /* Enhanced admin modal for mobile */
-  .admin-modal {
-    border-radius: 16px !important;
-    width: 95% !important;
-    max-width: 400px !important;
-    margin: 10px !important;
-    max-height: 90vh !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  .admin-content {
-    padding: 16px !important;
-    max-height: calc(90vh - 40px) !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  /* Mobile-optimized admin sections */
-  .color-settings,
-  .typography-settings {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
-  }
-
-  .color-card {
-    padding: 16px !important;
-  }
-
-  .color-card-header {
-    flex-direction: column !important;
-    gap: 12px !important;
-    align-items: flex-start !important;
-  }
-
-  .color-input-group {
-    flex-direction: column !important;
-    gap: 8px !important;
-  }
-
-  .color-variants {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 8px !important;
-  }
-
-  .presets-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-  }
-
-  .logo-actions {
-    flex-direction: column !important;
-    gap: 12px !important;
-  }
-
-  /* Ensure close button is visible and properly sized */
-  .close-button {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 18px !important;
-    background: rgba(255, 255, 255, 0.2) !important;
-    border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    color: white !important;
-    font-weight: 600 !important;
-  }
-}
 
 /* Animation for widget appearance */
 .widget-open {

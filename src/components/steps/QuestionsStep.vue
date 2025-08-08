@@ -365,13 +365,13 @@ onMounted(() => {
     
     if (questionsSection) {
       questionsSection.style.overflowY = 'auto'
-      questionsSection.style.webkitOverflowScrolling = 'touch'
+      ;(questionsSection.style as any).webkitOverflowScrolling = 'touch'
       questionsSection.style.minHeight = '300px'
     }
     
     if (stepContent) {
       stepContent.style.overflowY = 'auto'
-      stepContent.style.webkitOverflowScrolling = 'touch'
+      ;(stepContent.style as any).webkitOverflowScrolling = 'touch'
     }
     
     // Also ensure questions are scrollable
@@ -440,13 +440,13 @@ const ensureQuestionsScrollable = () => {
     
     if (questionsSection) {
       questionsSection.style.overflowY = 'auto'
-      questionsSection.style.webkitOverflowScrolling = 'touch'
+      ;(questionsSection.style as any).webkitOverflowScrolling = 'touch'
       questionsSection.style.minHeight = '300px'
     }
     
     if (stepContent) {
       stepContent.style.overflowY = 'auto'
-      stepContent.style.webkitOverflowScrolling = 'touch'
+      ;(stepContent.style as any).webkitOverflowScrolling = 'touch'
     }
   })
 }

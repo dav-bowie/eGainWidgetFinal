@@ -849,11 +849,11 @@ const calculateTopRightPosition = () => {
 
   // Position widget based on device type
   let x, y
-  
-  // For mobile devices (≤768px), center the widget
+
+  // For mobile devices (≤768px), position on the right side
   if (viewportWidth <= 768) {
-    x = (viewportWidth - widgetWidth) / 2
-    y = (viewportHeight - widgetHeight) / 2
+    x = Math.max(margin, viewportWidth - widgetWidth - margin)
+    y = Math.max(margin, (viewportHeight - widgetHeight) / 2)
   } else {
     // For larger devices, position in top-right corner
     x = Math.max(margin, viewportWidth - widgetWidth - margin)
@@ -1310,11 +1310,11 @@ const selectFontSize = (sizeValue: string) => {
     max-width: 320px;
     max-height: 450px;
     border-radius: 16px;
-    /* Ensure widget is centered and within bounds */
+    /* Ensure widget is positioned on the right side */
     position: fixed;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 10px;
+    transform: translateY(-50%);
     margin: 0;
   }
 
@@ -1345,11 +1345,11 @@ const selectFontSize = (sizeValue: string) => {
     height: 520px;
     max-width: calc(100vw - 30px);
     max-height: calc(100vh - 40px);
-    /* Ensure widget is centered and within bounds */
+    /* Ensure widget is positioned on the right side */
     position: fixed;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 15px;
+    transform: translateY(-50%);
     margin: 0;
   }
 

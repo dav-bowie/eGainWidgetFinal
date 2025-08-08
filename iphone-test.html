@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>iPhone 15 Widget Test - eGain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* iPhone 15 Frame */
+        .iphone-frame {
+            width: 393px;
+            height: 852px;
+            background: #000;
+            border-radius: 47px;
+            padding: 8px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 39px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 47px;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .time {
+            font-weight: 600;
+        }
+
+        .bell-icon {
+            width: 16px;
+            height: 16px;
+            background: #333;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .bell-icon::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .signal-bars {
+            display: flex;
+            gap: 1px;
+        }
+
+        .signal-bar {
+            width: 3px;
+            background: #333;
+            border-radius: 1px;
+        }
+
+        .signal-bar:nth-child(1) { height: 6px; }
+        .signal-bar:nth-child(2) { height: 8px; }
+        .signal-bar:nth-child(3) { height: 10px; }
+        .signal-bar:nth-child(4) { height: 12px; }
+
+        .wifi-icon {
+            width: 16px;
+            height: 12px;
+            border: 2px solid #333;
+            border-radius: 0 0 8px 8px;
+            position: relative;
+        }
+
+        .wifi-icon::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            border: 2px solid #333;
+            border-radius: 50%;
+        }
+
+        .battery {
+            width: 24px;
+            height: 12px;
+            border: 1px solid #333;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .battery::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 3px;
+            width: 2px;
+            height: 6px;
+            background: #333;
+            border-radius: 0 1px 1px 0;
+        }
+
+        .battery-level {
+            width: 79%;
+            height: 100%;
+            background: #333;
+            border-radius: 1px;
+        }
+
+        /* Header */
+        .header {
+            height: 44px;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid #e5e5e7;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .widget-trigger {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .widget-trigger:hover {
+            transform: scale(1.05);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        /* Content Cards */
+        .content {
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .card-icon.purple {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .card-icon.blue {
+            background: #06b6d4;
+            color: white;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .card p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #6b7280;
+        }
+
+        /* Browser Bar */
+        .browser-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f5f5f7;
+            border-top: 1px solid #e5e5e7;
+            padding: 8px 20px 20px;
+        }
+
+        .address-bar {
+            background: white;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .nav-icons {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background: #007aff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .nav-icon.disabled {
+            background: #d1d5db;
+        }
+
+        .home-indicator {
+            width: 134px;
+            height: 5px;
+            background: #000;
+            border-radius: 3px;
+            margin: 8px auto 0;
+        }
+
+        /* Widget Container */
+        .widget-container {
+            position: fixed;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            width: 320px;
+            height: 450px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+        }
+
+        .widget-container.open {
+            display: block;
+        }
+
+        .widget-header {
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            padding: 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .widget-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .widget-subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .widget-close {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .widget-content {
+            padding: 20px;
+            height: calc(100% - 80px);
+            overflow-y: auto;
+        }
+
+        .widget-step {
+            text-align: center;
+        }
+
+        .widget-step h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: #1f2937;
+        }
+
+        .widget-step p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 400px) {
+            .iphone-frame {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                padding: 0;
+            }
+            
+            .iphone-screen {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="iphone-frame">
+        <div class="iphone-screen">
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="status-left">
+                    <span class="time">7:07</span>
+                    <div class="bell-icon"></div>
+                </div>
+                <div class="status-right">
+                    <div class="signal-bars">
+                        <div class="signal-bar"></div>
+                        <div class="signal-bar"></div>
+                        <div class="signal-bar"></div>
+                        <div class="signal-bar"></div>
+                    </div>
+                    <div class="wifi-icon"></div>
+                    <div class="battery">
+                        <div class="battery-level"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">eGain</div>
+                <div class="widget-trigger" onclick="toggleWidget()">ia</div>
+            </div>
+
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>AI-Powered Knowledge for Customer Service</h1>
+                <p>Transform customer service with our AI knowledge platform.</p>
+            </div>
+
+            <!-- Content Cards -->
+            <div class="content">
+                <div class="card">
+                    <div class="card-icon purple">💬</div>
+                    <h3>Smart Conversations</h3>
+                    <p>Engage customers with intelligent, context-aware responses powered by AI.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon blue">📚</div>
+                    <h3>Knowledge Base</h3>
+                    <p>Build and maintain a comprehensive knowledge base that grows smarter over time.</p>
+                </div>
+            </div>
+
+            <!-- Browser Bar -->
+            <div class="browser-bar">
+                <div class="address-bar">egainwidget.netlify.app</div>
+                <div class="nav-icons">
+                    <div class="nav-icon disabled">←</div>
+                    <div class="nav-icon disabled">→</div>
+                    <div class="nav-icon">↗</div>
+                    <div class="nav-icon">📖</div>
+                    <div class="nav-icon">⊞</div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+
+            <!-- Widget Container -->
+            <div class="widget-container" id="widget">
+                <div class="widget-header">
+                    <div>
+                        <div class="widget-title">Interactive Guidance</div>
+                        <div class="widget-subtitle">Let us help you find the perfect solution.</div>
+                    </div>
+                    <div class="widget-close" onclick="toggleWidget()">×</div>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-step">
+                        <h3>Welcome to eGain</h3>
+                        <p>This is a test of the widget positioning on iPhone 15. The widget should appear on the right side of the screen when you tap the "ia" button.</p>
+                        <br>
+                        <p>Current position: Right side, vertically centered</p>
+                        <p>Size: 320px × 450px</p>
+                        <p>Device: iPhone 15 (393×852)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleWidget() {
+            const widget = document.getElementById('widget');
+            widget.classList.toggle('open');
+        }
+
+        // Add some interactive feedback
+        document.querySelector('.widget-trigger').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+
+        // Simulate real iPhone interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('iPhone 15 Template Loaded');
+            console.log('Screen dimensions: 393×852px');
+            console.log('Widget position: Right side, vertically centered');
+        });
+    </script>
+</body>
+</html>

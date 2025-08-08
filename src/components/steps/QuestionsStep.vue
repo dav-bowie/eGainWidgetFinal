@@ -214,8 +214,17 @@ watch(currentQuestion, (newQuestion) => {
   if (newQuestion && displayMode.value === 'sequential') {
     nextTick(() => {
       scrollToCurrentQuestion()
+      // Also ensure the questions section is scrollable
+      ensureQuestionsScrollable()
     })
   }
+})
+
+// Watch for display mode changes to ensure scrolling works
+watch(displayMode, () => {
+  nextTick(() => {
+    ensureQuestionsScrollable()
+  })
 })
 
 const answeredQuestions = computed(() => {
@@ -351,10 +360,21 @@ onMounted(() => {
   nextTick(() => {
     // Ensure the questions section is properly scrollable
     const questionsSection = document.querySelector('.questions-section') as HTMLElement
+    const stepContent = document.querySelector('.step-content') as HTMLElement
+    
     if (questionsSection) {
       questionsSection.style.overflowY = 'auto'
       questionsSection.style.webkitOverflowScrolling = 'touch'
+      questionsSection.style.minHeight = '300px'
     }
+    
+    if (stepContent) {
+      stepContent.style.overflowY = 'auto'
+      stepContent.style.webkitOverflowScrolling = 'touch'
+    }
+    
+    // Also ensure questions are scrollable
+    ensureQuestionsScrollable()
   })
 })
 
@@ -407,6 +427,25 @@ const autoScrollToContent = () => {
     const questionsSection = document.querySelector('.questions-section')
     if (questionsSection) {
       questionsSection.scrollTop = 0
+    }
+  })
+}
+
+// Ensure questions section is properly scrollable
+const ensureQuestionsScrollable = () => {
+  nextTick(() => {
+    const questionsSection = document.querySelector('.questions-section') as HTMLElement
+    const stepContent = document.querySelector('.step-content') as HTMLElement
+    
+    if (questionsSection) {
+      questionsSection.style.overflowY = 'auto'
+      questionsSection.style.webkitOverflowScrolling = 'touch'
+      questionsSection.style.minHeight = '300px'
+    }
+    
+    if (stepContent) {
+      stepContent.style.overflowY = 'auto'
+      stepContent.style.webkitOverflowScrolling = 'touch'
     }
   })
 }
@@ -506,8 +545,8 @@ const autoScrollToContent = () => {
   -webkit-overflow-scrolling: touch;
   /* Ensure proper scrolling on mobile */
   overscroll-behavior: contain;
-  /* Ensure questions get priority space on desktop */
-  min-height: 0;
+  /* Allow content to expand properly */
+  min-height: 300px;
   /* Ensure it takes remaining space after answered panel */
   display: flex;
   flex-direction: column;
@@ -520,6 +559,9 @@ const autoScrollToContent = () => {
   gap: 16px;
   /* Ensure current question is always visible */
   flex: 1;
+  /* Allow content to expand and be scrollable */
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .question-container {
@@ -1014,8 +1056,9 @@ const autoScrollToContent = () => {
     /* Ensure proper scrolling on mobile */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    /* Full height for mobile widget */
-    height: 100%;
+    /* Allow content to expand and be scrollable */
+    height: auto;
+    min-height: 100%;
     max-height: none;
     /* Enable scrolling for the entire container */
     overflow-y: auto;
@@ -1026,8 +1069,9 @@ const autoScrollToContent = () => {
     /* Ensure proper scrolling on mobile */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    /* Full height content area */
-    height: 100%;
+    /* Allow content to expand */
+    height: auto;
+    min-height: 100%;
     overflow-y: auto;
     /* Ensure content is scrollable */
     min-height: 0;
@@ -1040,6 +1084,9 @@ const autoScrollToContent = () => {
     -webkit-overflow-scrolling: touch;
     /* Ensure proper spacing for mobile */
     padding-bottom: 20px;
+    /* Allow content to expand */
+    height: auto;
+    min-height: 300px;
   }
 
   /* Make answered panel more compact on mobile */
@@ -1053,6 +1100,8 @@ const autoScrollToContent = () => {
     margin-bottom: 16px;
     /* Ensure proper spacing */
     padding: 16px;
+    /* Allow content to expand */
+    height: auto;
   }
 }
 
@@ -1060,14 +1109,16 @@ const autoScrollToContent = () => {
 @media (max-width: 480px) {
   .questions-step {
     padding: 12px;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
     max-height: none;
     overflow-y: auto;
   }
 
   .step-content {
     gap: 12px;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
     overflow-y: auto;
   }
 
@@ -1077,6 +1128,9 @@ const autoScrollToContent = () => {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 20px;
+    /* Allow content to expand */
+    height: auto;
+    min-height: 250px;
   }
 
   /* Make answered panel even more compact */
@@ -1089,6 +1143,8 @@ const autoScrollToContent = () => {
   .question-container {
     margin-bottom: 12px;
     padding: 12px;
+    /* Allow content to expand */
+    height: auto;
   }
 }
 

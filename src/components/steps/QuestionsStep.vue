@@ -282,12 +282,16 @@ const getQuestionById = (questionId: string): Question | null => {
 }
 
 const handleAnswer = async (questionId: string, value: string | number, label?: string) => {
+  console.log('handleAnswer called:', { questionId, value, label })
+  
   await store.saveAnswer({
     questionId,
     value,
     label,
     timestamp: new Date()
   })
+  
+  console.log('Answer saved, current answers:', answers.value)
   
   // Scroll to show the updated answer in the answered panel
   nextTick(() => {
@@ -1093,6 +1097,24 @@ const ensureQuestionsScrollable = () => {
     /* Force scrolling to work */
     display: flex !important;
     flex-direction: column !important;
+    /* Mobile-specific scrolling fixes */
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Ensure question containers are fully visible and scrollable */
+  .question-container {
+    margin-bottom: 16px !important;
+    padding: 16px !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Ensure options are properly scrollable */
+  .options-grid {
+    max-height: none !important;
+    overflow: visible !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   /* Make answered panel more compact on mobile */
@@ -1159,6 +1181,24 @@ const ensureQuestionsScrollable = () => {
     /* Force scrolling to work */
     display: flex !important;
     flex-direction: column !important;
+    /* Mobile-specific scrolling fixes */
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Ensure question containers are fully visible and scrollable */
+  .question-container {
+    margin-bottom: 12px !important;
+    padding: 12px !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Ensure options are properly scrollable */
+  .options-grid {
+    max-height: none !important;
+    overflow: visible !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   /* Make answered panel even more compact */

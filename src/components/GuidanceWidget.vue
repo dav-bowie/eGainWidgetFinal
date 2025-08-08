@@ -61,11 +61,6 @@
 
       <!-- Content Area -->
       <div class="widget-content">
-        <!-- Debug info for mobile -->
-        <div v-if="isMobileDevice" style="background: red; color: white; padding: 5px; font-size: 10px;">
-          DEBUG: Widget is open (isOpen: {{ isOpen }})
-        </div>
-
         <!-- Problem Description Step -->
         <ProblemDescriptionStep v-if="currentStep === 'problem'" @next="handleProblemSubmit" />
 

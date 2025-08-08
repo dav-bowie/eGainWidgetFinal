@@ -609,16 +609,43 @@ watch(() => props.answer?.value, (newValue) => {
 /* Responsive Design */
 @media (max-width: 768px) {
   .question-component {
-    padding: 20px;
+    padding: 16px;
+    /* Ensure proper scrolling on mobile */
+    overflow: visible;
+  }
+
+  .question-header {
+    margin-bottom: 20px;
+  }
+
+  .question-title {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .question-description {
+    font-size: 13px;
+  }
+
+  .options-grid {
+    gap: 10px;
+  }
+
+  .option-item {
+    padding: 14px;
+    /* Ensure options are fully visible */
+    min-height: 48px;
   }
 
   .image-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
 
   .image-option {
     padding: 12px;
+    /* Ensure image options are fully visible */
+    min-height: 80px;
   }
 
   .image-container {
@@ -627,12 +654,24 @@ watch(() => props.answer?.value, (newValue) => {
   }
 
   .text-input {
-    min-height: 100px;
+    min-height: 80px;
     padding: 12px;
+    font-size: 16px; /* Prevent zoom on iOS */
   }
 
   .number-input {
     padding: 12px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  /* Ensure proper spacing for mobile */
+  .text-input-actions {
+    margin-top: 12px;
+  }
+
+  .submit-button {
+    min-height: 44px;
+    padding: 12px 16px;
   }
 }
 

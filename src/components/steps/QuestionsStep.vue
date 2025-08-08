@@ -180,7 +180,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick } from 'vue'
+import { computed, ref, nextTick, watch, onMounted } from 'vue'
 import { useWidgetStore } from '@/stores/widget'
 import QuestionComponent from './QuestionComponent.vue'
 import type { Question, Answer } from '@/types/widget'
@@ -207,6 +207,15 @@ const currentQuestion = computed(() => {
     return unanswered[0] || null
   }
   return null
+})
+
+// Watch for current question changes and scroll to it
+watch(currentQuestion, (newQuestion) => {
+  if (newQuestion && displayMode.value === 'sequential') {
+    nextTick(() => {
+      scrollToCurrentQuestion()
+    })
+  }
 })
 
 const answeredQuestions = computed(() => {
@@ -337,6 +346,18 @@ const closeEditModal = () => {
   editingQuestionId.value = null
 }
 
+// Ensure content is scrollable when component mounts
+onMounted(() => {
+  nextTick(() => {
+    // Ensure the questions section is properly scrollable
+    const questionsSection = document.querySelector('.questions-section')
+    if (questionsSection) {
+      questionsSection.style.overflowY = 'auto'
+      questionsSection.style.webkitOverflowScrolling = 'touch'
+    }
+  })
+})
+
 // Scrolling methods
 const scrollToAnsweredPanel = () => {
   const answeredPanel = document.querySelector('.answered-panel')
@@ -352,9 +373,10 @@ const scrollToAnsweredPanel = () => {
 const scrollToCurrentQuestion = () => {
   const currentQuestionElement = document.querySelector('.question-container')
   if (currentQuestionElement) {
+    // For mobile, scroll to the top of the question
     currentQuestionElement.scrollIntoView({
       behavior: 'smooth',
-      block: 'center',
+      block: 'start',
       inline: 'nearest'
     })
   }
@@ -368,6 +390,25 @@ const scrollToTop = () => {
       behavior: 'smooth'
     })
   }
+}
+
+// Enhanced scrolling for mobile
+const scrollToQuestionOption = (optionElement: Element) => {
+  optionElement.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+    inline: 'nearest'
+  })
+}
+
+// Auto-scroll when content changes
+const autoScrollToContent = () => {
+  nextTick(() => {
+    const questionsSection = document.querySelector('.questions-section')
+    if (questionsSection) {
+      questionsSection.scrollTop = 0
+    }
+  })
 }
 </script>
 
@@ -976,8 +1017,8 @@ const scrollToTop = () => {
     /* Full height for mobile widget */
     height: 100%;
     max-height: none;
-    /* Enable scrolling */
-    overflow: hidden;
+    /* Enable scrolling for the entire container */
+    overflow-y: auto;
   }
 
   .step-content {
@@ -988,7 +1029,32 @@ const scrollToTop = () => {
     /* Full height content area */
     height: 100%;
     overflow-y: auto;
+    /* Ensure content is scrollable */
+    min-height: 0;
   }
+
+  /* Ensure questions section is scrollable */
+  .questions-section {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Ensure proper spacing for mobile */
+    padding-bottom: 20px;
+  }
+
+  /* Make answered panel more compact on mobile */
+  .answered-panel {
+    max-height: 100px;
+    margin-bottom: 16px;
+  }
+
+  /* Ensure question containers are fully visible */
+  .question-container {
+    margin-bottom: 16px;
+    /* Ensure proper spacing */
+    padding: 16px;
+  }
+}
 
   .step-title {
     font-size: 18px;
@@ -1043,14 +1109,37 @@ const scrollToTop = () => {
 @media (max-width: 480px) {
   .questions-step {
     padding: 12px;
-    height: calc(100vh - 100px);
-    max-height: calc(100vh - 100px);
+    height: 100%;
+    max-height: none;
+    overflow-y: auto;
   }
 
   .step-content {
     gap: 12px;
-    height: calc(100% - 50px);
+    height: 100%;
+    overflow-y: auto;
   }
+
+  /* Ensure questions section is scrollable on small screens */
+  .questions-section {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 20px;
+  }
+
+  /* Make answered panel even more compact */
+  .answered-panel {
+    max-height: 80px;
+    margin-bottom: 12px;
+  }
+
+  /* Ensure question containers are fully visible */
+  .question-container {
+    margin-bottom: 12px;
+    padding: 12px;
+  }
+}
 
   .step-title {
     font-size: 16px;

@@ -822,20 +822,20 @@ const calculateTopRightPosition = () => {
   }
   // Medium devices (tablets, 769px and up)
   else if (viewportWidth <= 1024) {
-    widgetWidth = Math.min(450, viewportWidth - 40)
-    widgetHeight = Math.min(580, viewportHeight - 40)
+    widgetWidth = Math.min(550, viewportWidth - 40)
+    widgetHeight = Math.min(650, viewportHeight - 40)
     margin = 20
   }
   // Large devices (desktops, 1025px and up)
   else if (viewportWidth <= 1440) {
-    widgetWidth = Math.min(520, viewportWidth - 40)
-    widgetHeight = Math.min(600, viewportHeight - 40)
+    widgetWidth = Math.min(620, viewportWidth - 40)
+    widgetHeight = Math.min(700, viewportHeight - 40)
     margin = 20
   }
   // Extra large devices (large desktops, 1441px and up)
   else {
-    widgetWidth = Math.min(600, viewportWidth - 40)
-    widgetHeight = Math.min(600, viewportHeight - 40)
+    widgetWidth = Math.min(700, viewportWidth - 40)
+    widgetHeight = Math.min(700, viewportHeight - 40)
     margin = 20
   }
 
@@ -1278,8 +1278,8 @@ const selectFontSize = (sizeValue: string) => {
 }
 
 .widget-container {
-  width: min(600px, calc(100vw - 40px));
-  height: min(600px, calc(100vh - 40px));
+  width: min(700px, calc(100vw - 40px));
+  height: min(700px, calc(100vh - 40px));
   background: white;
   border-radius: 24px;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
@@ -1596,8 +1596,8 @@ const selectFontSize = (sizeValue: string) => {
 /* Medium devices (tablets, 769px and up) */
 @media (min-width: 769px) and (max-width: 1024px) {
   .widget-container {
-    width: min(450px, calc(100vw - 40px));
-    height: min(580px, calc(100vh - 40px));
+    width: min(550px, calc(100vw - 40px));
+    height: min(650px, calc(100vh - 40px));
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
   }
@@ -1606,17 +1606,17 @@ const selectFontSize = (sizeValue: string) => {
 /* Large devices (desktops, 1025px and up) */
 @media (min-width: 1025px) and (max-width: 1440px) {
   .widget-container {
-    width: min(520px, calc(100vw - 40px));
-    height: min(600px, calc(100vh - 40px));
+    width: min(620px, calc(100vw - 40px));
+    height: min(700px, calc(100vh - 40px));
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
     /* Ensure proper height for desktop content */
-    min-height: 500px;
+    min-height: 600px;
   }
 
   .widget-content {
     /* Ensure content area has proper height on desktop */
-    height: calc(100% - 80px);
+    height: calc(100% - 90px);
     overflow: hidden;
   }
 }
@@ -1624,17 +1624,17 @@ const selectFontSize = (sizeValue: string) => {
 /* Extra large devices (large desktops, 1441px and up) */
 @media (min-width: 1441px) {
   .widget-container {
-    width: min(600px, calc(100vw - 40px));
-    height: min(600px, calc(100vh - 40px));
+    width: min(700px, calc(100vw - 40px));
+    height: min(700px, calc(100vh - 40px));
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
     /* Ensure proper height for desktop content */
-    min-height: 500px;
+    min-height: 600px;
   }
 
   .widget-content {
     /* Ensure content area has proper height on desktop */
-    height: calc(100% - 80px);
+    height: calc(100% - 90px);
     overflow: hidden;
   }
 }

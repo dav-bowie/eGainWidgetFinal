@@ -38,6 +38,7 @@ export interface WidgetConfig {
   secondaryColor: string;
   fontFamily: string;
   fontSize: string;
+  companyName?: string;
   logoUrl?: string;
   maxQuestionsBeforeSolution: number;
 }

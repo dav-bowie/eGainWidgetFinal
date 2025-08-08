@@ -88,8 +88,8 @@
                 </svg>
               </div>
               <div class="admin-title">
-                <h3>Admin Access</h3>
-                <p>Widget Configuration</p>
+                <h3>{{ isAdminAuthenticated ? 'Widget Studio' : 'Admin Access' }}</h3>
+                <p>{{ isAdminAuthenticated ? 'Design your perfect widget' : 'Widget Configuration' }}</p>
               </div>
             </div>
             <div class="header-right">
@@ -177,35 +177,6 @@
 
         <!-- Admin Settings Screen -->
         <div v-else class="admin-settings-screen">
-          <!-- Studio Header -->
-          <div class="studio-header">
-            <div class="header-content">
-              <div class="header-left">
-                <div class="studio-icon">🎨</div>
-                <div class="studio-title">
-                  <h2>Widget Studio</h2>
-                  <p>Design your perfect widget</p>
-                </div>
-              </div>
-              <div class="header-right">
-                <div class="device-controls">
-                  <button class="device-btn active" @click="setDeviceView('desktop')">
-                    <span class="device-icon">🖥️</span>
-                    Desktop
-                  </button>
-                  <button class="device-btn" @click="setDeviceView('tablet')">
-                    <span class="device-icon">📱</span>
-                    Tablet
-                  </button>
-                  <button class="device-btn" @click="setDeviceView('mobile')">
-                    <span class="device-icon">📱</span>
-                    Mobile
-                  </button>
-                </div>
-                <button @click="closeAdminModal" class="close-studio-btn">×</button>
-              </div>
-            </div>
-          </div>
 
           <!-- Tab Navigation -->
           <div class="tab-navigation">
@@ -540,7 +511,7 @@
                   <label>Company Name</label>
                   <input
                     type="text"
-                    v-model="adminConfig.logoUrl"
+                    v-model="adminConfig.companyName"
                     @input="updateAdminConfig"
                     class="company-input"
                     placeholder="eGain"
@@ -746,6 +717,7 @@ const adminConfig = ref({
   fontWeight: '400',
   lineHeight: 1.5,
   letterSpacing: 0,
+  companyName: 'eGain',
   logoUrl: '/eGainLogo.png',
   maxQuestionsBeforeSolution: 3,
 })
@@ -1045,6 +1017,7 @@ const showAdminPanel = () => {
     fontWeight: adminConfig.value.fontWeight || '400',
     lineHeight: adminConfig.value.lineHeight || 1.5,
     letterSpacing: adminConfig.value.letterSpacing || 0,
+    companyName: adminConfig.value.companyName || 'eGain',
     logoUrl: widgetConfig.value.logoUrl || '/eGainLogo.png',
     maxQuestionsBeforeSolution: widgetConfig.value.maxQuestionsBeforeSolution,
   }
@@ -1081,6 +1054,7 @@ const updateAdminConfig = () => {
     secondaryColor: adminConfig.value.secondaryColor,
     fontFamily: adminConfig.value.fontFamily,
     fontSize: adminConfig.value.fontSize,
+    companyName: adminConfig.value.companyName,
     logoUrl: adminConfig.value.logoUrl,
     maxQuestionsBeforeSolution: adminConfig.value.maxQuestionsBeforeSolution,
   })
@@ -2189,8 +2163,8 @@ const selectFontWeight = (weightValue: string) => {
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
   max-width: min(1600px, calc(100vw - 20px));
   width: min(98%, calc(100vw - 20px));
-  max-height: calc(100vh - 64px);
-  height: auto;
+  height: calc(100vh - 64px);
+  max-height: none;
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2251,9 +2225,9 @@ const selectFontWeight = (weightValue: string) => {
   .admin-modal {
     width: calc(100vw - 12px);
     max-width: calc(100vw - 12px);
-    height: calc(100vh - 2px);
-    max-height: calc(100vh - 2px);
-    margin: 1px 6px;
+    height: calc(100vh - 48px);
+    max-height: none;
+    margin: 24px 6px;
     border-radius: 20px;
   }
 
@@ -2275,9 +2249,9 @@ const selectFontWeight = (weightValue: string) => {
   .admin-modal {
     width: calc(100vw - 20px);
     max-width: calc(100vw - 20px);
-    height: calc(100vh - 4px);
-    max-height: calc(100vh - 4px);
-    margin: 2px 10px;
+    height: calc(100vh - 48px);
+    max-height: none;
+    margin: 24px 10px;
     border-radius: 22px;
   }
 
@@ -2299,9 +2273,9 @@ const selectFontWeight = (weightValue: string) => {
   .admin-modal {
     width: min(98%, calc(100vw - 20px));
     max-width: min(1600px, calc(100vw - 20px));
-    height: calc(100vh - 2px);
-    max-height: calc(100vh - 2px);
-    margin: 1px auto;
+    height: calc(100vh - 48px);
+    max-height: none;
+    margin: 24px auto;
     border-radius: 24px;
   }
 
@@ -2345,6 +2319,9 @@ const selectFontWeight = (weightValue: string) => {
   padding: 16px 32px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .admin-modal-header .header-content {
@@ -2446,6 +2423,7 @@ const selectFontWeight = (weightValue: string) => {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  z-index: 60;
 }
 
 .close-admin-btn:hover {
@@ -2741,7 +2719,9 @@ const selectFontWeight = (weightValue: string) => {
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-behavior: smooth;
-  position: relative;
+  position: sticky;
+  top: 66px;
+  z-index: 49;
   /* Enable momentum scrolling on iOS */
   -webkit-overflow-scrolling: touch;
 }
@@ -2988,6 +2968,7 @@ const selectFontWeight = (weightValue: string) => {
 .admin-content {
   flex: 1;
   padding: 40px 48px;
+  padding-bottom: 32px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   max-height: calc(100vh - 64px - 72px - 56px);

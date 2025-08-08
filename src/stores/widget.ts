@@ -26,6 +26,7 @@ export const useWidgetStore = defineStore('widget', () => {
     secondaryColor: '#f1f5f9',
     fontFamily: 'Inter, sans-serif',
     fontSize: '16px',
+    companyName: 'eGain',
     logoUrl: '/placeholder.svg',
     maxQuestionsBeforeSolution: 3
   })

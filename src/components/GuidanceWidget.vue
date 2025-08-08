@@ -2169,7 +2169,7 @@ const selectFontWeight = (weightValue: string) => {
   justify-content: center;
   z-index: 10001;
   animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 4px;
+  padding: 2px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -2189,8 +2189,8 @@ const selectFontWeight = (weightValue: string) => {
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
   max-width: min(1600px, calc(100vw - 20px));
   width: min(98%, calc(100vw - 20px));
-  max-height: 99vh;
-  height: 99vh;
+  max-height: 99.5vh;
+  height: 99.5vh;
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2204,12 +2204,12 @@ const selectFontWeight = (weightValue: string) => {
 /* Responsive admin modal for all devices */
 @media (max-width: 480px) {
   .admin-modal {
-    width: calc(100vw - 8px);
-    max-width: calc(100vw - 8px);
-    height: calc(100vh - 8px);
-    max-height: calc(100vh - 8px);
+    width: calc(100vw - 4px);
+    max-width: calc(100vw - 4px);
+    height: calc(100vh - 4px);
+    max-height: calc(100vh - 4px);
     border-radius: 16px;
-    margin: 4px;
+    margin: 2px;
   }
 
   .studio-header {
@@ -2249,11 +2249,11 @@ const selectFontWeight = (weightValue: string) => {
 
 @media (min-width: 481px) and (max-width: 768px) {
   .admin-modal {
-    width: calc(100vw - 16px);
-    max-width: calc(100vw - 16px);
-    height: calc(100vh - 4px);
-    max-height: calc(100vh - 4px);
-    margin: 2px 8px;
+    width: calc(100vw - 12px);
+    max-width: calc(100vw - 12px);
+    height: calc(100vh - 2px);
+    max-height: calc(100vh - 2px);
+    margin: 1px 6px;
     border-radius: 20px;
   }
 
@@ -2273,11 +2273,11 @@ const selectFontWeight = (weightValue: string) => {
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .admin-modal {
-    width: calc(100vw - 24px);
-    max-width: calc(100vw - 24px);
-    height: calc(100vh - 6px);
-    max-height: calc(100vh - 6px);
-    margin: 3px 12px;
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+    height: calc(100vh - 4px);
+    max-height: calc(100vh - 4px);
+    margin: 2px 10px;
     border-radius: 22px;
   }
 
@@ -2297,11 +2297,11 @@ const selectFontWeight = (weightValue: string) => {
 
 @media (min-width: 1025px) {
   .admin-modal {
-    width: min(95%, calc(100vw - 40px));
-    max-width: min(1400px, calc(100vw - 40px));
-    height: calc(100vh - 4px);
-    max-height: calc(100vh - 4px);
-    margin: 2px auto;
+    width: min(98%, calc(100vw - 20px));
+    max-width: min(1600px, calc(100vw - 20px));
+    height: calc(100vh - 2px);
+    max-height: calc(100vh - 2px);
+    margin: 1px auto;
     border-radius: 24px;
   }
 
@@ -2342,7 +2342,7 @@ const selectFontWeight = (weightValue: string) => {
 .admin-modal-header {
   background: white;
   border-bottom: 1px solid #e2e8f0;
-  padding: 20px 32px;
+  padding: 16px 32px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
@@ -2990,7 +2990,7 @@ const selectFontWeight = (weightValue: string) => {
   padding: 40px 48px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 180px);
 }
 
 /* Section Headers */

@@ -78,6 +78,52 @@
     <!-- Admin Panel Modal -->
     <div v-if="showAdminModal" class="admin-modal-overlay" @click="closeAdminModal">
       <div class="admin-modal" @click.stop>
+        <!-- Admin Modal Header (Always Visible) -->
+        <div class="admin-modal-header">
+          <div class="header-content">
+            <div class="header-left">
+              <div class="admin-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V21C3 22.1 3.9 23 5 23H19C20.1 23 21 22.1 21 21V9ZM19 21H5V3H13V9H19V21Z" fill="#6366F1"/>
+                </svg>
+              </div>
+              <div class="admin-title">
+                <h3>Admin Access</h3>
+                <p>Widget Configuration</p>
+              </div>
+            </div>
+            <div class="header-right">
+              <div class="device-controls">
+                <button class="device-btn active" @click="setDeviceView('desktop')">
+                  <span class="device-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M21 2H3C1.9 2 1 2.9 1 4V16C1 17.1 1.9 18 3 18H10V20H8V22H16V20H14V18H21C22.1 18 23 17.1 23 16V4C23 2.9 22.1 2 21 2ZM21 16H3V4H21V16Z" fill="currentColor"/>
+                    </svg>
+                  </span>
+                  Desktop
+                </button>
+                <button class="device-btn" @click="setDeviceView('tablet')">
+                  <span class="device-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M19 0H5C3.9 0 3 0.9 3 2V22C3 23.1 3.9 24 5 24H19C20.1 24 21 23.1 21 22V2C21 0.9 20.1 0 19 0ZM19 22H5V2H19V22Z" fill="currentColor"/>
+                    </svg>
+                  </span>
+                  Tablet
+                </button>
+                <button class="device-btn" @click="setDeviceView('mobile')">
+                  <span class="device-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17 1H7C5.9 1 5 1.9 5 3V21C5 22.1 5.9 23 7 23H17C18.1 23 19 22.1 19 21V3C19 1.9 18.1 1 17 1ZM17 21H7V3H17V21Z" fill="currentColor"/>
+                    </svg>
+                  </span>
+                  Mobile
+                </button>
+              </div>
+              <button @click="closeAdminModal" class="close-admin-btn">×</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Password Screen -->
         <div v-if="!isAdminAuthenticated" class="admin-password-screen">
           <div class="password-header">
@@ -2093,8 +2139,26 @@ const selectFontSize = (sizeValue: string) => {
     font-size: 11px;
   }
 
+  .admin-modal-header {
+    padding: 16px 20px;
+  }
+
+  .admin-title h3 {
+    font-size: 16px;
+  }
+
+  .admin-title p {
+    font-size: 11px;
+  }
+
   .device-controls {
     display: none; /* Hide device controls on very small screens */
+  }
+
+  .close-admin-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
   }
 }
 
@@ -2107,6 +2171,19 @@ const selectFontSize = (sizeValue: string) => {
     margin: 10px;
     border-radius: 20px;
   }
+
+  .admin-modal-header {
+    padding: 18px 24px;
+  }
+
+  .device-controls {
+    display: flex !important;
+  }
+
+  .device-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
@@ -2118,6 +2195,19 @@ const selectFontSize = (sizeValue: string) => {
     margin: 15px;
     border-radius: 22px;
   }
+
+  .admin-modal-header {
+    padding: 20px 28px;
+  }
+
+  .device-controls {
+    display: flex !important;
+  }
+
+  .device-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
 }
 
 @media (min-width: 1025px) {
@@ -2128,6 +2218,19 @@ const selectFontSize = (sizeValue: string) => {
     max-height: calc(100vh - 40px);
     margin: 20px auto;
     border-radius: 24px;
+  }
+
+  .admin-modal-header {
+    padding: 20px 32px;
+  }
+
+  .device-controls {
+    display: flex !important;
+  }
+
+  .device-btn {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }
 
@@ -2150,6 +2253,121 @@ const selectFontSize = (sizeValue: string) => {
   }
 }
 
+/* Admin Modal Header */
+.admin-modal-header {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 20px 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.admin-modal-header .header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-modal-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 8px;
+}
+
+.admin-title h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 2px 0;
+}
+
+.admin-title p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+.admin-modal-header .header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.device-controls {
+  display: flex;
+  gap: 8px;
+}
+
+/* Ensure device controls are visible on tablet and desktop */
+@media (min-width: 481px) {
+  .device-controls {
+    display: flex !important;
+  }
+}
+
+.device-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.device-btn:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.device-btn.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: white;
+}
+
+.device-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-admin-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f1f5f9;
+  color: #64748b;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-admin-btn:hover {
+  background: #e2e8f0;
+  color: #475569;
+}
+
 /* Password Screen */
 .admin-password-screen {
   padding: 32px;
@@ -2158,7 +2376,8 @@ const selectFontSize = (sizeValue: string) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 350px;
+  flex: 1;
+  min-height: 300px;
 }
 
 .password-header {

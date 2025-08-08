@@ -3999,88 +3999,141 @@ const selectFontSize = (sizeValue: string) => {
 @media (max-width: 480px) {
   .widget-container {
     /* Scaled down version of desktop - same features, smaller size */
-    width: calc(100vw - 20px);
-    height: 80vh;
-    max-width: 350px;
-    max-height: 500px;
-    border-radius: 16px;
+    width: calc(100vw - 20px) !important;
+    height: 80vh !important;
+    max-width: 350px !important;
+    max-height: 500px !important;
+    border-radius: 16px !important;
     /* Position on right side like desktop */
-    right: 10px;
-    left: auto;
-    top: 50%;
-    transform: translateY(-50%);
+    position: fixed !important;
+    right: 10px !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
     /* Prevent iOS Safari from interfering with scrolling */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
     /* Handle iOS safe area insets */
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    /* Ensure widget is in frame */
+    z-index: 10000 !important;
   }
 
   .widget-embedded .widget-container {
     /* Same scaled down approach for embedded */
-    width: calc(100vw - 20px);
-    height: 80vh;
-    max-width: 350px;
-    max-height: 500px;
-    border-radius: 16px;
+    width: calc(100vw - 20px) !important;
+    height: 80vh !important;
+    max-width: 350px !important;
+    max-height: 500px !important;
+    border-radius: 16px !important;
     /* Position on right side like desktop */
-    right: 10px;
-    left: auto;
-    top: 50%;
-    transform: translateY(-50%);
+    position: fixed !important;
+    right: 10px !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
     /* Prevent iOS Safari from interfering with scrolling */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
     /* Handle iOS safe area insets */
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    /* Ensure widget is in frame */
+    z-index: 10000 !important;
   }
 
   .widget-header {
-    padding: 16px;
+    padding: 16px !important;
   }
 
   .widget-title {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 
   .widget-subtitle {
-    font-size: 12px;
+    font-size: 12px !important;
   }
 
   .widget-content {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
     /* Ensure proper scrolling on mobile */
-    touch-action: pan-y;
+    touch-action: pan-y !important;
     /* Scaled down height */
-    height: calc(80vh - 80px);
+    height: calc(80vh - 80px) !important;
   }
 
+  /* Enhanced admin modal for mobile */
   .admin-modal {
-    border-radius: 16px;
-    width: 95%;
-    margin: 10px;
+    border-radius: 16px !important;
+    width: 95% !important;
+    max-width: 400px !important;
+    margin: 10px !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   .admin-content {
-    padding: 16px;
+    padding: 16px !important;
+    max-height: calc(90vh - 40px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Mobile-optimized admin sections */
+  .color-settings,
+  .typography-settings {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .color-card {
+    padding: 16px !important;
+  }
+
+  .color-card-header {
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+
+  .color-input-group {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .color-variants {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .presets-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .logo-actions {
+    flex-direction: column !important;
+    gap: 12px !important;
   }
 
   /* Ensure close button is visible and properly sized */
   .close-button {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 18px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-weight: 600 !important;
   }
 }
 

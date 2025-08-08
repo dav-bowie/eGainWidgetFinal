@@ -563,6 +563,8 @@ const ensureQuestionsScrollable = () => {
   /* Allow content to expand and be scrollable */
   min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .question-container {
@@ -1080,14 +1082,17 @@ const ensureQuestionsScrollable = () => {
 
   /* Ensure questions section is scrollable */
   .questions-section {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    flex: 1 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
     /* Ensure proper spacing for mobile */
-    padding-bottom: 20px;
+    padding-bottom: 20px !important;
     /* Allow content to expand */
-    height: auto;
-    min-height: 300px;
+    height: auto !important;
+    min-height: 300px !important;
+    /* Force scrolling to work */
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   /* Make answered panel more compact on mobile */
@@ -1144,13 +1149,16 @@ const ensureQuestionsScrollable = () => {
 
   /* Ensure questions section is scrollable on small screens */
   .questions-section {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 20px;
+    flex: 1 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 20px !important;
     /* Allow content to expand */
-    height: auto;
-    min-height: 250px;
+    height: auto !important;
+    min-height: 250px !important;
+    /* Force scrolling to work */
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   /* Make answered panel even more compact */

@@ -317,6 +317,8 @@ watch(() => props.answer?.value, (newValue) => {
   overscroll-behavior: contain;
   /* Add padding to account for scrollbar */
   padding-right: 8px;
+  /* Force proper grid layout */
+  grid-template-columns: 1fr;
 }
 
 .option-item {
@@ -649,12 +651,15 @@ watch(() => props.answer?.value, (newValue) => {
   .options-grid {
     gap: 10px;
     /* Enhanced scrolling for mobile */
-    max-height: 250px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    max-height: 250px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
     /* Ensure proper spacing */
-    padding-right: 4px;
+    padding-right: 4px !important;
+    /* Force scrolling to work */
+    display: grid !important;
+    grid-template-columns: 1fr !important;
   }
 
   .option-item {
@@ -709,8 +714,14 @@ watch(() => props.answer?.value, (newValue) => {
 
   .options-grid {
     /* Even more compact for small screens */
-    max-height: 200px;
-    gap: 8px;
+    max-height: 200px !important;
+    gap: 8px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    /* Force scrolling to work */
+    display: grid !important;
+    grid-template-columns: 1fr !important;
   }
 
   .option-item {

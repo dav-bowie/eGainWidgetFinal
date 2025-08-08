@@ -1058,7 +1058,7 @@ const closeAdminModal = () => {
   isAdminAuthenticated.value = false
   adminPassword.value = ''
   passwordError.value = ''
-  
+
   // Remove class to restore transforms
   document.querySelector('.guidance-widget')?.classList.remove('showing-admin')
 }
@@ -1067,7 +1067,7 @@ const authenticateAdmin = () => {
   if (adminPassword.value === 'admin123') {
     isAdminAuthenticated.value = true
     passwordError.value = ''
-    
+
     // Update header height when switching to settings screen
     setTimeout(() => {
       updateAdminHeaderHeight()

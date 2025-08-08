@@ -12,12 +12,22 @@
       <div class="rating-summary">
         <div class="average-rating">
           <div class="rating-number">4.5</div>
-          <div class="star-rating">
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star half-filled">★</span>
+          <div class="star-rating" aria-label="4.5 out of 5">
+            <svg class="star filled" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <svg class="star filled" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <svg class="star filled" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <svg class="star filled" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <svg class="star half" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
           </div>
           <div class="review-count">120 reviews</div>
         </div>
@@ -78,7 +88,9 @@
             @mouseleave="hoverRating = 0"
             :aria-label="`Rate ${star} star${star > 1 ? 's' : ''}`"
           >
-            ★
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
           </button>
         </div>
         <div class="rating-label">
@@ -242,32 +254,31 @@ const handleSkip = () => {
 }
 
 .star-rating {
-  display: flex;
-  gap: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;         /* kill inherited line-height */
+  letter-spacing: 0;      /* kill inherited tracking */
+  font-size: 0;           /* remove inline-block whitespace if you use spans */
 }
 
 .star {
-  font-size: 20px;
-  color: #e1e5e9;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  fill: #e1e5e9;
 }
 
 .star.filled {
-  color: #fbbf24;
+  fill: #fbbf24;
 }
 
-.star.half-filled {
-  color: #fbbf24;
+.star.half {
   position: relative;
 }
 
-.star.half-filled::after {
-  content: '★';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 50%;
-  overflow: hidden;
-  color: #e1e5e9;
+.star.half path {
+  clip-path: inset(0 50% 0 0);
 }
 
 .review-count {
@@ -331,31 +342,43 @@ const handleSkip = () => {
 }
 
 .star-input {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
+  align-items: center;
   gap: 8px;
   margin-bottom: 12px;
+  line-height: 1;         /* kill inherited line-height */
+  letter-spacing: 0;      /* kill inherited tracking */
+  font-size: 0;           /* remove inline-block whitespace */
 }
 
 .star-button {
   background: none;
   border: none;
-  font-size: 32px;
-  color: #e1e5e9;
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.star-button:hover,
-.star-button.hovered {
-  color: #fbbf24;
+.star-button svg {
+  width: 32px;
+  height: 32px;
+  fill: #e1e5e9;
+  transition: all 0.2s ease;
+}
+
+.star-button:hover svg,
+.star-button.hovered svg {
+  fill: #fbbf24;
   transform: scale(1.1);
 }
 
-.star-button.filled {
-  color: #fbbf24;
+.star-button.filled svg {
+  fill: #fbbf24;
 }
 
 .rating-label {
@@ -479,8 +502,9 @@ const handleSkip = () => {
     gap: 4px;
   }
 
-  .star-button {
-    font-size: 28px;
+  .star-button svg {
+    width: 28px;
+    height: 28px;
   }
 
   .step-actions {

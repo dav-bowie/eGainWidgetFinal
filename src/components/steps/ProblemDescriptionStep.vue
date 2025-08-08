@@ -106,7 +106,7 @@ const suggestions = ref([
 ])
 
 const isValid = computed(() => {
-  return description.value.trim().length >= 10
+  return description.value.trim().length >= 3 // Reduced from 10 to 3 characters
 })
 
 const isSuggestionActive = (suggestionText: string): boolean => {
@@ -185,22 +185,25 @@ const handleSubmit = () => {
   height: 100%;
   display: flex;
   flex-direction: column;
+  /* Ensure proper mobile layout */
+  overflow: hidden;
 }
 
 .step-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  /* Ensure content doesn't overflow on mobile */
+  padding-bottom: 0;
 }
-
-
 
 /* Chat Messages */
 .chat-messages {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
 }
 
 .message {
@@ -250,9 +253,76 @@ const handleSubmit = () => {
   margin-left: 4px;
 }
 
-/* Chat Input */
+/* Suggestions Section */
+.suggestions-section {
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.suggestions-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 12px 0;
+}
+
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.suggestion-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: left;
+  font-family: inherit;
+  font-size: 14px;
+  color: #374151;
+}
+
+.suggestion-button:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-button.active {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-color: #6366f1;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+}
+
+.suggestion-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.suggestion-text {
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Chat Input - Fixed positioning for mobile */
 .chat-input-section {
   margin-top: auto;
+  flex-shrink: 0;
+  /* Ensure input stays at bottom and visible */
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
 }
 
 .chat-input-container {
@@ -325,67 +395,6 @@ const handleSubmit = () => {
   transform: translateX(2px);
 }
 
-/* Suggestions Section */
-.suggestions-section {
-  margin-bottom: 8px;
-}
-
-.suggestions-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #374151;
-  margin: 0 0 16px 0;
-}
-
-.suggestions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-}
-
-.suggestion-button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-align: left;
-  font-family: inherit;
-  font-size: 14px;
-  color: #374151;
-}
-
-.suggestion-button:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.suggestion-button.active {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border-color: #6366f1;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
-}
-
-.suggestion-icon {
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.suggestion-text {
-  font-weight: 500;
-  line-height: 1.4;
-}
-
-
-
 .typing-indicator {
   display: flex;
   gap: 4px;
@@ -415,60 +424,93 @@ const handleSubmit = () => {
   }
 }
 
-/* Responsive Design */
+/* Responsive Design - Mobile Optimizations */
 @media (max-width: 768px) {
   .problem-step {
-    padding: 20px;
+    padding: 16px;
     /* Ensure proper scrolling on mobile */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
+    /* Reduce height to account for keyboard */
+    height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
   }
 
   .step-content {
-    gap: 24px;
+    gap: 12px;
     /* Ensure proper scrolling on mobile */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-  }
-
-  .step-title {
-    font-size: 20px;
-  }
-
-  .step-description {
-    font-size: 14px;
+    /* Reduce content area to make room for input */
+    height: calc(100% - 80px);
   }
 
   .suggestions-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .suggestion-button {
-    padding: 14px 16px;
+    padding: 12px 14px;
     font-size: 13px;
-  }
-
-  .problem-textarea {
-    min-height: 100px;
-    padding: 16px;
-    font-size: 15px;
-  }
-
-  .next-button {
-    padding: 14px 24px;
-    font-size: 15px;
-    min-width: 120px;
-  }
-
-  /* Improve touch targets on mobile */
-  .suggestion-button {
+    /* Improve touch targets on mobile */
     min-height: 48px;
   }
 
+  /* Improve touch targets on mobile */
   .send-button {
     min-width: 44px;
     min-height: 44px;
+  }
+
+  /* Ensure input is always visible */
+  .chat-input-section {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 10;
+    padding: 8px 0 0 0;
+  }
+
+  .chat-input-container {
+    padding: 10px 14px;
+  }
+
+  .chat-textarea {
+    font-size: 16px; /* Prevent zoom on iOS */
+    min-height: 24px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .problem-step {
+    padding: 12px;
+    height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+  }
+
+  .step-content {
+    gap: 8px;
+    height: calc(100% - 70px);
+  }
+
+  .suggestions-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .suggestion-button {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .message-bubble {
+    padding: 10px 14px;
+  }
+
+  .message-text {
+    font-size: 13px;
   }
 }
 

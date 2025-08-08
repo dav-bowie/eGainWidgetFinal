@@ -1300,10 +1300,17 @@ const selectFontSize = (sizeValue: string) => {
     max-width: 320px;
     max-height: 450px;
     border-radius: 16px;
+    /* Ensure widget adapts to keyboard */
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    right: 10px;
+    bottom: 20px;
   }
 
   .widget-header {
     padding: 16px;
+    flex-shrink: 0;
   }
 
   .widget-title {
@@ -1312,6 +1319,12 @@ const selectFontSize = (sizeValue: string) => {
 
   .widget-subtitle {
     font-size: 12px;
+  }
+
+  .widget-content {
+    /* Ensure content area adapts to keyboard */
+    height: calc(100% - 80px);
+    overflow: hidden;
   }
 }
 
@@ -1322,6 +1335,18 @@ const selectFontSize = (sizeValue: string) => {
     height: 520px;
     max-width: calc(100vw - 30px);
     max-height: calc(100vh - 40px);
+    /* Ensure widget adapts to keyboard */
+    position: fixed;
+    top: 20px;
+    left: 15px;
+    right: 15px;
+    bottom: 20px;
+  }
+
+  .widget-content {
+    /* Ensure content area adapts to keyboard */
+    height: calc(100% - 80px);
+    overflow: hidden;
   }
 }
 
@@ -1360,6 +1385,40 @@ const selectFontSize = (sizeValue: string) => {
   .widget-container {
     height: calc(100vh - 20px);
     max-height: 400px;
+    /* Ensure widget adapts to keyboard in landscape */
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .widget-content {
+    /* Ensure content area adapts to keyboard */
+    height: calc(100% - 60px);
+    overflow: hidden;
+  }
+}
+
+/* Keyboard-aware adjustments for mobile */
+@media (max-width: 768px) {
+  .widget-container {
+    /* Ensure widget stays within viewport when keyboard appears */
+    transition: all 0.3s ease;
+  }
+
+  /* When virtual keyboard is likely active */
+  @media (max-height: 500px) {
+    .widget-container {
+      height: calc(100vh - 20px);
+      max-height: calc(100vh - 20px);
+      top: 10px;
+      bottom: 10px;
+    }
+
+    .widget-content {
+      height: calc(100% - 70px);
+    }
   }
 }
 

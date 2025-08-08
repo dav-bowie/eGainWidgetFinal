@@ -304,93 +304,133 @@ const closeEditModal = () => {
 
 <style scoped>
 .questions-step {
-  padding: 16px;
+  padding: 24px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
+  /* Ensure proper mobile layout */
+  overflow: hidden;
 }
 
 .step-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  height: 100%;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Ensure content doesn't overflow on mobile */
+  padding-bottom: 0;
 }
 
 .step-header {
   text-align: center;
+  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .step-title {
-  margin: 0 0 8px 0;
   font-size: 20px;
-  font-weight: 600;
-  color: var(--primary-color);
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
 }
 
 .step-description {
-  margin: 0;
   font-size: 14px;
-  color: #666;
+  color: #64748b;
+  margin: 0;
   line-height: 1.5;
 }
 
+/* Display Mode Toggle */
 .display-mode-toggle {
   display: flex;
   gap: 8px;
-  justify-content: center;
-  padding: 8px;
-  background: var(--secondary-color);
-  border-radius: 8px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
 }
 
 .mode-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
-  cursor: pointer;
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  border-radius: 12px;
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+
+.mode-button:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
 }
 
 .mode-button.active {
-  background: var(--primary-color);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-color: #6366f1;
   color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
-.mode-button:hover:not(.active) {
-  background: rgba(147, 51, 234, 0.1);
-}
-
+/* Questions Section */
 .questions-section {
   flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Ensure proper scrolling on mobile */
+  overscroll-behavior: contain;
+}
+
+.sequential-questions,
+.batch-questions {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
 .question-container {
-  background: white;
-  border: 1px solid #e1e5e9;
-  border-radius: 8px;
-  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.question-container:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .no-questions {
   text-align: center;
-  padding: 32px;
-  color: #666;
+  padding: 40px 20px;
+  color: #64748b;
 }
 
+.no-questions p {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Answered Questions Panel */
 .answered-panel {
-  background: var(--secondary-color);
-  border-radius: 8px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
   padding: 16px;
   margin-top: 16px;
+  flex-shrink: 0;
 }
 
 .panel-header {
@@ -462,11 +502,15 @@ const closeEditModal = () => {
   opacity: 0.6;
 }
 
+/* Step Actions */
 .step-actions {
   display: flex;
   justify-content: flex-end;
   padding-top: 16px;
   border-top: 1px solid #e1e5e9;
+  flex-shrink: 0;
+  /* Ensure actions stay at bottom */
+  margin-top: auto;
 }
 
 .next-button {
@@ -482,6 +526,8 @@ const closeEditModal = () => {
   align-items: center;
   gap: 8px;
   transition: all 0.2s ease;
+  /* Improve touch targets on mobile */
+  min-height: 44px;
 }
 
 .next-button:hover:not(:disabled) {
@@ -505,14 +551,12 @@ const closeEditModal = () => {
 }
 
 .loading-spinner {
-  display: inline-block;
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid transparent;
+  border-top: 2px solid white;
   border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s ease-in-out infinite;
-  margin-right: 8px;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -521,83 +565,19 @@ const closeEditModal = () => {
   }
 }
 
-/* Edit Modal */
-.edit-modal-overlay {
+/* Loading Overlay */
+.loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1001;
-}
-
-.edit-modal {
-  background: white;
-  border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 80vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #e1e5e9;
-}
-
-.modal-header h4 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.close-modal {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.close-modal:hover {
-  background-color: #f1f5f9;
-}
-
-.modal-content {
-  padding: 16px;
-  overflow-y: auto;
-}
-
-/* Loading Overlay */
-.loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.95);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1002;
-  backdrop-filter: blur(2px);
-  border-radius: 12px;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
 .loading-content {
@@ -743,18 +723,188 @@ const closeEditModal = () => {
   color: #333;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);
   }
   100% {
     transform: translateX(100%);
+  }
+}
+
+/* Edit Modal */
+.edit-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.edit-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.modal-header h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.close-modal {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.close-modal:hover {
+  background: #e2e8f0;
+  color: #374151;
+}
+
+.modal-content {
+  padding: 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+
+/* Responsive Design - Mobile Optimizations */
+@media (max-width: 768px) {
+  .questions-step {
+    padding: 16px;
+    /* Ensure proper scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Reduce height to account for keyboard */
+    height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
+  }
+
+  .step-content {
+    gap: 16px;
+    /* Ensure proper scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Reduce content area to make room for actions */
+    height: calc(100% - 60px);
+  }
+
+  .step-title {
+    font-size: 18px;
+  }
+
+  .step-description {
+    font-size: 13px;
+  }
+
+  .display-mode-toggle {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .mode-button {
+    padding: 10px 14px;
+    font-size: 13px;
+    /* Improve touch targets on mobile */
+    min-height: 44px;
+  }
+
+  .questions-section {
+    /* Ensure proper scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .question-container {
+    padding: 16px;
+  }
+
+  .answered-panel {
+    padding: 12px;
+    margin-top: 12px;
+  }
+
+  .step-actions {
+    padding-top: 12px;
+  }
+
+  .next-button {
+    padding: 10px 20px;
+    font-size: 13px;
+    /* Improve touch targets on mobile */
+    min-height: 44px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .questions-step {
+    padding: 12px;
+    height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+  }
+
+  .step-content {
+    gap: 12px;
+    height: calc(100% - 50px);
+  }
+
+  .step-title {
+    font-size: 16px;
+  }
+
+  .step-description {
+    font-size: 12px;
+  }
+
+  .mode-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .question-container {
+    padding: 12px;
+  }
+
+  .answered-panel {
+    padding: 10px;
+  }
+
+  .next-button {
+    padding: 8px 16px;
+    font-size: 12px;
   }
 }
 

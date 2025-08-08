@@ -1,6 +1,24 @@
 # Changelog
 
-## [Unreleased]
+## [1.2.0] - 2024-08-07
+
+### Reverted
+- **Mobile Full-Screen Implementation**: Removed mobile-specific full-screen overlay and modal
+- **Mobile Detection Logic**: Removed mobile detection and orientation change handling
+- **Mobile Admin Panel**: Removed separate mobile admin modal implementation
+- **Mobile-Specific Methods**: Removed mobile-only methods and properties
+
+### Changed
+- **Unified Experience**: All devices (phones, tablets, laptops, desktops) now use the same responsive widget implementation
+- **Consistent Admin Panel**: Single admin panel works across all device sizes
+- **Standard Responsive Design**: Phones now use the same responsive breakpoints as other devices
+
+### Technical Improvements
+- **Simplified Codebase**: Removed complex mobile-specific logic and templates
+- **Consistent Behavior**: All devices get the same feature set and user experience
+- **Maintainable Code**: Single implementation reduces complexity and maintenance overhead
+
+---
 
 ## [1.1.1] - 2024-08-07
 

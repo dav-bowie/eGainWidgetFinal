@@ -350,7 +350,7 @@ const closeEditModal = () => {
 onMounted(() => {
   nextTick(() => {
     // Ensure the questions section is properly scrollable
-    const questionsSection = document.querySelector('.questions-section')
+    const questionsSection = document.querySelector('.questions-section') as HTMLElement
     if (questionsSection) {
       questionsSection.style.overflowY = 'auto'
       questionsSection.style.webkitOverflowScrolling = 'touch'
@@ -1056,55 +1056,6 @@ const autoScrollToContent = () => {
   }
 }
 
-  .step-title {
-    font-size: 18px;
-  }
-
-  .step-description {
-    font-size: 13px;
-  }
-
-  .display-mode-toggle {
-    gap: 6px;
-    margin-bottom: 12px;
-  }
-
-  .mode-button {
-    padding: 10px 14px;
-    font-size: 13px;
-    /* Improve touch targets on mobile */
-    min-height: 44px;
-  }
-
-  .questions-section {
-    /* Ensure proper scrolling on mobile */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-  }
-
-  .question-container {
-    padding: 16px;
-  }
-
-  .answered-panel {
-    padding: 12px;
-    margin-top: 12px;
-    /* Full height on mobile */
-    max-height: none;
-  }
-
-  .step-actions {
-    padding-top: 12px;
-  }
-
-  .next-button {
-    padding: 10px 20px;
-    font-size: 13px;
-    /* Improve touch targets on mobile */
-    min-height: 44px;
-  }
-}
-
 /* Extra small devices */
 @media (max-width: 480px) {
   .questions-step {
@@ -1138,33 +1089,6 @@ const autoScrollToContent = () => {
   .question-container {
     margin-bottom: 12px;
     padding: 12px;
-  }
-}
-
-  .step-title {
-    font-size: 16px;
-  }
-
-  .step-description {
-    font-size: 12px;
-  }
-
-  .mode-button {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-
-  .question-container {
-    padding: 12px;
-  }
-
-  .answered-panel {
-    padding: 10px;
-  }
-
-  .next-button {
-    padding: 8px 16px;
-    font-size: 12px;
   }
 }
 

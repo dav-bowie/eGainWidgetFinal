@@ -2021,7 +2021,7 @@ const selectFontSize = (sizeValue: string) => {
   justify-content: center;
   z-index: 10001;
   animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -2039,10 +2039,10 @@ const selectFontSize = (sizeValue: string) => {
   background: white;
   border-radius: 24px;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
-  max-width: min(1200px, calc(100vw - 40px));
-  width: min(90%, calc(100vw - 40px));
-  max-height: 85vh;
-  height: 85vh;
+  max-width: min(1400px, calc(100vw - 40px));
+  width: min(95%, calc(100vw - 40px));
+  max-height: 90vh;
+  height: 90vh;
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2083,26 +2083,32 @@ const selectFontSize = (sizeValue: string) => {
 
 @media (min-width: 481px) and (max-width: 768px) {
   .admin-modal {
-    width: calc(100vw - 30px);
-    max-width: calc(100vw - 30px);
-    margin: 15px;
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+    margin: 10px;
     border-radius: 20px;
   }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .admin-modal {
-    width: calc(100vw - 40px);
-    max-width: calc(100vw - 40px);
-    margin: 20px;
+    width: calc(100vw - 30px);
+    max-width: calc(100vw - 30px);
+    height: calc(100vh - 30px);
+    max-height: calc(100vh - 30px);
+    margin: 15px;
     border-radius: 22px;
   }
 }
 
 @media (min-width: 1025px) {
   .admin-modal {
-    width: min(90%, calc(100vw - 40px));
-    max-width: min(1200px, calc(100vw - 40px));
+    width: min(95%, calc(100vw - 40px));
+    max-width: min(1400px, calc(100vw - 40px));
+    height: calc(100vh - 40px);
+    max-height: calc(100vh - 40px);
     margin: 20px auto;
     border-radius: 24px;
   }

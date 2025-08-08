@@ -22,11 +22,14 @@
     <div
       class="widget-container"
       :class="{ dragging: isDragging }"
-      @mousedown="handleMouseDown"
-      @touchstart="handleMouseDown"
     >
       <!-- Header -->
-      <div class="widget-header" :class="{ draggable: embedded && isOpen }">
+      <div 
+        class="widget-header" 
+        :class="{ draggable: embedded && isOpen }"
+        @mousedown="handleMouseDown"
+        @touchstart="handleMouseDown"
+      >
         <div class="header-content">
           <h2 class="widget-title">Interactive Guidance</h2>
           <p class="widget-subtitle">Let us help you find the perfect solution.</p>
@@ -861,8 +864,14 @@ const handleComplete = () => {
 const handleMouseDown = (event: MouseEvent | TouchEvent) => {
   if (!props.embedded || !isOpen.value) return
 
-  // Prevent dragging if clicking on interactive elements
   const target = event.target as HTMLElement
+
+  // Don't drag when starting inside the scrollable content
+  if (target.closest('.widget-content')) {
+    return
+  }
+
+  // Prevent dragging if clicking on interactive elements
   if (
     target.closest('button') ||
     target.closest('input') ||
@@ -872,6 +881,8 @@ const handleMouseDown = (event: MouseEvent | TouchEvent) => {
     return
   }
 
+  // Only now preventDefault and start dragging
+  event.preventDefault()
   isDragging.value = true
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
   const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX
@@ -886,7 +897,6 @@ const handleMouseDown = (event: MouseEvent | TouchEvent) => {
   document.addEventListener('mouseup', handleMouseUp)
   document.addEventListener('touchmove', handleMouseMove, { passive: false })
   document.addEventListener('touchend', handleMouseUp)
-  event.preventDefault()
 }
 
 const handleMouseMove = (event: MouseEvent | TouchEvent) => {
@@ -2086,13 +2096,15 @@ const selectFontWeight = (weightValue: string) => {
 /* Content Area */
 .widget-content {
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
   background: #fafbfc;
   position: relative;
   display: flex;
   flex-direction: column;
   /* Ensure proper height calculation on mobile */
   min-height: 0;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 /* Floating Action Button */
@@ -2344,6 +2356,14 @@ const selectFontWeight = (weightValue: string) => {
   .device-btn {
     padding: 8px 12px;
     font-size: 12px;
+  }
+
+  /* Tablet scrolling fix */
+  .widget-content {
+    height: calc(100% - 90px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 }
 

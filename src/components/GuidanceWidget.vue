@@ -169,14 +169,6 @@
               <span class="tab-icon">🖼️</span>
               Branding
             </button>
-            <button
-              class="tab-btn"
-              :class="{ active: activeTab === 'export' }"
-              @click="setActiveTab('export')"
-            >
-              <span class="tab-icon">&lt;/&gt;</span>
-              Export
-            </button>
           </div>
 
           <!-- Main Content Area -->
@@ -233,8 +225,10 @@
                             class="color-variant"
                             :style="{ backgroundColor: variant }"
                             @click="
-                              adminConfig.primaryColor = variant
-                              updateAdminConfig()
+                              () => {
+                                adminConfig.primaryColor = variant
+                                updateAdminConfig()
+                              }
                             "
                             :title="variant"
                           ></div>
@@ -279,8 +273,10 @@
                             class="color-variant"
                             :style="{ backgroundColor: variant }"
                             @click="
-                              adminConfig.secondaryColor = variant
-                              updateAdminConfig()
+                              () => {
+                                adminConfig.secondaryColor = variant
+                                updateAdminConfig()
+                              }
                             "
                             :title="variant"
                           ></div>
@@ -519,71 +515,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Export Tab -->
-              <div v-if="activeTab === 'export'" class="tab-content">
-                <div class="section-header">
-                  <div class="section-icon">&lt;/&gt;</div>
-                  <div>
-                    <h3>Export Widget</h3>
-                    <p>Get your widget code</p>
-                  </div>
-                </div>
-
-                <div class="export-section">
-                  <div class="export-card">
-                    <h4>Embed Code</h4>
-                    <p>Copy this code to embed the widget on your website</p>
-                    <div class="code-block">
-                      <pre><code>{{ embedCode }}</code></pre>
-                      <button @click="copyEmbedCode" class="copy-btn">
-                        <span class="copy-icon">📋</span>
-                        Copy Code
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="export-card">
-                    <h4>Configuration</h4>
-                    <p>Download your widget configuration</p>
-                    <button @click="exportConfig" class="export-btn">
-                      <span class="export-icon">📥</span>
-                      Export Config
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Panel - Live Preview -->
-            <div class="preview-panel">
-              <div class="preview-header">
-                <h3>Live Preview</h3>
-                <span class="preview-subtitle">See changes in real-time</span>
-              </div>
-              <div class="preview-container" :class="deviceView">
-                <div class="widget-preview">
-                  <!-- Mini widget preview here -->
-                  <div class="preview-widget" :style="previewStyles">
-                    <div
-                      class="preview-header"
-                      :style="{
-                        background:
-                          'linear-gradient(135deg, ' +
-                          adminConfig.primaryColor +
-                          ', ' +
-                          adminConfig.secondaryColor +
-                          ')',
-                      }"
-                    >
-                      <span class="preview-title">Widget Preview</span>
-                    </div>
-                    <div class="preview-content">
-                      <p>This is how your widget will look with the current settings.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -742,6 +673,21 @@ const toggleOpen = () => {
     // When opening, ensure widget starts in top-right position
     resetPosition()
     console.log('Widget opened, positioned at top-right')
+
+    // Add mobile scrolling support
+    if (window.innerWidth <= 768) {
+      // On mobile, scroll to widget position
+      setTimeout(() => {
+        const widgetElement = document.querySelector('.guidance-widget')
+        if (widgetElement) {
+          widgetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest',
+          })
+        }
+      }, 100)
+    }
   } else {
     // Reset position when closing widget
     resetPosition() // Always return to top-right when closed
@@ -860,36 +806,71 @@ const handleMouseUp = () => {
 const calculateTopRightPosition = () => {
   const viewportWidth = window.innerWidth
   const viewportHeight = window.innerHeight
+  const isLandscape = window.innerWidth > window.innerHeight
 
-  // Responsive widget width based on screen size
-  let widgetWidth = 500
-  if (viewportWidth < 768) {
-    widgetWidth = Math.min(350, viewportWidth - 40) // Smaller on mobile, max 350px
-  } else if (viewportWidth < 1024) {
-    widgetWidth = 450 // Slightly smaller on tablets
+  // Comprehensive responsive widget sizing based on device type
+  let widgetWidth, widgetHeight, margin
+
+  // Extra small devices (phones, 320px and up)
+  if (viewportWidth <= 480) {
+    widgetWidth = Math.min(320, viewportWidth - 20)
+    widgetHeight = Math.min(450, viewportHeight - 40)
+    margin = 10
+  }
+  // Small devices (large phones, 481px and up)
+  else if (viewportWidth <= 768) {
+    widgetWidth = Math.min(380, viewportWidth - 30)
+    widgetHeight = Math.min(520, viewportHeight - 40)
+    margin = 15
+  }
+  // Medium devices (tablets, 769px and up)
+  else if (viewportWidth <= 1024) {
+    widgetWidth = Math.min(450, viewportWidth - 40)
+    widgetHeight = Math.min(580, viewportHeight - 40)
+    margin = 20
+  }
+  // Large devices (desktops, 1025px and up)
+  else if (viewportWidth <= 1440) {
+    widgetWidth = Math.min(520, viewportWidth - 40)
+    widgetHeight = Math.min(600, viewportHeight - 40)
+    margin = 20
+  }
+  // Extra large devices (large desktops, 1441px and up)
+  else {
+    widgetWidth = Math.min(600, viewportWidth - 40)
+    widgetHeight = Math.min(600, viewportHeight - 40)
+    margin = 20
   }
 
-  const margin = 15
-  const widgetHeight = 700 // Approximate widget height
-
-  // Position widget in the exact top-right corner
-  const x = viewportWidth - widgetWidth - margin
-  const y = margin // Always at the top
-
-  return {
-    x: Math.max(margin, x), // Ensure it doesn't go off-screen
-    y: Math.max(margin, Math.min(y, viewportHeight - widgetHeight - margin)), // Ensure it doesn't go off-screen
+  // Landscape orientation adjustments for mobile
+  if (viewportWidth <= 768 && isLandscape) {
+    widgetHeight = Math.min(400, viewportHeight - 20)
   }
+
+  // Position widget in the top-right corner with proper bounds checking
+  const x = Math.max(margin, viewportWidth - widgetWidth - margin)
+  const y = Math.max(margin, Math.min(margin, viewportHeight - widgetHeight - margin))
+
+  return { x, y }
 }
 
 const resetPosition = () => {
   const topRightPos = calculateTopRightPosition()
-  widgetPosition.value = topRightPos
-  initialPosition.x = topRightPos.x
-  initialPosition.y = topRightPos.y
+
+  // Safety check to ensure position is within bounds
+  const viewportWidth = window.innerWidth
+  const viewportHeight = window.innerHeight
+
+  // Ensure widget doesn't go off-screen
+  const safeX = Math.max(10, Math.min(topRightPos.x, viewportWidth - 50))
+  const safeY = Math.max(10, Math.min(topRightPos.y, viewportHeight - 50))
+
+  widgetPosition.value = { x: safeX, y: safeY }
+  initialPosition.x = safeX
+  initialPosition.y = safeY
 
   // Debug logging for position reset
-  console.log('Widget position reset to top-right:', topRightPos)
+  console.log('Widget position reset to top-right:', { x: safeX, y: safeY })
 }
 
 const handleLogoError = (event: Event) => {
@@ -1111,6 +1092,28 @@ const cancelLogoUpload = () => {
 // Studio methods
 const setActiveTab = (tab: string) => {
   activeTab.value = tab
+
+  // Scroll to active tab on mobile/tablet
+  if (window.innerWidth <= 1024) {
+    setTimeout(() => {
+      const activeTabElement = document.querySelector('.tab-btn.active') as HTMLElement
+      const tabNavigation = document.querySelector('.tab-navigation') as HTMLElement
+
+      if (activeTabElement && tabNavigation) {
+        const tabRect = activeTabElement.getBoundingClientRect()
+        const navRect = tabNavigation.getBoundingClientRect()
+
+        // Check if tab is not fully visible
+        if (tabRect.left < navRect.left || tabRect.right > navRect.right) {
+          activeTabElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          })
+        }
+      }
+    }, 100)
+  }
 }
 
 const setDeviceView = (device: string) => {
@@ -1162,7 +1165,7 @@ const getColorVariants = (baseColor: string) => {
   const g = parseInt(hex.substr(2, 2), 16)
   const b = parseInt(hex.substr(4, 2), 16)
 
-  // Lighter variants
+  // Generate lighter variants
   for (let i = 1; i <= 3; i++) {
     const factor = 1 + i * 0.2
     const newR = Math.min(255, Math.round(r * factor))
@@ -1173,7 +1176,7 @@ const getColorVariants = (baseColor: string) => {
     )
   }
 
-  // Darker variants
+  // Generate darker variants
   for (let i = 1; i <= 3; i++) {
     const factor = 1 - i * 0.15
     const newR = Math.max(0, Math.round(r * factor))
@@ -1214,38 +1217,6 @@ const selectFont = (fontValue: string) => {
 const selectFontSize = (sizeValue: string) => {
   adminConfig.value.fontSize = sizeValue
   updateAdminConfig()
-}
-
-// Computed properties for preview
-const previewStyles = computed(() => ({
-  '--primary-color': adminConfig.value.primaryColor,
-  '--secondary-color': adminConfig.value.secondaryColor,
-  '--font-family': adminConfig.value.fontFamily,
-  '--font-size': adminConfig.value.fontSize,
-}))
-
-const embedCode = computed(() => {
-  const configString = JSON.stringify(adminConfig.value).replace(/"/g, '&quot;')
-  const scriptPart = '&lt;script src="https://your-domain.com/widget.js"&gt;&lt;/script&gt;'
-  const divPart = '&lt;div id="egain-widget" data-config="' + configString + '"&gt;&lt;/div&gt;'
-  return scriptPart + divPart
-})
-
-const copyEmbedCode = () => {
-  navigator.clipboard.writeText(embedCode.value)
-  // You could add a toast notification here
-}
-
-const exportConfig = () => {
-  const configBlob = new Blob([JSON.stringify(adminConfig.value, null, 2)], {
-    type: 'application/json',
-  })
-  const url = URL.createObjectURL(configBlob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = 'widget-config.json'
-  a.click()
-  URL.revokeObjectURL(url)
 }
 
 // These functions are available for future use in the admin panel
@@ -1314,6 +1285,153 @@ const exportConfig = () => {
   backdrop-filter: blur(10px);
   /* Prevent touch events from interfering with scrolling on mobile */
   touch-action: pan-y;
+  /* Ensure widget doesn't exceed viewport bounds */
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 40px);
+}
+
+/* Comprehensive responsive design for all devices */
+
+/* Extra small devices (phones, 320px and up) */
+@media (max-width: 480px) {
+  .widget-container {
+    width: calc(100vw - 20px);
+    height: calc(100vh - 40px);
+    max-width: 320px;
+    max-height: 450px;
+    border-radius: 16px;
+  }
+
+  .widget-header {
+    padding: 16px;
+  }
+
+  .widget-title {
+    font-size: 18px;
+  }
+
+  .widget-subtitle {
+    font-size: 12px;
+  }
+}
+
+/* Small devices (large phones, 481px and up) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .widget-container {
+    width: 380px;
+    height: 520px;
+    max-width: calc(100vw - 30px);
+    max-height: calc(100vh - 40px);
+  }
+}
+
+/* Medium devices (tablets, 769px and up) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .widget-container {
+    width: 450px;
+    height: 580px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+  }
+}
+
+/* Large devices (desktops, 1025px and up) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .widget-container {
+    width: 520px;
+    height: 600px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+  }
+}
+
+/* Extra large devices (large desktops, 1441px and up) */
+@media (min-width: 1441px) {
+  .widget-container {
+    width: 600px;
+    height: 600px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .widget-container {
+    height: calc(100vh - 20px);
+    max-height: 400px;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .widget-container {
+    border-width: 0.5px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .widget-container {
+    cursor: default;
+  }
+
+  .widget-container:hover {
+    transform: none;
+  }
+
+  .widget-container.dragging {
+    transform: scale(1.01);
+  }
+}
+
+/* Responsive header adjustments */
+@media (max-width: 480px) {
+  .widget-header {
+    padding: 12px 16px;
+  }
+
+  .widget-title {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .widget-subtitle {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .admin-button {
+    font-size: 16px;
+    padding: 8px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .widget-header {
+    padding: 16px 20px;
+  }
+
+  .widget-title {
+    font-size: 18px;
+  }
+
+  .widget-subtitle {
+    font-size: 12px;
+  }
+}
+
+/* Responsive content area */
+@media (max-width: 480px) {
+  .widget-content {
+    padding: 12px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .widget-content {
+    padding: 16px;
+  }
 }
 
 .widget-container:hover {
@@ -1503,6 +1621,58 @@ const exportConfig = () => {
   border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Responsive FAB adjustments */
+@media (max-width: 480px) {
+  .widget-fab {
+    width: 56px;
+    height: 56px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .fab-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .fab-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 24px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .widget-fab {
+    width: 60px;
+    height: 60px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .fab-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .fab-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 26px;
+  }
+}
+
+/* Touch device FAB optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .widget-fab:hover {
+    transform: none;
+  }
+
+  .widget-fab:active {
+    transform: scale(0.9);
+  }
+}
+
 /* Admin Modal */
 .admin-modal-overlay {
   position: fixed;
@@ -1542,6 +1712,61 @@ const exportConfig = () => {
   border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  /* Ensure modal doesn't extend beyond viewport */
+  max-width: min(1200px, calc(100vw - 40px));
+  width: min(95%, calc(100vw - 40px));
+}
+
+/* Responsive admin modal for all devices */
+@media (max-width: 480px) {
+  .admin-modal {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    height: calc(100vh - 32px);
+    max-height: calc(100vh - 32px);
+    border-radius: 16px;
+    margin: 16px 8px;
+  }
+
+  .studio-header {
+    padding: 12px 16px;
+  }
+
+  .studio-title h2 {
+    font-size: 18px;
+  }
+
+  .studio-title p {
+    font-size: 11px;
+  }
+
+  .device-controls {
+    display: none; /* Hide device controls on very small screens */
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .admin-modal {
+    width: calc(100vw - 30px);
+    max-width: calc(100vw - 30px);
+    margin: 20px 15px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .admin-modal {
+    width: calc(100vw - 40px);
+    max-width: calc(100vw - 40px);
+    margin: 20px 20px;
+  }
+}
+
+/* Landscape orientation for mobile admin modal */
+@media (max-width: 768px) and (orientation: landscape) {
+  .admin-modal {
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+  }
 }
 
 @keyframes slideUp {
@@ -1801,6 +2026,9 @@ const exportConfig = () => {
   font-size: 20px;
   color: #64748b;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
 }
 
 .close-studio-btn:hover {
@@ -1809,13 +2037,55 @@ const exportConfig = () => {
   transform: scale(1.1);
 }
 
-/* Tab Navigation */
+/* Ensure close button is always visible */
+@media (max-width: 480px) {
+  .close-studio-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+}
+
+/* Tab Navigation - Horizontal Scrolling for Mobile/Tablet */
 .tab-navigation {
   background: white;
   border-bottom: 1px solid #e2e8f0;
   padding: 0 32px;
   display: flex;
   gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  position: relative;
+  /* Enable momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab-navigation::-webkit-scrollbar {
+  display: none;
+}
+
+/* Add subtle gradient indicators for scrollable content */
+.tab-navigation::before,
+.tab-navigation::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tab-navigation::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.8), transparent);
+}
+
+.tab-navigation::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.8), transparent);
 }
 
 .tab-btn {
@@ -1832,6 +2102,13 @@ const exportConfig = () => {
   gap: 8px;
   border-bottom: 3px solid transparent;
   position: relative;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 120px;
+  justify-content: center;
+  /* Ensure proper touch targets on mobile */
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
 .tab-btn:hover {
@@ -1849,7 +2126,68 @@ const exportConfig = () => {
   font-size: 16px;
 }
 
-/* Studio Content */
+/* Responsive tab navigation with horizontal scrolling */
+@media (max-width: 1024px) {
+  .tab-navigation {
+    padding: 0 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .tab-navigation::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    padding: 16px 20px;
+    font-size: 14px;
+    gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 140px;
+  }
+
+  .tab-icon {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-navigation {
+    padding: 0 16px;
+  }
+
+  .tab-btn {
+    padding: 14px 16px;
+    font-size: 13px;
+    gap: 6px;
+    min-width: 120px;
+  }
+
+  .tab-icon {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab-navigation {
+    padding: 0 12px;
+  }
+
+  .tab-btn {
+    padding: 12px 14px;
+    font-size: 12px;
+    gap: 4px;
+    min-width: 100px;
+  }
+
+  .tab-icon {
+    font-size: 12px;
+  }
+}
+
+/* Studio Content - No Horizontal Scrolling */
 .studio-content {
   flex: 1;
   display: flex;
@@ -1858,21 +2196,38 @@ const exportConfig = () => {
 }
 
 .settings-panel {
-  flex: 0 0 480px;
+  flex: 1;
   padding: 24px;
   overflow-y: auto;
+  overflow-x: hidden;
   background: white;
-  border-right: 1px solid #e2e8f0;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
 }
 
-.preview-panel {
-  flex: 1;
-  padding: 24px;
-  background: #f8fafc;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+/* Tab content - fit within bounds */
+.tab-content {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive admin modal layout */
+@media (max-width: 1024px) {
+  .settings-panel {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-panel {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-panel {
+    padding: 12px;
+  }
 }
 
 .preview-header {
@@ -2024,9 +2379,17 @@ const exportConfig = () => {
 
 .presets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
   margin-top: 16px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .presets-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
 }
 
 /* Enhanced Typography Cards */
@@ -2051,9 +2414,17 @@ const exportConfig = () => {
 
 .font-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
   margin-bottom: 32px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .font-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
 }
 
 .font-card {
@@ -2246,10 +2617,19 @@ const exportConfig = () => {
 
 /* Color Cards */
 .color-cards-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   margin-bottom: 24px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .color-cards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
 }
 
 .color-card {
@@ -2637,10 +3017,338 @@ const exportConfig = () => {
   font-weight: 500;
 }
 
+/* Branding Section Styles - Improved Layout */
+.branding-section {
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.branding-section label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.company-input {
+  width: 100%;
+  max-width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  box-sizing: border-box;
+}
+
+.company-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
 .logo-section {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.logo-upload-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.logo-preview-large {
+  width: 100%;
+  max-width: 100%;
+  height: 120px;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.logo-image-large {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.logo-placeholder-large {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+}
+
+.placeholder-icon-large {
+  font-size: 32px;
+}
+
+.upload-zone {
+  width: 100%;
+  max-width: 100%;
+}
+
+.upload-area-modern {
+  width: 100%;
+  max-width: 100%;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #f8fafc;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.upload-area-modern:hover {
+  border-color: var(--primary-color);
+  background: #f1f5f9;
+}
+
+.upload-area-modern.processing {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.file-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.upload-content-modern {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.upload-icon-modern {
+  font-size: 24px;
+  color: #94a3b8;
+}
+
+.upload-text-modern {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.upload-hint-modern {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.choose-file-btn {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.choose-file-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.upload-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #e2e8f0;
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.logo-guidelines {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.guidelines-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.guidelines-icon {
+  font-size: 16px;
+}
+
+.guidelines-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.guidelines-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.guidelines-list li {
+  margin-bottom: 4px;
+}
+
+.logo-preview-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.preview-header {
+  margin-bottom: 16px;
+}
+
+.preview-header h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+}
+
+.preview-header p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+.logo-preview-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.preview-logo {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.preview-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+.file-size {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Responsive branding section */
+@media (max-width: 768px) {
+  .logo-preview-large {
+    height: 100px;
+  }
+
+  .upload-area-modern {
+    padding: 16px;
+  }
+
+  .logo-preview-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .preview-logo {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-area-modern {
+    padding: 12px;
+  }
+
+  .upload-text-modern {
+    font-size: 14px;
+  }
+
+  .upload-hint-modern {
+    font-size: 11px;
+  }
 }
 
 .current-logo {

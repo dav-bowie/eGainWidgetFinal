@@ -184,6 +184,7 @@ npm run preview
 ### Deployment
 
 #### Netlify Deployment (Recommended)
+
 1. **Connect Repository**: Link your GitHub repository to Netlify
 2. **Build Settings**:
    - Build command: `npm run build`
@@ -192,6 +193,7 @@ npm run preview
 3. **Deploy**: Netlify will automatically deploy on every push to main branch
 
 #### Manual Deployment
+
 ```bash
 # Build the project
 npm run build
@@ -201,6 +203,7 @@ npm run build
 ```
 
 #### Alternative Deployment Platforms
+
 - **Vercel**: Connect repository and use same build settings
 - **GitHub Pages**: Use GitHub Actions for automatic deployment
 - **AWS S3**: Upload dist folder to S3 bucket with static website hosting

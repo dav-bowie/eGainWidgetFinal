@@ -458,6 +458,71 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Font Weight -->
+                <div class="font-weight-section">
+                  <div class="typography-header">
+                    <h4>Font Weight</h4>
+                    <p>Choose text thickness</p>
+                  </div>
+                  <div class="weight-options">
+                    <div
+                      v-for="weight in fontWeights"
+                      :key="weight.value"
+                      class="weight-card"
+                      :class="{ active: adminConfig.fontWeight === weight.value }"
+                      @click="selectFontWeight(weight.value)"
+                    >
+                      <div class="weight-preview">
+                        <span class="weight-sample" :style="{ fontWeight: weight.value }">Aa</span>
+                      </div>
+                      <div class="weight-info">
+                        <span class="weight-name">{{ weight.name }}</span>
+                        <span class="weight-value">{{ weight.value }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Line Height -->
+                <div class="line-height-section">
+                  <div class="typography-header">
+                    <h4>Line Height</h4>
+                    <p>Adjust text spacing</p>
+                  </div>
+                  <div class="line-height-control">
+                    <input
+                      type="range"
+                      v-model="adminConfig.lineHeight"
+                      @input="updateAdminConfig"
+                      min="1"
+                      max="2"
+                      step="0.1"
+                      class="line-height-slider"
+                    />
+                    <div class="line-height-value">{{ adminConfig.lineHeight }}</div>
+                  </div>
+                </div>
+
+                <!-- Letter Spacing -->
+                <div class="letter-spacing-section">
+                  <div class="typography-header">
+                    <h4>Letter Spacing</h4>
+                    <p>Adjust character spacing</p>
+                  </div>
+                  <div class="letter-spacing-control">
+                    <input
+                      type="range"
+                      v-model="adminConfig.letterSpacing"
+                      @input="updateAdminConfig"
+                      min="-2"
+                      max="5"
+                      step="0.5"
+                      class="letter-spacing-slider"
+                    />
+                    <div class="letter-spacing-value">{{ adminConfig.letterSpacing }}px</div>
+                  </div>
+                </div>
               </div>
 
               <!-- Branding Tab -->
@@ -663,12 +728,24 @@ const fontSizes = ref([
   { name: 'Large', value: '18px' },
 ])
 
+// Font weights
+const fontWeights = ref([
+  { name: 'Light', value: '300' },
+  { name: 'Regular', value: '400' },
+  { name: 'Medium', value: '500' },
+  { name: 'Semi Bold', value: '600' },
+  { name: 'Bold', value: '700' },
+])
+
 // Admin config (temporary until saved)
 const adminConfig = ref({
   primaryColor: '#8b5cf6',
   secondaryColor: '#d946ef',
   fontFamily: 'Inter, sans-serif',
   fontSize: '16px',
+  fontWeight: '400',
+  lineHeight: 1.5,
+  letterSpacing: 0,
   logoUrl: '/eGainLogo.png',
   maxQuestionsBeforeSolution: 3,
 })
@@ -965,6 +1042,9 @@ const showAdminPanel = () => {
     secondaryColor: widgetConfig.value.secondaryColor,
     fontFamily: widgetConfig.value.fontFamily,
     fontSize: widgetConfig.value.fontSize,
+    fontWeight: adminConfig.value.fontWeight || '400',
+    lineHeight: adminConfig.value.lineHeight || 1.5,
+    letterSpacing: adminConfig.value.letterSpacing || 0,
     logoUrl: widgetConfig.value.logoUrl || '/eGainLogo.png',
     maxQuestionsBeforeSolution: widgetConfig.value.maxQuestionsBeforeSolution,
   }
@@ -1286,6 +1366,11 @@ const selectFont = (fontValue: string) => {
 
 const selectFontSize = (sizeValue: string) => {
   adminConfig.value.fontSize = sizeValue
+  updateAdminConfig()
+}
+
+const selectFontWeight = (weightValue: string) => {
+  adminConfig.value.fontWeight = weightValue
   updateAdminConfig()
 }
 
@@ -2102,8 +2187,8 @@ const selectFontSize = (sizeValue: string) => {
   background: white;
   border-radius: 24px;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
-  max-width: min(1400px, calc(100vw - 40px));
-  width: min(95%, calc(100vw - 40px));
+  max-width: min(1600px, calc(100vw - 20px));
+  width: min(98%, calc(100vw - 20px));
   max-height: 99vh;
   height: 99vh;
   overflow: hidden;
@@ -2902,7 +2987,7 @@ const selectFontSize = (sizeValue: string) => {
 
 .admin-content {
   flex: 1;
-  padding: 32px;
+  padding: 40px 48px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   max-height: calc(100vh - 200px);
@@ -2951,39 +3036,54 @@ const selectFontSize = (sizeValue: string) => {
 }
 
 .setting-group {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   background: white;
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 32px;
   border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .setting-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: #1e293b;
-  margin: 0 0 16px 0;
+  margin: 0 0 24px 0;
   letter-spacing: -0.025em;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #f1f5f9;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f1f5f9;
 }
 
 .setting-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 1200px) {
+  .setting-grid {
+    grid-template-columns: 1fr 1.5fr;
+    gap: 40px;
+  }
 }
 
 .presets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
   width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .presets-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2995,16 +3095,16 @@ const selectFontSize = (sizeValue: string) => {
 
 /* Enhanced Typography Cards */
 .typography-header {
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f1f5f9;
 }
 
 .typography-header h4 {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: #1e293b;
-  margin: 0 0 4px 0;
+  margin: 0 0 8px 0;
 }
 
 .typography-header p {
@@ -3015,10 +3115,17 @@ const selectFontSize = (sizeValue: string) => {
 
 .font-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 16px;
-  margin-bottom: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
   width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .font-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -3032,12 +3139,12 @@ const selectFontSize = (sizeValue: string) => {
   background: white;
   border: 2px solid #e2e8f0;
   border-radius: 16px;
-  padding: 20px;
+  padding: 28px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   text-align: center;
 }
 
@@ -3090,6 +3197,133 @@ const selectFontSize = (sizeValue: string) => {
   font-size: 12px;
   color: #64748b;
   font-weight: 500;
+}
+
+/* Font Weight Controls */
+.weight-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.weight-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.weight-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.weight-card.active {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+}
+
+.weight-preview {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.weight-sample {
+  font-size: 24px;
+  color: #1e293b;
+}
+
+.weight-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.weight-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.weight-value {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Line Height and Letter Spacing Controls */
+.line-height-control,
+.letter-spacing-control {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.line-height-slider,
+.letter-spacing-slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: #e2e8f0;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.line-height-slider::-webkit-slider-thumb,
+.letter-spacing-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.line-height-slider::-moz-range-thumb,
+.letter-spacing-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.line-height-value,
+.letter-spacing-value {
+  min-width: 60px;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
 }
 
 .size-options {
@@ -3344,19 +3578,19 @@ const selectFontSize = (sizeValue: string) => {
 .color-input {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 24px;
   background: #f8fafc;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 24px;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
 }
 
 .color-picker {
-  width: 48px;
-  height: 48px;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
+  width: 64px;
+  height: 64px;
+  border: 3px solid #e2e8f0;
+  border-radius: 12px;
   cursor: pointer;
   outline: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -3370,10 +3604,10 @@ const selectFontSize = (sizeValue: string) => {
 
 .color-text {
   flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 16px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
   font-family: 'Monaco', 'Menlo', monospace;
   font-weight: 500;
   outline: none;
@@ -3390,10 +3624,10 @@ const selectFontSize = (sizeValue: string) => {
 
 .color-text-input {
   width: 100%;
-  padding: 16px 20px;
+  padding: 20px 24px;
   border: 2px solid #e2e8f0;
   border-radius: 16px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -3409,10 +3643,10 @@ const selectFontSize = (sizeValue: string) => {
 
 .font-select {
   width: 100%;
-  padding: 16px 20px;
+  padding: 20px 24px;
   border: 2px solid #e2e8f0;
   border-radius: 16px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

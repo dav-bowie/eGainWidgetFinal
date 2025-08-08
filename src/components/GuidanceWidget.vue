@@ -1180,7 +1180,7 @@ const handleFileDrop = (event: DragEvent) => {
 
 const processLogoFile = (file: File) => {
   console.log('Processing logo file:', file.name, file.type, file.size) // Debug log
-  
+
   // Set processing state
   isProcessingLogo.value = true
 

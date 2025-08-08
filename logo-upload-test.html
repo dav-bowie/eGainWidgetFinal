@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Upload Test</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 16px;
+        }
+        
+        .instructions {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions h3 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+        
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .status {
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .button {
+            background: #9333ea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin: 10px 5px;
+        }
+        
+        .button:hover {
+            background: #7c3aed;
+            transform: translateY(-1px);
+        }
+        
+        .button.secondary {
+            background: #6c757d;
+        }
+        
+        .button.secondary:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Logo Upload Functionality Test</h1>
+        
+        <div class="instructions">
+            <h3>📋 Test Instructions for Hiring Manager/Interviewer:</h3>
+            <ol>
+                <li><strong>Open the widget:</strong> Go to <a href="https://egainwidget.netlify.app" target="_blank">egainwidget.netlify.app</a></li>
+                <li><strong>Access admin panel:</strong> Click the gear icon (⚙️) in the top-right corner</li>
+                <li><strong>Enter password:</strong> Use <code>admin123</code> to access the admin panel</li>
+                <li><strong>Navigate to branding:</strong> Click the "Branding" tab in the admin panel</li>
+                <li><strong>Test logo upload:</strong> Try uploading a PNG image using the upload area</li>
+                <li><strong>Verify success:</strong> Check that the logo appears in the widget header</li>
+            </ol>
+        </div>
+        
+        <div class="test-section">
+            <h2>✅ Expected Behavior:</h2>
+            <div class="status success">
+                <strong>✓ File Selection:</strong> Clicking the upload area should open file picker
+            </div>
+            <div class="status success">
+                <strong>✓ File Validation:</strong> Only PNG, JPG, SVG files under 5MB should be accepted
+            </div>
+            <div class="status success">
+                <strong>✓ Preview Display:</strong> Selected file should show preview before upload
+            </div>
+            <div class="status success">
+                <strong>✓ Upload Processing:</strong> File should be processed and resized automatically
+            </div>
+            <div class="status success">
+                <strong>✓ Success Feedback:</strong> "Logo uploaded successfully!" alert should appear
+            </div>
+            <div class="status success">
+                <strong>✓ Widget Update:</strong> Logo should appear in widget header immediately
+            </div>
+            <div class="status success">
+                <strong>✓ Status Indicator:</strong> "✓ Active" status should show next to Logo label
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔍 Debug Information:</h2>
+            <div class="status info">
+                <strong>Console Logs:</strong> Open browser developer tools (F12) to see detailed upload logs
+            </div>
+            <div class="status info">
+                <strong>File Types Supported:</strong> PNG, JPG, SVG (up to 5MB)
+            </div>
+            <div class="status info">
+                <strong>Auto-Resize:</strong> Images are automatically resized to 44×44px for optimal display
+            </div>
+            <div class="status info">
+                <strong>Drag & Drop:</strong> You can also drag and drop image files onto the upload area
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🚀 Quick Test Actions:</h2>
+            <button class="button" onclick="window.open('https://egainwidget.netlify.app', '_blank')">
+                🌐 Open Widget
+            </button>
+            <button class="button secondary" onclick="window.open('https://github.com/dav-bowie/eGainWidgetFinal', '_blank')">
+                📁 View Source Code
+            </button>
+            <button class="button secondary" onclick="alert('Password: admin123')">
+                🔑 Show Admin Password
+            </button>
+        </div>
+        
+        <div class="test-section">
+            <h2>📝 Test Checklist:</h2>
+            <div class="status info">
+                <input type="checkbox" id="test1"> <label for="test1">Admin panel opens with password</label><br>
+                <input type="checkbox" id="test2"> <label for="test2">Branding tab is accessible</label><br>
+                <input type="checkbox" id="test3"> <label for="test3">File picker opens on upload area click</label><br>
+                <input type="checkbox" id="test4"> <label for="test4">PNG file is accepted and previewed</label><br>
+                <input type="checkbox" id="test5"> <label for="test5">Upload processes without errors</label><br>
+                <input type="checkbox" id="test6"> <label for="test6">Success message appears</label><br>
+                <input type="checkbox" id="test7"> <label for="test7">Logo appears in widget header</label><br>
+                <input type="checkbox" id="test8"> <label for="test8">"✓ Active" status shows in admin panel</label>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

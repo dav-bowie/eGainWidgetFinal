@@ -847,30 +847,40 @@ const calculateTopRightPosition = () => {
     widgetHeight = Math.min(400, viewportHeight - 20)
   }
 
-  // Position widget in the top-right corner with proper bounds checking
-  const x = Math.max(margin, viewportWidth - widgetWidth - margin)
-  const y = Math.max(margin, Math.min(margin, viewportHeight - widgetHeight - margin))
+  // Position widget based on device type
+  let x, y
+  
+  // For mobile devices (≤768px), center the widget
+  if (viewportWidth <= 768) {
+    x = (viewportWidth - widgetWidth) / 2
+    y = (viewportHeight - widgetHeight) / 2
+  } else {
+    // For larger devices, position in top-right corner
+    x = Math.max(margin, viewportWidth - widgetWidth - margin)
+    y = Math.max(margin, Math.min(margin, viewportHeight - widgetHeight - margin))
+  }
 
   return { x, y }
 }
 
 const resetPosition = () => {
-  const topRightPos = calculateTopRightPosition()
+  const position = calculateTopRightPosition()
 
   // Safety check to ensure position is within bounds
   const viewportWidth = window.innerWidth
   const viewportHeight = window.innerHeight
 
   // Ensure widget doesn't go off-screen
-  const safeX = Math.max(10, Math.min(topRightPos.x, viewportWidth - 50))
-  const safeY = Math.max(10, Math.min(topRightPos.y, viewportHeight - 50))
+  const safeX = Math.max(10, Math.min(position.x, viewportWidth - 50))
+  const safeY = Math.max(10, Math.min(position.y, viewportHeight - 50))
 
   widgetPosition.value = { x: safeX, y: safeY }
   initialPosition.x = safeX
   initialPosition.y = safeY
 
   // Debug logging for position reset
-  console.log('Widget position reset to top-right:', { x: safeX, y: safeY })
+  const deviceType = window.innerWidth <= 768 ? 'mobile (centered)' : 'desktop (top-right)'
+  console.log(`Widget position reset for ${deviceType}:`, { x: safeX, y: safeY })
 }
 
 const handleLogoError = (event: Event) => {
@@ -1300,12 +1310,12 @@ const selectFontSize = (sizeValue: string) => {
     max-width: 320px;
     max-height: 450px;
     border-radius: 16px;
-    /* Ensure widget adapts to keyboard */
+    /* Ensure widget is centered and within bounds */
     position: fixed;
-    top: 20px;
-    left: 10px;
-    right: 10px;
-    bottom: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
   }
 
   .widget-header {
@@ -1335,12 +1345,12 @@ const selectFontSize = (sizeValue: string) => {
     height: 520px;
     max-width: calc(100vw - 30px);
     max-height: calc(100vh - 40px);
-    /* Ensure widget adapts to keyboard */
+    /* Ensure widget is centered and within bounds */
     position: fixed;
-    top: 20px;
-    left: 15px;
-    right: 15px;
-    bottom: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
   }
 
   .widget-content {

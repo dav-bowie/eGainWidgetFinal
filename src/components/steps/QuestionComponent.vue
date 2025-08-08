@@ -167,10 +167,34 @@ const getNumericValue = (): number | '' => {
 // Methods
 const handleTextChoice = (optionId: string, label: string) => {
   emit('answer', props.question.id, optionId, label)
+  
+  // Smooth scroll to show the selection
+  nextTick(() => {
+    const selectedElement = document.querySelector(`input[value="${optionId}"]`)
+    if (selectedElement) {
+      selectedElement.closest('.option-item')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      })
+    }
+  })
 }
 
 const handleImageChoice = (optionId: string, label: string) => {
   emit('answer', props.question.id, optionId, label)
+  
+  // Smooth scroll to show the selection
+  nextTick(() => {
+    const selectedElement = document.querySelector(`input[value="${optionId}"]`)
+    if (selectedElement) {
+      selectedElement.closest('.image-option')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      })
+    }
+  })
 }
 
 const handleTextInput = () => {

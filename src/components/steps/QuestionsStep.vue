@@ -180,7 +180,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, nextTick } from 'vue'
 import { useWidgetStore } from '@/stores/widget'
 import QuestionComponent from './QuestionComponent.vue'
 import type { Question, Answer } from '@/types/widget'
@@ -239,6 +239,11 @@ const canProceed = computed(() => {
 // Methods
 const setDisplayMode = (mode: 'sequential' | 'batch') => {
   store.setDisplayMode(mode)
+  
+  // Scroll to top when switching modes for better UX
+  nextTick(() => {
+    scrollToTop()
+  })
 }
 
 const getAnswer = (questionId: string): Answer | null => {
@@ -264,6 +269,11 @@ const handleAnswer = async (questionId: string, value: string | number, label?: 
     label,
     timestamp: new Date()
   })
+  
+  // Scroll to show the updated answer in the answered panel
+  nextTick(() => {
+    scrollToAnsweredPanel()
+  })
 }
 
 const handleNext = async () => {
@@ -273,6 +283,16 @@ const handleNext = async () => {
   isLoading.value = true
   await new Promise(resolve => setTimeout(resolve, 800))
   isLoading.value = false
+  
+  // Scroll to the next question after loading
+  nextTick(() => {
+    if (currentQuestion.value) {
+      scrollToCurrentQuestion()
+    } else {
+      // If no current question, all questions are answered, scroll to top
+      scrollToTop()
+    }
+  })
 }
 
 const handleComplete = async () => {
@@ -306,10 +326,48 @@ const editAnswer = (questionId: string) => {
 const handleEditAnswer = async (questionId: string, value: string | number, label?: string) => {
   await handleAnswer(questionId, value, label)
   closeEditModal()
+  
+  // Scroll to show the updated answer
+  nextTick(() => {
+    scrollToAnsweredPanel()
+  })
 }
 
 const closeEditModal = () => {
   editingQuestionId.value = null
+}
+
+// Scrolling methods
+const scrollToAnsweredPanel = () => {
+  const answeredPanel = document.querySelector('.answered-panel')
+  if (answeredPanel) {
+    answeredPanel.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest'
+    })
+  }
+}
+
+const scrollToCurrentQuestion = () => {
+  const currentQuestionElement = document.querySelector('.question-container')
+  if (currentQuestionElement) {
+    currentQuestionElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'nearest'
+    })
+  }
+}
+
+const scrollToTop = () => {
+  const stepContent = document.querySelector('.step-content')
+  if (stepContent) {
+    stepContent.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
 }
 </script>
 
@@ -338,6 +396,10 @@ const closeEditModal = () => {
   padding-bottom: 0;
   /* Ensure proper ordering of elements */
   align-items: stretch;
+  /* Smooth scrolling behavior */
+  scroll-behavior: smooth;
+  /* Prevent scroll chaining */
+  overscroll-behavior: contain;
 }
 
 .step-header {
@@ -457,6 +519,13 @@ const closeEditModal = () => {
   overflow-y: auto;
   /* Ensure it's always visible */
   order: -1;
+  /* Smooth scrolling for answered panel */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  /* Prevent scroll chaining */
+  overscroll-behavior: contain;
+  /* Smooth transition when content changes */
+  transition: max-height 0.3s ease;
 }
 
 .panel-header {

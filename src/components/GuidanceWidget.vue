@@ -65,7 +65,7 @@
         <div v-if="isMobileDevice" style="background: red; color: white; padding: 5px; font-size: 10px;">
           DEBUG: Widget is open (isOpen: {{ isOpen }})
         </div>
-        
+
         <!-- Problem Description Step -->
         <ProblemDescriptionStep v-if="currentStep === 'problem'" @next="handleProblemSubmit" />
 
@@ -1307,19 +1307,38 @@ const selectFontSize = (sizeValue: string) => {
 
 /* Extra small devices (phones, 320px and up) */
 @media (max-width: 480px) {
-  .widget-container {
-    /* Scaled down version of desktop - same features, smaller size */
-    width: calc(100vw - 20px) !important;
-    height: 80vh !important;
-    max-width: 350px !important;
-    max-height: 500px !important;
-    border-radius: 16px !important;
-    /* Position on right side like desktop */
+  /* Mobile: Transform into full-screen overlay */
+  .guidance-widget {
     position: fixed !important;
-    right: 10px !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 10000 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  .widget-container {
+    /* Full-screen mobile widget */
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 20px !important;
+    /* Center the widget */
+    position: relative !important;
+    top: auto !important;
     left: auto !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    right: auto !important;
+    transform: none !important;
     margin: 0 !important;
     /* Prevent iOS Safari from interfering with scrolling */
     -webkit-overflow-scrolling: touch !important;
@@ -1328,19 +1347,33 @@ const selectFontSize = (sizeValue: string) => {
     padding-top: env(safe-area-inset-top) !important;
     padding-bottom: env(safe-area-inset-bottom) !important;
     /* Ensure widget is in frame */
-    z-index: 10000 !important;
+    z-index: 10001 !important;
+    /* Add smooth animation */
+    animation: mobileWidgetSlideIn 0.3s ease-out !important;
+  }
+
+  @keyframes mobileWidgetSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
   }
 
   .widget-header {
-    padding: 16px !important;
+    padding: 20px !important;
+    border-radius: 20px 20px 0 0 !important;
   }
 
   .widget-title {
-    font-size: 16px !important;
+    font-size: 20px !important;
   }
 
   .widget-subtitle {
-    font-size: 12px !important;
+    font-size: 14px !important;
   }
 
   .widget-content {
@@ -1349,8 +1382,48 @@ const selectFontSize = (sizeValue: string) => {
     overscroll-behavior: contain !important;
     /* Ensure proper scrolling on mobile */
     touch-action: pan-y !important;
-    /* Scaled down height */
-    height: calc(80vh - 80px) !important;
+    /* Full height content */
+    height: calc(100% - 80px) !important;
+    padding: 20px !important;
+  }
+
+  /* Mobile-specific FAB styling */
+  .widget-fab {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    top: auto !important;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4) !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 3px solid rgba(255, 255, 255, 0.2) !important;
+    animation: mobileFabPulse 2s infinite !important;
+  }
+
+  @keyframes mobileFabPulse {
+    0%, 100% {
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    }
+    50% {
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6), 0 0 0 8px rgba(99, 102, 241, 0.1);
+    }
+  }
+
+  .fab-logo {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .fab-icon {
+    font-size: 24px !important;
+    width: 40px !important;
+    height: 40px !important;
   }
 
   /* Enhanced admin modal for mobile */
@@ -1425,19 +1498,38 @@ const selectFontSize = (sizeValue: string) => {
 
 /* Small devices (large phones, 481px and up) */
 @media (min-width: 481px) and (max-width: 768px) {
-  .widget-container {
-    /* Scaled down version of desktop - same features, smaller size */
-    width: calc(100vw - 30px) !important;
-    height: 85vh !important;
-    max-width: 400px !important;
-    max-height: 600px !important;
-    border-radius: 20px !important;
-    /* Position on right side like desktop */
+  /* Tablet: Use full-screen overlay like mobile */
+  .guidance-widget {
     position: fixed !important;
-    right: 15px !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 10000 !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 30px !important;
+    box-sizing: border-box !important;
+  }
+
+  .widget-container {
+    /* Full-screen tablet widget */
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 24px !important;
+    /* Center the widget */
+    position: relative !important;
+    top: auto !important;
     left: auto !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    right: auto !important;
+    transform: none !important;
     margin: 0 !important;
     /* Prevent iOS Safari from interfering with scrolling */
     -webkit-overflow-scrolling: touch !important;
@@ -1446,7 +1538,22 @@ const selectFontSize = (sizeValue: string) => {
     padding-top: env(safe-area-inset-top) !important;
     padding-bottom: env(safe-area-inset-bottom) !important;
     /* Ensure widget is in frame */
-    z-index: 10000 !important;
+    z-index: 10001 !important;
+    /* Add smooth animation */
+    animation: mobileWidgetSlideIn 0.3s ease-out !important;
+  }
+
+  .widget-header {
+    padding: 24px !important;
+    border-radius: 24px 24px 0 0 !important;
+  }
+
+  .widget-title {
+    font-size: 22px !important;
+  }
+
+  .widget-subtitle {
+    font-size: 16px !important;
   }
 
   .widget-content {
@@ -1455,8 +1562,39 @@ const selectFontSize = (sizeValue: string) => {
     overscroll-behavior: contain !important;
     /* Ensure proper scrolling on mobile */
     touch-action: pan-y !important;
-    /* Scaled down height */
-    height: calc(85vh - 80px) !important;
+    /* Full height content */
+    height: calc(100% - 90px) !important;
+    padding: 24px !important;
+  }
+
+  /* Tablet-specific FAB styling */
+  .widget-fab {
+    position: fixed !important;
+    bottom: 25px !important;
+    right: 25px !important;
+    top: auto !important;
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4) !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 3px solid rgba(255, 255, 255, 0.2) !important;
+    animation: mobileFabPulse 2s infinite !important;
+  }
+
+  .fab-logo {
+    width: 45px !important;
+    height: 45px !important;
+  }
+
+  .fab-icon {
+    font-size: 28px !important;
+    width: 45px !important;
+    height: 45px !important;
   }
 }
 

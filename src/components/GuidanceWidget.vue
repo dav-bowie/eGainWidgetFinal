@@ -520,7 +520,10 @@
 
                 <!-- Logo Upload -->
                 <div class="logo-section">
-                  <label>Logo</label>
+                  <div class="logo-header">
+                    <label>Logo</label>
+                    <span v-if="adminConfig.logoUrl && adminConfig.logoUrl !== '/placeholder.svg'" class="logo-status">✓ Active</span>
+                  </div>
                   <div class="logo-upload-area">
                     <div class="logo-preview-large">
                       <img
@@ -1096,20 +1099,44 @@ const updateAdminConfig = () => {
 // updateFontSize function removed as it's not being used
 
 const triggerFileUpload = () => {
-  fileInput.value?.click()
+  console.log('Triggering file upload') // Debug log
+  if (fileInput.value) {
+    fileInput.value.click()
+    console.log('File input clicked') // Debug log
+  } else {
+    console.error('File input not found') // Debug log
+    // Fallback: create a temporary file input
+    const tempInput = document.createElement('input')
+    tempInput.type = 'file'
+    tempInput.accept = 'image/png,image/jpeg,image/svg+xml'
+    tempInput.onchange = (event) => {
+      handleFileUpload(event)
+      document.body.removeChild(tempInput)
+    }
+    document.body.appendChild(tempInput)
+    tempInput.click()
+  }
 }
 
 const handleFileUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
   if (file) {
+    console.log('File selected:', file.name, file.type, file.size) // Debug log
     selectedFile.value = file
     // Create preview URL
     const reader = new FileReader()
     reader.onload = (e) => {
       previewLogoUrl.value = e.target?.result as string
+      console.log('Preview created successfully') // Debug log
+    }
+    reader.onerror = () => {
+      console.error('Failed to read file') // Debug log
+      alert('Failed to read file. Please try again.')
     }
     reader.readAsDataURL(file)
+  } else {
+    console.log('No file selected') // Debug log
   }
 }
 
@@ -1127,22 +1154,33 @@ const formatFileSize = (bytes: number) => {
 
 const handleFileDrop = (event: DragEvent) => {
   event.preventDefault()
+  console.log('File drop event triggered') // Debug log
   const files = event.dataTransfer?.files
   if (files && files.length > 0) {
     const file = files[0]
+    console.log('Dropped file:', file.name, file.type, file.size) // Debug log
     if (file.type.startsWith('image/')) {
       selectedFile.value = file
       // Create preview URL
       const reader = new FileReader()
       reader.onload = (e) => {
         previewLogoUrl.value = e.target?.result as string
+        console.log('Drop preview created successfully') // Debug log
+      }
+      reader.onerror = () => {
+        console.error('Failed to read dropped file') // Debug log
+        alert('Failed to read dropped file. Please try again.')
       }
       reader.readAsDataURL(file)
+    } else {
+      alert('Please drop an image file (PNG, JPG, or SVG)')
     }
   }
 }
 
 const processLogoFile = (file: File) => {
+  console.log('Processing logo file:', file.name, file.type, file.size) // Debug log
+  
   // Set processing state
   isProcessingLogo.value = true
 
@@ -1167,6 +1205,13 @@ const processLogoFile = (file: File) => {
       const result = e.target?.result as string
       adminConfig.value.logoUrl = result
       updateAdminConfig()
+      isProcessingLogo.value = false
+      console.log('SVG logo uploaded successfully') // Debug log
+      alert('Logo uploaded successfully!')
+    }
+    reader.onerror = () => {
+      console.error('Failed to read SVG file') // Debug log
+      alert('Failed to read SVG file. Please try again.')
       isProcessingLogo.value = false
     }
     reader.readAsDataURL(file)
@@ -1221,6 +1266,8 @@ const processLogoFile = (file: File) => {
     if (fileInput.value) {
       fileInput.value.value = ''
     }
+    console.log('PNG/JPG logo uploaded and resized successfully') // Debug log
+    alert('Logo uploaded successfully!')
   }
 
   img.onerror = () => {
@@ -3923,6 +3970,21 @@ const selectFontWeight = (weightValue: string) => {
   max-width: 100%;
 }
 
+.logo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-status {
+  font-size: 12px;
+  color: #10b981;
+  font-weight: 600;
+  background: #d1fae5;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
 .logo-upload-area {
   display: flex;
   flex-direction: column;
@@ -3999,6 +4061,9 @@ const selectFontWeight = (weightValue: string) => {
   width: 100%;
   height: 100%;
   cursor: pointer;
+  z-index: 10;
+  top: 0;
+  left: 0;
 }
 
 .upload-content-modern {
